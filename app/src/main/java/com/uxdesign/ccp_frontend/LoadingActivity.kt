@@ -2,24 +2,24 @@ package com.uxdesign.ccp_frontend
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.os.Handler
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
 
-class MenuActivity : AppCompatActivity() {
+class LoadingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_menu)
+        setContentView(R.layout.activity_loading)
 
-        val buttonRecomendar: Button = findViewById(R.id.buttonRecomendar)
-        buttonRecomendar.setOnClickListener {
-            val intent = Intent(this, CargarVideoActivity::class.java)
+        Handler().postDelayed({
+            val intent = Intent(this, GenerarRecomendacionActivity::class.java)
             startActivity(intent)
-        }
+            finish()
+        }, 10000)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
