@@ -2,6 +2,7 @@ package com.uxdesign.ccp_frontend
 
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -18,6 +19,12 @@ class GenerarRecomendacionActivity : AppCompatActivity() {
 
         //val bitmap = intent.getParcelableExtra<Bitmap>("imageBitmap")
         //imagen.setImageBitmap(bitmap)
+
+        val minuto = intent.getStringExtra("minuto") ?: "mm"
+
+        val textoCuadro: TextView = findViewById(R.id.textoCuadro)
+        val textoConMinuto = "Esta imagen pertenece al minuto $minuto de tu video"
+        textoCuadro.text = textoConMinuto
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
