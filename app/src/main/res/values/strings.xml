@@ -3,4 +3,6 @@
     <string name="iniciar">Iniciar</string>
     <string name="crear_pedido">Crear Pedido</string>
     <string name="recomendar_localizaci_n_productos">Recomendar Localización Productos</string>
+    <string name="logo_peque_o">Logo pequeño</string>
+    <string name="imagen_del_producto">Imagen del producto</string>
 </resources>
