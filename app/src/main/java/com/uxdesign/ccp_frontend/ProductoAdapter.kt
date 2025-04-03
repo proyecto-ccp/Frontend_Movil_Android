@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,18 @@ class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
         val producto = productos[position]
         holder.bind(producto)
+        val context = holder.itemView.context
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, DetalleProductoActivity::class.java).apply {
+                putExtra("producto_id", producto.id)
+                putExtra("producto_nombre", producto.nombre)
+                putExtra("producto_precio", producto.precio)
+                putExtra("producto_descripcion", producto.descripcion)
+                putExtra("producto_imagen", producto.imagen)
+            }
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
