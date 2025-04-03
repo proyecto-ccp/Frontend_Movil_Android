@@ -13,6 +13,9 @@
         android:theme="@style/Theme.CPP"
         tools:targetApi="31">
         <activity
+            android:name="com.uxdesign.ccp_frontend.FinalizarPedidoActivity"
+            android:exported="false" />
+        <activity
             android:name="com.uxdesign.ccp_frontend.DetalleProductoActivity"
             android:exported="false" />
         <activity
