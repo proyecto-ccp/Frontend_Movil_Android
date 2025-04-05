@@ -1,31 +1,31 @@
 package com.uxdesign.ccp_frontend
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
 
-class MenuActivity : AppCompatActivity() {
+class GenerarRecomendacionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_menu)
+        setContentView(R.layout.activity_generar_recomendacion)
 
-        val buttonRecomendar: Button = findViewById(R.id.buttonRecomendar)
-        buttonRecomendar.setOnClickListener {
-            val intent = Intent(this, CargarVideoActivity::class.java)
-            startActivity(intent)
-        }
+        //val imagen: ImageView = findViewById(R.id.imagenRecomendacion)
 
-        val buttonCatalogo: Button = findViewById(R.id.buttonPedido)
-        buttonCatalogo.setOnClickListener {
-            val intent = Intent(this, CatalogoProductosActivity::class.java)
-            startActivity(intent)
-        }
+        //val bitmap = intent.getParcelableExtra<Bitmap>("imageBitmap")
+        //imagen.setImageBitmap(bitmap)
+
+        val minuto = intent.getStringExtra("minuto") ?: "mm"
+
+        val textoCuadro: TextView = findViewById(R.id.textoCuadro)
+        val textoConMinuto = "Esta imagen pertenece al minuto $minuto de tu video"
+        textoCuadro.text = textoConMinuto
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
