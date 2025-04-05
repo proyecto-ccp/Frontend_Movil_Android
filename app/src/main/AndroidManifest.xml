@@ -25,9 +25,6 @@
             android:name="com.uxdesign.ccp_frontend.CatalogoProductosActivity"
             android:exported="false" />
         <activity
-            android:name="com.uxdesign.ccp_frontend.CargarVideoActivity"
-            android:exported="false" />
-        <activity
             android:name="com.uxdesign.ccp_frontend.MenuActivity"
             android:exported="false" />
         <activity

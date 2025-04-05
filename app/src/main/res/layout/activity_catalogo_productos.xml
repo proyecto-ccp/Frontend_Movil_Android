@@ -65,5 +65,17 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageOjoN"
+        android:layout_width="63dp"
+        android:layout_height="48dp"
+        android:clickable="true"
+        android:contentDescription="Cambiar color"
+        android:focusable="true"
+        app:srcCompat="@drawable/pinkeye"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="332dp"
+        tools:layout_editor_absoluteY="16dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
