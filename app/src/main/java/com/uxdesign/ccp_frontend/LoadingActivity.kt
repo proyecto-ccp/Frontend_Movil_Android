@@ -16,7 +16,7 @@ class LoadingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_loading)
 
         Handler().postDelayed({
-            val intent = Intent(this, GenerarRecomendacionActivity::class.java)
+            val intent = Intent(this, ListaVideosActivity::class.java)
             startActivity(intent)
             finish()
         }, 10000)
