@@ -13,9 +13,9 @@ import retrofit2.http.Part
 interface ApiService {
 
     @Multipart
-    @POST("tu/endpoint/aqui")
+    @POST("API/videos/CargarVideo")
     fun uploadVideo(
-        @Part videoPart: MultipartBody.Part,          // El video (archivo)
-        @Part("producto") productoBody: RequestBody   // El nombre del producto (texto)
+        @Part video: MultipartBody.Part,
+        @Part("data") data: RequestBody
     ): Call<ResponseBody>
 }

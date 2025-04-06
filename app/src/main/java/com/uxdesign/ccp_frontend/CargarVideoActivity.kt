@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -12,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.gson.Gson
 import com.uxdesign.cpp.R
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -107,11 +109,12 @@ class CargarVideoActivity : AppCompatActivity() {
                     val videoUri = data?.data
                     if (videoUri != null) {
                         try {
+                            val videoName: String = getFileNameFromUri(videoUri).toString()
                             val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!
                             videoBytes = inputStream.readBytes()
                             saveVideoToFile(videoBytes)
-                            val intent = Intent(this, LoadingActivity::class.java)
-                            startActivity(intent)
+                            sendVideoToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
+
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Toast.makeText(this, "Error al leer el video", Toast.LENGTH_SHORT).show()
@@ -126,13 +129,12 @@ class CargarVideoActivity : AppCompatActivity() {
                     val videoUri = data?.data
                     if (videoUri != null) {
                         try {
+                            val videoName : String = getFileNameFromUri(videoUri).toString()
                             val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!
                             videoBytes = inputStream.readBytes()
                             saveVideoToFile(videoBytes)
-                            //sendVideoToServer(videoBytes, spinner.selectedItem.toString())
-                            //Toast.makeText(this, "Video capturado y convertido en bytes", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, LoadingActivity::class.java)
-                            startActivity(intent)
+                            sendVideoToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
+
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Toast.makeText(this, "Error al leer el video", Toast.LENGTH_SHORT).show()
@@ -143,6 +145,18 @@ class CargarVideoActivity : AppCompatActivity() {
                 }
             }
         }    }
+
+    private fun getFileNameFromUri(uri: Uri): String? {
+        var fileName = "default.mp4"
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        cursor?.use {
+            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (it.moveToFirst()) {
+                fileName = it.getString(nameIndex) ?: "default.mp4"
+            }
+        }
+        return fileName
+    }
 
     private fun saveVideoToFile(videoBytes: ByteArray) {
         try {
@@ -159,9 +173,9 @@ class CargarVideoActivity : AppCompatActivity() {
         }
     }
 
-    private fun sendVideoToServer(videoBytes: ByteArray, producto: String) {
+    private fun sendVideoToServer(videoBytes: ByteArray, producto: String, cliente: String, videoName: String) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://your.api.url/")  // Cambia la URL de tu microservicio
+            .baseUrl("API/videos/CargarVideo")  // Aqui URL de microservicio
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -169,17 +183,29 @@ class CargarVideoActivity : AppCompatActivity() {
 
         // Crear el RequestBody para el video
         val requestBody = RequestBody.create("video/mp4".toMediaTypeOrNull(), videoBytes)
-        val videoPart = MultipartBody.Part.createFormData("video", "video.mp4", requestBody)
+        val videoPart = MultipartBody.Part.createFormData("video", videoName, requestBody)
 
-        // Crear el RequestBody para el producto
-        val productoBody = RequestBody.create("text/plain".toMediaTypeOrNull(), producto)
+        // Crear los datos adicionales en formato JSON
+        val videoRequest = VideoRequest(
+            idCliente = cliente,  // Asumiendo que 'cliente' es un ID de tipo String
+            idProducto = producto.toInt(),  // Convertir 'producto' a un número entero
+            nombre = videoName
+        )
+
+        val gson = Gson()
+        val jsonRequest = gson.toJson(videoRequest)
+        val requestBodyJson = RequestBody.create("application/json".toMediaTypeOrNull(), jsonRequest)
 
         // Enviar la solicitud
-        apiService.uploadVideo(videoPart, productoBody).enqueue(object : Callback<ResponseBody> {
+        apiService.uploadVideo(videoPart, requestBodyJson).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@CargarVideoActivity, "Video subido exitosamente", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@CargarVideoActivity, LoadingActivity::class.java)
+                    val intent = Intent(this@CargarVideoActivity, ListaVideosActivity::class.java)
+                    intent.putExtra("idProducto", producto.toInt())
+                    intent.putExtra("idCliente", cliente)
+                    intent.putExtra("videoName", videoName)
+                    startActivity(intent)
                 } else {
                     Toast.makeText(this@CargarVideoActivity, "Error al subir el video", Toast.LENGTH_SHORT).show()
                 }

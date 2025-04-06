@@ -19,7 +19,7 @@ class LoadingActivity : AppCompatActivity() {
             val intent = Intent(this, ListaVideosActivity::class.java)
             startActivity(intent)
             finish()
-        }, 10000)
+        }, 3000)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
