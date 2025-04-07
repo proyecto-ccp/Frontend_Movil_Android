@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.OpenableColumns
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -195,6 +196,8 @@ class CargarVideoActivity : AppCompatActivity() {
         val gson = Gson()
         val jsonRequest = gson.toJson(videoRequest)
         val requestBodyJson = RequestBody.create("application/json".toMediaTypeOrNull(), jsonRequest)
+
+        Log.d("HTTP", "JSON Request: $jsonRequest")
 
         // Enviar la solicitud
         apiService.uploadVideo(videoPart, requestBodyJson).enqueue(object : Callback<ResponseBody> {
