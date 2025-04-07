@@ -45,8 +45,8 @@ class CargarVideoActivity : AppCompatActivity() {
         spinner = findViewById(R.id.spinnerProductos)
         spinnerC = findViewById(R.id.spinnerClientes)
 
-        val productos = listOf("Selecciona uno", "Producto 1", "Producto 2", "Producto 3")
-        val clientes = listOf("Selecciona uno", "Cliente 1", "Cliente 2", "Cliente 3")
+        val productos = listOf("Selecciona uno", 1, 2, 3)
+        val clientes = listOf("Selecciona uno", "550e8400-e29b-41d4-a716-446655440000", "Cliente2", "Cliente3")
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, productos)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -166,7 +166,7 @@ class CargarVideoActivity : AppCompatActivity() {
             outputStream.write(videoBytes)
             outputStream.close()
 
-            Toast.makeText(this, "Video guardado en: ${file.absolutePath}", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Video guardado en: ${file.absolutePath}", Toast.LENGTH_LONG).show()
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(this, "Error al guardar el archivo de video", Toast.LENGTH_SHORT).show()
@@ -175,7 +175,7 @@ class CargarVideoActivity : AppCompatActivity() {
 
     private fun sendVideoToServer(videoBytes: ByteArray, producto: String, cliente: String, videoName: String) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("API/videos/CargarVideo")  // Aqui URL de microservicio
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")  // Aqui URL de microservicio
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

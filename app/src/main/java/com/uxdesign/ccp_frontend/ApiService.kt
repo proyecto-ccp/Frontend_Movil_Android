@@ -13,7 +13,7 @@ import retrofit2.http.Part
 interface ApiService {
 
     @Multipart
-    @POST("API/videos/CargarVideo")
+    @POST("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")
     fun uploadVideo(
         @Part video: MultipartBody.Part,
         @Part("data") data: RequestBody
