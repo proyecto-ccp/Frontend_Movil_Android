@@ -12,10 +12,13 @@ import retrofit2.http.Part
 
 interface ApiService {
 
-    @Multipart
-    @POST("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")
-    fun uploadVideo(
-        @Part video: MultipartBody.Part,
-        @Part("data") data: RequestBody
-    ): Call<ResponseBody>
+    //@Multipart
+    //@POST("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")
+    //fun uploadVideo(
+     //   @Part video: MultipartBody.Part,
+      //  @Part("data") data: RequestBody
+    //): Call<ResponseBody>
+    @POST("Video/CargarVideo")  // Reemplaza con la URL de tu microservicio
+    fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
+
 }
