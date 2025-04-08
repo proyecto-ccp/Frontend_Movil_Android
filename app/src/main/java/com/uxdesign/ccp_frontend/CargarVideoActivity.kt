@@ -117,7 +117,9 @@ class CargarVideoActivity : AppCompatActivity() {
                             videoBytes = inputStream.readBytes()
                             saveVideoToFile(videoBytes)
                             sendVideo64ToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
-
+                            videoBytes = ByteArray(0) // Liberar la memoria
+                            spinner.setSelection(0)    // Limpiar el spinner
+                            spinnerC.setSelection(0)
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Toast.makeText(this, "Error al leer el video", Toast.LENGTH_SHORT).show()
@@ -135,10 +137,12 @@ class CargarVideoActivity : AppCompatActivity() {
                             val videoName : String = getFileNameFromUri(videoUri).toString()
                             val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!
                             videoBytes = inputStream.readBytes()
-                            saveVideoToFile(videoBytes)
+                            //saveVideoToFile(videoBytes)
                                 // sendVideoToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
                             sendVideo64ToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
-
+                            videoBytes = ByteArray(0) // Liberar la memoria
+                            spinner.setSelection(0)    // Limpiar el spinner
+                            spinnerC.setSelection(0)
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Toast.makeText(this, "Error al leer el video", Toast.LENGTH_SHORT).show()
@@ -233,9 +237,10 @@ class CargarVideoActivity : AppCompatActivity() {
             nombre = videoName,
             video = video64
         )
+        //Log.d("VideoRequest", "Request Body: $videoRequest")
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")  // Aqui URL de microservicio
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Video/")  // Aqui URL de microservicio
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -244,13 +249,21 @@ class CargarVideoActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@CargarVideoActivity, "Video subido exitosamente", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@CargarVideoActivity, ListaVideosActivity::class.java)
-                    intent.putExtra("idProducto", producto.toInt())
-                    intent.putExtra("idCliente", cliente)
-                    intent.putExtra("videoName", videoName)
-                    startActivity(intent)
+
+                    //val intent = Intent(this@CargarVideoActivity, ListaVideosActivity::class.java)
+                    //intent.putExtra("idProducto", producto.toInt())
+                    //intent.putExtra("idCliente", cliente)
+                    //intent.putExtra("videoName", videoName)
+                    //startActivity(intent)
                 } else {
-                    Toast.makeText(this@CargarVideoActivity, "Error al subir el video", Toast.LENGTH_SHORT).show()
+                    // Imprimir el cuerpo de la respuesta en caso de error
+                    try {
+                        val errorBody = response.errorBody()?.string()
+                        Log.e("UploadError", "Error en la subida del video: $errorBody")
+                        Toast.makeText(this@CargarVideoActivity, "Error al subir el video", Toast.LENGTH_SHORT).show()
+                    } catch (e: IOException) {
+                        Log.e("UploadError", "Error al leer la respuesta del error: ${e.message}")
+                    }
                 }
             }
 

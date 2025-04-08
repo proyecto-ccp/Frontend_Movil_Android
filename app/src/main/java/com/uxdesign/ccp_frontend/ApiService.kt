@@ -18,7 +18,7 @@ interface ApiService {
      //   @Part video: MultipartBody.Part,
       //  @Part("data") data: RequestBody
     //): Call<ResponseBody>
-    @POST("Video/CargarVideo")  // Reemplaza con la URL de tu microservicio
+    @POST("CargarVideo")  // Reemplaza con la URL de tu microservicio
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
 }
