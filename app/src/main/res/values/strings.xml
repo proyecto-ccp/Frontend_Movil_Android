@@ -10,4 +10,18 @@
     <string name="selecciona_un_producto_para_recomendarte_una_localizaci_n_y_luego_sube_un_video_donde_puedas_mostrarnos_la_tienda">Selecciona un producto para recomendarte una localización y luego sube un video donde puedas mostrarnos la tienda:</string>
     <string name="producto">Producto</string>
     <string name="selecciona_uno">Selecciona uno</string>
+
+    <string-array name="tipos_doc">
+        <item>Cédula de Ciudadanía</item>
+        <item>Cédula de Extranjería</item>
+        <item>Número de Identificación Tributaria</item>
+        <item>Pasaporte</item>
+    </string-array>
+
+    <string-array name="values_doc">
+        <item>CC</item>
+        <item>CE</item>
+        <item>NI</item>
+        <item>PS</item>
+    </string-array>
 </resources>
