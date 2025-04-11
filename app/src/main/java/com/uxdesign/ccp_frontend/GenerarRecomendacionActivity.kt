@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
+import com.bumptech.glide.Glide
 
 class GenerarRecomendacionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,16 +16,18 @@ class GenerarRecomendacionActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_generar_recomendacion)
 
-        //val imagen: ImageView = findViewById(R.id.imagenRecomendacion)
+        val imagen = intent.getStringExtra("video_imagen")
+        val minuto = intent.getStringExtra("video_minuto")
 
-        //val bitmap = intent.getParcelableExtra<Bitmap>("imageBitmap")
-        //imagen.setImageBitmap(bitmap)
-
-        val minuto = intent.getStringExtra("minuto") ?: "mm"
-
-        val textoCuadro: TextView = findViewById(R.id.textoCuadro)
+        val imageView: ImageView = findViewById<ImageView>(R.id.imagenRecomendacion)
+        val textoCuadro: TextView = findViewById<TextView>(R.id.textoCuadro)
         val textoConMinuto = "Esta imagen pertenece al minuto $minuto de tu video"
         textoCuadro.text = textoConMinuto
+
+        Glide.with(this)
+            .load(imagen)
+            //.placeholder(R.drawable.placeholder) para imagen por defecto
+            .into(imageView)
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->

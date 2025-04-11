@@ -4,5 +4,7 @@ data class Video(
     val nombre: String,
     val cliente: String,
     val producto: String,
-    val estado: String
+    val estado: String,
+    val imagen: String,
+    val minuto: String
 )

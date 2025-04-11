@@ -22,19 +22,12 @@ class VideoAdapter(private val videos: List<Video>) : RecyclerView.Adapter<Video
         val context = holder.itemView.context
 
         holder.itemView.setOnClickListener {
-            if (video.estado == "Procesado") {
-                val intent = Intent(context, GenerarRecomendacionActivity::class.java).apply {
-                    //putExtra("video_nombre", video.nombre)
-                    //putExtra("video_cliente", video.cliente)
-                    //putExtra("video_producto", video.producto)
-                    //putExtra("video_estado", video.estado)
+           val intent = Intent(context, GenerarRecomendacionActivity::class.java).apply {
+                putExtra("video_imagen", video.imagen)
+                putExtra("video_minuto", video.minuto)
+           }
+            context.startActivity(intent)
 
-                }
-                context.startActivity(intent)
-            } else {
-                // Si el video no está "Procesado", muestra un mensaje
-                Toast.makeText(context, "Este video aún está en proceso", Toast.LENGTH_SHORT).show()
-            }
         }
     }
     override fun getItemCount(): Int {
