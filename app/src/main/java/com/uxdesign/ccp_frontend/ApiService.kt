@@ -22,6 +22,9 @@ interface ApiService {
     @POST("CargarVideo")  // Reemplaza con la URL de tu microservicio
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
-    @GET("videos") // Aquí debes poner el endpoint correcto del microservicio
+    @GET("videos") // Aquí debes poner el endpoint del microservicio
     fun getRecomendacion(): Call<List<Video>>
+
+    @POST("cliente") // <- Ajusta el endpoint
+    fun registrarCliente(@Body cliente: Cliente): Call<ResponseBody>
 }
