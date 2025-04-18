@@ -23,8 +23,8 @@ class VideoAdapter(private val videos: List<Video>) : RecyclerView.Adapter<Video
 
         holder.itemView.setOnClickListener {
            val intent = Intent(context, GenerarRecomendacionActivity::class.java).apply {
-                putExtra("video_imagen", video.imagen)
-                putExtra("video_minuto", video.minuto)
+                putExtra("video_imagen", video.urlImagen)
+                //putExtra("video_minuto", video.minuto)
            }
             context.startActivity(intent)
 
@@ -42,9 +42,9 @@ class VideoAdapter(private val videos: List<Video>) : RecyclerView.Adapter<Video
 
         fun bind(video: Video) {
             nombreVideo.text = video.nombre
-            clienteVideo.text = video.cliente
-            productoVideo.text = video.producto
-            estadoVideo.text = video.estado
+            clienteVideo.text = "Cliente: ${video.idCliente}"
+            productoVideo.text = "Producto ID: ${video.idProducto}"
+            estadoVideo.text = "Estado: ${video.estadoCarga}"
         }
     }
 

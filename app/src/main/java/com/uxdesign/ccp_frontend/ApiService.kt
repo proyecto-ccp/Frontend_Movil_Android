@@ -10,6 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -22,9 +23,12 @@ interface ApiService {
     @POST("CargarVideo")  // Reemplaza con la URL de tu microservicio
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
-    @GET("videos") // Aquí debes poner el endpoint del microservicio
-    fun getRecomendacion(): Call<List<Video>>
+    @GET("Video/ObtenerVideosPorCliente/{clienteId}")
+    fun getVideosPorCliente(@Path("clienteId") clienteId: String): Call<List<Video>>
 
     @POST("cliente") // <- Ajusta el endpoint
     fun registrarCliente(@Body cliente: Cliente): Call<ResponseBody>
+
+    @GET("Cliente")
+    fun getClientes(): Call<List<Cliente>>
 }

@@ -16,19 +16,25 @@ class GenerarRecomendacionActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_generar_recomendacion)
 
-        val imagen = intent.getStringExtra("video_imagen")
-        val minuto = intent.getStringExtra("video_minuto")
+        val imagen = intent.getStringExtra("video_url_imagen")
+        //val minuto = intent.getStringExtra("video_minuto")
 
         val imageView: ImageView = findViewById<ImageView>(R.id.imagenRecomendacion)
-        val textoCuadro: TextView = findViewById<TextView>(R.id.textoCuadro)
-        val textoConMinuto = "Esta imagen pertenece al minuto $minuto de tu video"
-        textoCuadro.text = textoConMinuto
+        //val textoCuadro: TextView = findViewById<TextView>(R.id.textoCuadro)
+        //val textoConMinuto = "Esta imagen pertenece al minuto $minuto de tu video"
+        //textoCuadro.text = textoConMinuto
 
-        Glide.with(this)
-            .load(imagen)
-            //.placeholder(R.drawable.placeholder) para imagen por defecto
-            .into(imageView)
-
+        if (!imagen.isNullOrEmpty()) {
+            Glide.with(this)
+                .load(imagen)
+                .placeholder(R.drawable.cargando)
+                .error(R.drawable.cargando)
+                .into(imageView)
+        } else {
+            Glide.with(this)
+                .load(R.drawable.cargando)
+                .into(imageView)
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

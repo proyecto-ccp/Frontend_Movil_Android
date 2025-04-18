@@ -62,18 +62,19 @@ class RegistrarClienteActivity : AppCompatActivity() {
             val tipoDocumento = valores[spinnerTipoDoc.selectedItemPosition]
 
             val cliente = Cliente(
+                id = "",
                 nombre = nombreText.text.toString(),
                 apellido = apellidoText.text.toString(),
                 documento = numDocText.text.toString(),
                 tipoDocumento = tipoDocumento,
                 telefono = telefonoText.text.toString(),
-                correo = correoText.text.toString(),
+                email = correoText.text.toString(),
                 direccion = direccionText.text.toString(),
-                contrasenia = contraseniaText.text.toString()
+                //contrasenia = contraseniaText.text.toString()
             )
 
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Cliente/")  // Aqui URL de microservicio
+                .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/Cliente/CrearCliente")  // Aqui URL de microservicio
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

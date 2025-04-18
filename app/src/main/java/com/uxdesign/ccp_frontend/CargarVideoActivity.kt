@@ -1,16 +1,17 @@
 package com.uxdesign.ccp_frontend
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
 import android.util.Base64
+import android.view.View
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -28,11 +29,17 @@ import java.io.InputStream
 import java.io.IOException
 
 class CargarVideoActivity : AppCompatActivity() {
+    private var listaClientes: List<Cliente> = emptyList()
+    private var selectedClienteId: String = ""
+
     private val REQUEST_VIDEO_CAPTURE = 1
     private val REQUEST_VIDEO_GALLERY = 2
     private lateinit var videoBytes: ByteArray
     private lateinit var spinner: Spinner
     private lateinit var spinnerC: Spinner
+    private lateinit var editTextNombreVideo: EditText
+    private var nombreVideo: String = ""
+    private lateinit var loadingContainer: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,52 +48,78 @@ class CargarVideoActivity : AppCompatActivity() {
 
         spinner = findViewById(R.id.spinnerProductos)
         spinnerC = findViewById(R.id.spinnerClientes)
+        editTextNombreVideo = findViewById(R.id.editNombres)
 
         val productos = listOf("Selecciona uno", 1, 2, 3)
-        val clientes = listOf("Selecciona uno", "550e8400-e29b-41d4-a716-446655440000", "Cliente2", "Cliente3")
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, productos)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-        val adapterc = ArrayAdapter(this, android.R.layout.simple_spinner_item, clientes)
-        adapterc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerC.adapter = adapterc
+        cargarClientesDesdeApi()
+        //val adapterc = ArrayAdapter(this, android.R.layout.simple_spinner_item, clientes)
+        //adapterc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        //spinnerC.adapter = adapterc
 
         val buttonCargar = findViewById<Button>(R.id.buttonCargar)
         val buttonGaleria = findViewById<Button>(R.id.buttonGaleria)
+        loadingContainer = findViewById(R.id.loadingContainer)
 
         buttonCargar.setOnClickListener {
             val productoSeleccionado = spinner.selectedItem.toString()
-            val clienteSeleccionado = spinnerC.selectedItem.toString()
-            if (productoSeleccionado != "Selecciona uno" && clienteSeleccionado != "Selecciona uno")
-            {
-                val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-                startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
-            } else {
+            val posicion = spinnerC.selectedItemPosition
+
+            if (productoSeleccionado == "Selecciona uno" || posicion == 0) {
                 Toast.makeText(this, "Debes seleccionar un producto y un cliente", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            val clienteSeleccionado = listaClientes[posicion - 1]
+            val idCliente = clienteSeleccionado.id
+            selectedClienteId = idCliente
+            nombreVideo = editTextNombreVideo.text.toString()
+
+            val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
 
         }
 
        
         buttonGaleria.setOnClickListener {
             val productoSeleccionado = spinner.selectedItem.toString()
-            val clienteSeleccionado = spinnerC.selectedItem.toString()
-            if (productoSeleccionado != "Selecciona uno" && clienteSeleccionado != "Selecciona uno")
-            {
-                val pickVideoIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-                pickVideoIntent.type = "video/*"
-                startActivityForResult(pickVideoIntent, REQUEST_VIDEO_GALLERY)
-            } else {
+            val posicion = spinnerC.selectedItemPosition
+
+            if (productoSeleccionado == "Selecciona uno" || posicion == 0) {
                 Toast.makeText(this, "Debes seleccionar un producto y un cliente", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
+
+            val clienteSeleccionado = listaClientes[posicion - 1]
+            val idCliente = clienteSeleccionado.id
+
+            nombreVideo = editTextNombreVideo.text.toString()
+
+            val pickVideoIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+            pickVideoIntent.type = "video/*"
+            selectedClienteId = idCliente
+            startActivityForResult(pickVideoIntent, REQUEST_VIDEO_GALLERY)
 
         }
 
         val buttonVerLista: Button = findViewById<Button>(R.id.buttonLista)
         buttonVerLista.setOnClickListener {
-            val intent = Intent(this, ListaVideosActivity::class.java)
-            startActivity(intent)
+            val posicion = spinnerC.selectedItemPosition
+
+            if (posicion > 0) {
+                val clienteSeleccionado = listaClientes[posicion - 1]
+                val idCliente = clienteSeleccionado.id
+
+                val intent = Intent(this, ListaVideosActivity::class.java)
+                intent.putExtra("CLIENTE_ID", idCliente)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Debes seleccionar un cliente de la lista", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -106,14 +139,14 @@ class CargarVideoActivity : AppCompatActivity() {
                     val videoUri = data?.data
                     if (videoUri != null) {
                         try {
-                            val videoName: String = getFileNameFromUri(videoUri).toString()
                             val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!
                             videoBytes = inputStream.readBytes()
                             saveVideoToFile(videoBytes)
-                            sendVideo64ToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
+                            sendVideo64ToServer(videoBytes, spinner.selectedItem.toString(), selectedClienteId)
                             videoBytes = ByteArray(0) // Liberar la memoria
                             spinner.setSelection(0)    // Limpiar el spinner
                             spinnerC.setSelection(0)
+                            editTextNombreVideo.text.clear()
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Toast.makeText(this, "Error al leer el video", Toast.LENGTH_SHORT).show()
@@ -128,15 +161,16 @@ class CargarVideoActivity : AppCompatActivity() {
                     val videoUri = data?.data
                     if (videoUri != null) {
                         try {
-                            val videoName : String = getFileNameFromUri(videoUri).toString()
                             val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!
                             videoBytes = inputStream.readBytes()
                             //saveVideoToFile(videoBytes)
                                 // sendVideoToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
-                            sendVideo64ToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
+                            sendVideo64ToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString())
                             videoBytes = ByteArray(0) // Liberar la memoria
                             spinner.setSelection(0)    // Limpiar el spinner
                             spinnerC.setSelection(0)
+                            editTextNombreVideo.text.clear()
+
                         } catch (e: IOException) {
                             e.printStackTrace()
                             Toast.makeText(this, "Error al leer el video", Toast.LENGTH_SHORT).show()
@@ -148,21 +182,10 @@ class CargarVideoActivity : AppCompatActivity() {
             }
         }    }
 
-    private fun getFileNameFromUri(uri: Uri): String? {
-        var fileName = "default.mp4"
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        cursor?.use {
-            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-            if (it.moveToFirst()) {
-                fileName = it.getString(nameIndex) ?: "default.mp4"
-            }
-        }
-        return fileName
-    }
 
     private fun saveVideoToFile(videoBytes: ByteArray) {
         try {
-            val file = File(filesDir, "video_guardado.mp4")
+            val file = File(filesDir, nombreVideo)
             val outputStream = FileOutputStream(file)
 
             outputStream.write(videoBytes)
@@ -175,63 +198,17 @@ class CargarVideoActivity : AppCompatActivity() {
         }
     }
 
-    //private fun sendVideoToServer(videoBytes: ByteArray, producto: String, cliente: String, videoName: String) {
-      //  val retrofit = Retrofit.Builder()
-        //    .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")  // Aqui URL de microservicio
-          //  .addConverterFactory(GsonConverterFactory.create())
-            //.build()
-
-        //val apiService = retrofit.create(ApiService::class.java)
-
-        // Crear el RequestBody para el video
-        //val requestBody = RequestBody.create("video/mp4".toMediaTypeOrNull(), videoBytes)
-        //val videoPart = MultipartBody.Part.createFormData("video", videoName, requestBody)
-
-        // Crear los datos adicionales en formato JSON
-        //val videoRequest = VideoRequest(
-          //  idCliente = cliente,  // Asumiendo que 'cliente' es un ID de tipo String
-            //idProducto = producto.toInt(),  // Convertir 'producto' a un número entero
-            //nombre = videoName,
-            //video = "kjhh"
-      //  )
-
-        //val gson = Gson()
-       // val jsonRequest = gson.toJson(videoRequest)
-        //val requestBodyJson = RequestBody.create("application/json".toMediaTypeOrNull(), jsonRequest)
-
-        //Log.d("HTTP", "JSON Request: $jsonRequest")
-
-        // Enviar la solicitud
-        //apiService.uploadVideo(videoPart, requestBodyJson).enqueue(object : Callback<ResponseBody> {
-          //  override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-            //    if (response.isSuccessful) {
-           //         Toast.makeText(this@CargarVideoActivity, "Video subido exitosamente", Toast.LENGTH_SHORT).show()
-            //        val intent = Intent(this@CargarVideoActivity, ListaVideosActivity::class.java)
-            //        intent.putExtra("idProducto", producto.toInt())
-            //        intent.putExtra("idCliente", cliente)
-             //       intent.putExtra("videoName", videoName)
-               //     startActivity(intent)
-             //   } else {
-             //       Toast.makeText(this@CargarVideoActivity, "Error al subir el video", Toast.LENGTH_SHORT).show()
-            //    }
-           // }
-
-     //       override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-       //         Toast.makeText(this@CargarVideoActivity, "Error en la conexión", Toast.LENGTH_SHORT).show()
-      //      }
-      //  })
-    //}
-
-    private fun sendVideo64ToServer(videoBytes: ByteArray, producto: String, cliente: String, videoName: String) {
+    private fun sendVideo64ToServer(videoBytes: ByteArray, producto: String, cliente: String) {
         val video64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
 
         val videoRequest = VideoRequest(
             idCliente = cliente,  // Asumiendo que 'cliente' es un ID de tipo String
             idProducto = producto.toInt(),  // Convertir 'producto' a un número entero
-            nombre = videoName,
+            nombre = nombreVideo,
             video = video64
         )
         //Log.d("VideoRequest", "Request Body: $videoRequest")
+        loadingContainer.visibility = View.VISIBLE
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Video/")  // Aqui URL de microservicio
@@ -241,14 +218,10 @@ class CargarVideoActivity : AppCompatActivity() {
         val apiService = retrofit.create(ApiService::class.java)
         apiService.uploadVideo(videoRequest).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                loadingContainer.visibility = View.GONE
                 if (response.isSuccessful) {
                     Toast.makeText(this@CargarVideoActivity, "Video subido exitosamente", Toast.LENGTH_SHORT).show()
 
-                    //val intent = Intent(this@CargarVideoActivity, ListaVideosActivity::class.java)
-                    //intent.putExtra("idProducto", producto.toInt())
-                    //intent.putExtra("idCliente", cliente)
-                    //intent.putExtra("videoName", videoName)
-                    //startActivity(intent)
                 } else {
                     // Imprimir el cuerpo de la respuesta en caso de error
                     try {
@@ -262,10 +235,47 @@ class CargarVideoActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                loadingContainer.visibility = View.GONE
                 Toast.makeText(this@CargarVideoActivity, "Error en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+    private fun cargarClientesDesdeApi() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://tu-microservicio.com/api/") // Reemplaza por la base real
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getClientes().enqueue(object : Callback<List<Cliente>> {
+            override fun onResponse(call: Call<List<Cliente>>, response: Response<List<Cliente>>) {
+                if (response.isSuccessful) {
+                    val clientes = response.body() ?: emptyList()
+
+                    listaClientes = clientes
+
+                    val nombresClientes = clientes.map { "${it.nombre} ${it.apellido}" }
+                    val adapter = ArrayAdapter(
+                        this@CargarVideoActivity,
+                        android.R.layout.simple_spinner_item,
+                        listOf("Selecciona uno") + nombresClientes
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerC.adapter = adapter
+                } else {
+                    Toast.makeText(this@CargarVideoActivity, "Error al cargar clientes", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Cliente>>, t: Throwable) {
+                t.printStackTrace()
+                Toast.makeText(this@CargarVideoActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 }
 
 

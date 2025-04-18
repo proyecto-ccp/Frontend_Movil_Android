@@ -24,22 +24,26 @@ class ListaVideosActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_lista_videos)
 
-
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewVideos)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
         val adapter = VideoAdapter(videos)
         recyclerView.adapter = adapter
 
+        val clienteId = intent.getStringExtra("CLIENTE_ID")
+        if (clienteId.isNullOrEmpty()) {
+            Toast.makeText(this, "ID de cliente no recibido", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.tuservicio.com/") // URL base del microservicio
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/") // URL base del microservicio
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         apiService = retrofit.create(ApiService::class.java)
 
-        getVideos()
+        getVideos(clienteId)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -49,8 +53,8 @@ class ListaVideosActivity : AppCompatActivity() {
 
     }
 
-    private fun getVideos() {
-        apiService.getRecomendacion().enqueue(object : Callback<List<Video>> {
+    private fun getVideos(clienteId: String) {
+        apiService.getVideosPorCliente(clienteId).enqueue(object : Callback<List<Video>> {
             override fun onResponse(call: Call<List<Video>>, response: Response<List<Video>>) {
                 if (response.isSuccessful) {
                     val videoList = response.body()
