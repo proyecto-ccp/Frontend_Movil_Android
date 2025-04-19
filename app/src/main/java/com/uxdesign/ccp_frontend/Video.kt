@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Video(
     val id: String,
     val idCliente: String,
-    val idProducto: Int,
+    val idProducto: String,
     val nombre: String,
     val urlVideo: String,
     val urlImagen: String?, // puede ser null

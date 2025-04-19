@@ -31,4 +31,11 @@ interface ApiService {
 
     @GET("Cliente")
     fun getClientes(): Call<List<Cliente>>
+
+    @GET("Proveedor")
+    fun getProveedores(): Call<List<Proveedor>>
+
+    @GET("productos/proveedor/{id}")
+    fun getProductosPorProveedor(@Path("id") proveedorId: String): Call<List<Producto>>
+
 }

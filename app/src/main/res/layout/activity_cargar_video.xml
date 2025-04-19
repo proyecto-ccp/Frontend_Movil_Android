@@ -67,6 +67,27 @@
             android:minHeight="48dp" />
 
         <TextView
+            android:id="@+id/tituloSpinnerPro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="16dp"
+            android:text="Proveedor"
+            android:textColor="@color/blue"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spinnerProveedores"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/spinner_borde"
+            android:contentDescription="@string/selecciona_uno"
+            android:minHeight="48dp" />
+
+        <TextView
             android:id="@+id/tituloSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
