@@ -38,4 +38,10 @@ interface ApiService {
     @GET("productos/proveedor/{id}")
     fun getProductosPorProveedor(@Path("id") proveedorId: String): Call<List<Producto>>
 
+    @GET("Ciudad")
+    fun getCiudades(): Call<List<Ciudad>>
+
+    @GET("Zona")
+    fun getZonasPorCiudad(@Path("ciudadId") ciudadId: String): Call<List<Zona>>
+
 }

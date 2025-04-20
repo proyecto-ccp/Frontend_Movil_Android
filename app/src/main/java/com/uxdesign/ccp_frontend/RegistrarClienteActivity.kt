@@ -2,6 +2,8 @@ package com.uxdesign.ccp_frontend
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -31,6 +33,12 @@ class RegistrarClienteActivity : AppCompatActivity() {
     private lateinit var direccionText: EditText
     private lateinit var buttonCrear: Button
     private lateinit var spinnerTipoDoc: Spinner
+    private lateinit var spinnerCiudad: Spinner
+    private lateinit var spinnerZona: Spinner
+    private var listaCiudades: List<Ciudad> = emptyList()
+    private var selectedCiudadId: String = ""
+    private var listaZonas: List<Zona> = emptyList()
+    private var selectedZonaId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +46,8 @@ class RegistrarClienteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registrar_cliente)
 
         spinnerTipoDoc = findViewById<Spinner>(R.id.spinnerTipoDoc)
+        spinnerCiudad = findViewById<Spinner>(R.id.spinnerCiudad)
+        spinnerZona = findViewById<Spinner>(R.id.spinnerZona)
         nombreText = findViewById(R.id.editNombres)
         apellidoText = findViewById(R.id.editApellidos)
         contraseniaText = findViewById(R.id.editContrasenia)
@@ -54,12 +64,45 @@ class RegistrarClienteActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerTipoDoc.adapter = adapter
 
+        cargarCiudadesDesdeApi()
+
+        spinnerCiudad.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                if (position == 0 ){
+                    return
+                }
+
+                val ciudadSeleccionada = listaCiudades[position - 1]
+                selectedCiudadId = ciudadSeleccionada.id
+
+                cargarZonasDesdeApi(selectedCiudadId)
+            }
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // No hacer nada
+            }
+        }
+
         buttonCrear.setOnClickListener {
             if (!validarCampos()) {
                 return@setOnClickListener
             }
 
             val tipoDocumento = valores[spinnerTipoDoc.selectedItemPosition]
+            val posicionCiudad = spinnerCiudad.selectedItemPosition
+            val posicionZona = spinnerZona.selectedItemPosition
+
+            if (posicionCiudad == 0 || posicionZona == 0 ) {
+                Toast.makeText(this, "Debes seleccionar un producto y un cliente", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val ciudadSeleccionado = listaCiudades[posicionCiudad - 1]
+            val idCiudad = ciudadSeleccionado.id
+            selectedCiudadId = idCiudad
+
+            val zonaSeleccionado = listaZonas[posicionZona - 1]
+            val idZona = zonaSeleccionado.id
+            selectedZonaId = idZona
 
             val cliente = Cliente(
                 id = "",
@@ -70,6 +113,8 @@ class RegistrarClienteActivity : AppCompatActivity() {
                 telefono = telefonoText.text.toString(),
                 email = correoText.text.toString(),
                 direccion = direccionText.text.toString(),
+                idCiudad = selectedCiudadId,
+                idZona = selectedZonaId
                 //contrasenia = contraseniaText.text.toString()
             )
 
@@ -123,6 +168,72 @@ class RegistrarClienteActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    private fun cargarCiudadesDesdeApi() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://listarCiudadesApi")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getCiudades().enqueue(object : Callback<List<Ciudad>> {
+            override fun onResponse(call: Call<List<Ciudad>>, response: Response<List<Ciudad>>) {
+                if (response.isSuccessful) {
+                    val ciudades = response.body() ?: emptyList()
+
+                    listaCiudades = ciudades
+
+                    val nombresCiudades = ciudades.map { "${it.nombre}" }
+                    val adapter = ArrayAdapter(
+                        this@RegistrarClienteActivity,
+                        android.R.layout.simple_spinner_item,
+                        listOf("Selecciona uno") + nombresCiudades
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerCiudad.adapter = adapter
+                } else {
+                    Toast.makeText(this@RegistrarClienteActivity, "Error al cargar ciudades", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Ciudad>>, t: Throwable) {
+                t.printStackTrace()
+                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun cargarZonasDesdeApi(ciudadId: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://zonasApi") // Cambia por tu URL real
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+        apiService.getZonasPorCiudad(ciudadId).enqueue(object : Callback<List<Zona>> {
+            override fun onResponse(call: Call<List<Zona>>, response: Response<List<Zona>>) {
+                if (response.isSuccessful) {
+                    listaZonas = response.body() ?: emptyList()
+
+                    val nombresZonas = listaZonas.map { it.descripcion }
+                    val adapter = ArrayAdapter(
+                        this@RegistrarClienteActivity,
+                        android.R.layout.simple_spinner_item,
+                        listOf("Selecciona una") + nombresZonas
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerZona.adapter = adapter
+                } else {
+                    Toast.makeText(this@RegistrarClienteActivity, "Error al cargar las zonas", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<List<Zona>>, t: Throwable) {
+                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun validarCampos(): Boolean {

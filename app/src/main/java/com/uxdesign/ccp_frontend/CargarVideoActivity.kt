@@ -272,7 +272,7 @@ class CargarVideoActivity : AppCompatActivity() {
 
     private fun cargarProveedoresDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://tu-microservicio.com/api/") // Reemplaza por la base real
+            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/Proveedores/Listar")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
