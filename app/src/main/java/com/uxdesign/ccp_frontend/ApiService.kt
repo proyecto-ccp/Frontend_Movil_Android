@@ -47,4 +47,7 @@ interface ApiService {
     @GET("Cliente")
     fun getClientesPorZona(): Call<List<Cliente>>
 
+    @GET("Pedidos/ConsultarPorCliente/{id}")
+    fun getPedidosPorCliente(@Path("id") clienteId: String): Call<List<Pedido>>
+
 }
