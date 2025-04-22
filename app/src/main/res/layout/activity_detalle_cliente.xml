@@ -20,19 +20,177 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/productoContainer"
+        android:id="@+id/infoContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:background="@color/grey"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/imageLogoPeque"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
+        <TextView
+            android:id="@+id/etiquetaNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:paddingBottom="7dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cliente C"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaTipoDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de Documento"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoTipoDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo doc"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaNumDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Número de Documento"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoNumDoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12345"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaTelefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Teléfono"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoTelefono"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaDireccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dirección"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoDireccion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avenida"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaCiudad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ciudad"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoCiudad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bogota"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaZona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zona"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoZona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Centro"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaCorreo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correo"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoCorreo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ejemplo@correo.com"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/etiquetaUtimaVisita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fecha Últim Visita"
+            android:paddingBottom="7dp"
+            android:paddingTop="10dp"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/textoUltimaVisita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10-10-2010"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
