@@ -91,11 +91,6 @@ class RegistrarClienteActivity : AppCompatActivity() {
             val posicionCiudad = spinnerCiudad.selectedItemPosition
             val posicionZona = spinnerZona.selectedItemPosition
 
-            if (posicionCiudad == 0 || posicionZona == 0 ) {
-                Toast.makeText(this, "Debes seleccionar un producto y un cliente", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
             val ciudadSeleccionado = listaCiudades[posicionCiudad - 1]
             val idCiudad = ciudadSeleccionado.id
             selectedCiudadId = idCiudad
@@ -285,9 +280,23 @@ class RegistrarClienteActivity : AppCompatActivity() {
             return false
         }
 
-        val selectedSpinner = spinnerTipoDoc.selectedItem.toString()
-        if (selectedSpinner == "Selecciona uno") {
+        val selectedSpinnerTD = spinnerTipoDoc.selectedItem.toString()
+        if (selectedSpinnerTD == "Selecciona uno") {
             Toast.makeText(this, "Por favor selecciona un tipo de documento", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
+        val selectedSpinnerC = spinnerCiudad.selectedItem.toString()
+        if (selectedSpinnerC == "Selecciona uno") {
+            Toast.makeText(this, "Por favor selecciona una ciudad", Toast.LENGTH_SHORT)
+                .show()
+            return false
+        }
+
+        val selectedSpinnerZ = spinnerZona.selectedItem.toString()
+        if (selectedSpinnerZ == "Selecciona uno") {
+            Toast.makeText(this, "Por favor selecciona una zona", Toast.LENGTH_SHORT)
                 .show()
             return false
         }

@@ -24,9 +24,9 @@ class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adap
             val intent = Intent(context, DetalleProductoActivity::class.java).apply {
                 putExtra("producto_id", producto.id)
                 putExtra("producto_nombre", producto.nombre)
-                putExtra("producto_precio", producto.precio)
+                putExtra("producto_precio", producto.precioUnitario)
                 putExtra("producto_descripcion", producto.descripcion)
-                putExtra("producto_imagen", producto.imagen)
+                putExtra("producto_imagen", producto.urlFoto1)
             }
             context.startActivity(intent)
         }
@@ -44,7 +44,7 @@ class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adap
         fun bind(producto: Producto) {
             nombreProducto.text = producto.nombre
             descripcionProducto.text = producto.descripcion
-            precioProducto.text = producto.precio
+            precioProducto.text = producto.precioUnitario.toString()
         }
     }
 }

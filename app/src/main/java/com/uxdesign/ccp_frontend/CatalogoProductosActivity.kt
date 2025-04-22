@@ -51,10 +51,10 @@ class CatalogoProductosActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         val productos = listOf(
-            Producto("P1", "Producto 1", "producto", "$10.99", "imagen1"),
-            Producto("P2", "Producto 2", "producto", "$20.50", "imagen2"),
-            Producto("P3", "Producto 3", "producto","$15.75", "imagen3"),
-            Producto("P4", "Producto 4", "producto","$30.00", "imagen4")
+            Producto(1, "Producto 1", "producto", 10, "imagen1"),
+            Producto(2, "Producto 2", "producto", 20, "imagen2"),
+            Producto(3, "Producto 3", "producto",15, "imagen3"),
+            Producto(4, "Producto 4", "producto",30, "imagen4")
         )
 
         val adapter = ProductoAdapter(productos)
