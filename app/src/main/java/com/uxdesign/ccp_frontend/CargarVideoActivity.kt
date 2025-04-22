@@ -265,14 +265,14 @@ class CargarVideoActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 loadingContainer.visibility = View.GONE
-                Toast.makeText(this@CargarVideoActivity, "Error en la conexión: ${t.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CargarVideoActivity, "Error en la conexión para enviar video: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun cargarProveedoresDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/Proveedores/Listar")
+            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/Proveedores/Listar/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -300,7 +300,7 @@ class CargarVideoActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<List<Proveedor>>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(this@CargarVideoActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CargarVideoActivity, "Error de conexión con proveedores", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -335,7 +335,7 @@ class CargarVideoActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<List<Cliente>>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(this@CargarVideoActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CargarVideoActivity, "Error de conexión con clientes", Toast.LENGTH_SHORT).show()
             }
         })
     }
@@ -366,7 +366,7 @@ class CargarVideoActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
-                Toast.makeText(this@CargarVideoActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CargarVideoActivity, "Error de conexión con productos", Toast.LENGTH_SHORT).show()
             }
         })
     }

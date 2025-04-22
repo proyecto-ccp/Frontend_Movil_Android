@@ -27,6 +27,18 @@ class MenuActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val buttonConsultarCliente: Button = findViewById(R.id.buttonConsultarCliente)
+        buttonConsultarCliente.setOnClickListener {
+            val intent = Intent(this, ConsultarClientesActivity::class.java)
+            startActivity(intent)
+        }
+
+        val buttonEstadoPedido: Button = findViewById(R.id.buttonConsultarEstadoPedido)
+        buttonEstadoPedido.setOnClickListener {
+            val intent = Intent(this, ConsultarClientesActivity::class.java)
+            startActivity(intent)
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
