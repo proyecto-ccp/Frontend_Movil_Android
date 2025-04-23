@@ -20,11 +20,8 @@ class PedidoAdapter(private val pedidos: List<Pedido>) : RecyclerView.Adapter<Pe
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            val intent = Intent(context, DetalleClienteActivity::class.java).apply {
+            val intent = Intent(context, DetallePedidoActivity::class.java).apply {
                 putExtra("pedido_id", pedido.id)
-                putExtra("pedido_fecha", pedido.fecha)
-                putExtra("pedido_estado", pedido.estado)
-                putExtra("pedido_valor", pedido.valor)
             }
             context.startActivity(intent)
         }

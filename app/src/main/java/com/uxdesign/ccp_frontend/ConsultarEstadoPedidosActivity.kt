@@ -67,8 +67,8 @@ class ConsultarEstadoPedidosActivity : AppCompatActivity() {
                     t.printStackTrace()
                     Toast.makeText(this@ConsultarEstadoPedidosActivity, "Error de conexión de pedidos", Toast.LENGTH_SHORT).show()
                 }
-            })
+          })
 
-        }
     }
+
 }

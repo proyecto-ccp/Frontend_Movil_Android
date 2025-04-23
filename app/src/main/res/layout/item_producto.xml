@@ -56,6 +56,22 @@
             android:text="Precio"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/cantidadProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stock"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/valorTotalProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
     </LinearLayout>
 
     </LinearLayout>
