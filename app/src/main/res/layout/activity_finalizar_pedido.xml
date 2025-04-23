@@ -68,7 +68,7 @@
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/editCantidad"
+            android:id="@+id/editFechaEntrega"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -184,7 +184,7 @@
         android:layout_marginBottom="60dp"
         android:width="200dp"
         android:background="@android:color/black"
-        android:text="Registrar"
+        android:text="Terminar"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"

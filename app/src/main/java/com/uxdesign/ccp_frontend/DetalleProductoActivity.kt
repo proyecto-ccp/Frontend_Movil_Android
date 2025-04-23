@@ -1,17 +1,25 @@
 package com.uxdesign.ccp_frontend
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.uxdesign.cpp.R
-import org.w3c.dom.Text
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Callback
+import retrofit2.Response
+
 
 class DetalleProductoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,10 +69,56 @@ class DetalleProductoActivity : AppCompatActivity() {
         nombreProducto.text = productoNombre
         precioProducto.text = "$${productoPrecio}"
         descripcionProducto.text = productoDescripcion
-        //imageProducto.setImageResource(productoImagen)
-       // Glide.with(this)
-         //   .load(productoImagen)
-           // .into(imageProducto)
+
+        Glide.with(this)
+            .load(productoImagen) // URL de la imagen
+            .placeholder(R.drawable.logoccppeque) // opcional
+            .error(R.drawable.logoccppeque) // opcional
+            .into(imageProducto)
+
+        val editCantidad: TextView = findViewById(R.id.editCantidad)
+
+        agregarButton.setOnClickListener {
+            val cantidadText = editCantidad.text.toString().trim()
+
+            if (cantidadText.isEmpty() || cantidadText == "0") {
+                Toast.makeText(this, "Por favor ingrese una cantidad válida", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val cantidad = cantidadText.toInt()
+            val idUsuario = "12345"
+
+            val productoRequest = ProductoCarrito(
+                idProducto = productoId ?: "",
+                cantidad = cantidad,
+                idUsuario = idUsuario
+            )
+            val retrofit = Retrofit.Builder()
+                .baseUrl("https://tuservidor.com/api/") // Cambia a tu URL real
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            val api = retrofit.create(ApiService::class.java)
+
+            api.agregarProducto(productoRequest).enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(this@DetalleProductoActivity, "Producto agregado al carrito", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this@DetalleProductoActivity, VerPedidoActivity::class.java))
+                    } else {
+                        Toast.makeText(this@DetalleProductoActivity, "Error al agregar", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Toast.makeText(this@DetalleProductoActivity, "Fallo la conexión del carrito", Toast.LENGTH_SHORT).show()
+                }
+            })
+
+            }
+
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

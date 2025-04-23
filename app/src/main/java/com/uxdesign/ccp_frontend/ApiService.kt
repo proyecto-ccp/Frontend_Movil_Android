@@ -14,12 +14,6 @@ import retrofit2.http.Path
 
 interface ApiService {
 
-    //@Multipart
-    //@POST("https://servicio-video-596275467600.us-central1.run.app/api/Video/CargarVideo/")
-    //fun uploadVideo(
-     //   @Part video: MultipartBody.Part,
-      //  @Part("data") data: RequestBody
-    //): Call<ResponseBody>
     @POST("CargarVideo")  // Reemplaza con la URL de tu microservicio
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
@@ -32,11 +26,14 @@ interface ApiService {
     @GET("Cliente")
     fun getClientes(): Call<List<Cliente>>
 
-    @GET("Proveedor")
+    @GET("Proveedores/Listar")
     fun getProveedores(): Call<List<Proveedor>>
 
     @GET("Productos/ConsultarPorProveedor/{id}")
     fun getProductosPorProveedor(@Path("id") proveedorId: String): Call<List<Producto>>
+
+    @GET("Productos/Consultar")
+    fun getProductos(): Call<List<Producto>>
 
     @GET("Ciudad")
     fun getCiudades(): Call<List<Ciudad>>
@@ -49,5 +46,8 @@ interface ApiService {
 
     @GET("Pedidos/ConsultarPorCliente/{id}")
     fun getPedidosPorCliente(@Path("id") clienteId: String): Call<List<Pedido>>
+
+    @POST("carrito/agregar")
+    fun agregarProducto(@Body producto: ProductoCarrito): Call<Void>
 
 }

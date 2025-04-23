@@ -64,9 +64,8 @@ class ConsultarClientesActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<List<Cliente>>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(this@ConsultarClientesActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ConsultarClientesActivity, "Error de conexión en consultar clientes", Toast.LENGTH_SHORT).show()
             }
         })
-
     }
 }

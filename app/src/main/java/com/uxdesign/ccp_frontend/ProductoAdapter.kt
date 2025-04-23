@@ -4,8 +4,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.uxdesign.cpp.R
 
 class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adapter<ProductoAdapter.ProductoViewHolder>() {
@@ -40,6 +42,7 @@ class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adap
         private val nombreProducto: TextView = itemView.findViewById(R.id.nombreProducto)
         private val descripcionProducto: TextView = itemView.findViewById(R.id.descripcionProducto)
         private val precioProducto: TextView = itemView.findViewById(R.id.precioProducto)
+        private val imagenProducto: ImageView = itemView.findViewById(R.id.imagenProducto)
         private val cantidadProducto: TextView = itemView.findViewById(R.id.cantidadProducto)
         private val valor: TextView = itemView.findViewById(R.id.valorTotalProducto)
 
@@ -47,7 +50,15 @@ class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adap
             nombreProducto.text = producto.nombre
             descripcionProducto.text = producto.descripcion
             precioProducto.text = "Valor Unitario: $${producto.precioUnitario}"
-            cantidadProducto.text = "Stock: $${producto.cantidad}"
+
+            Glide.with(itemView.context)
+                .load(producto.urlFoto1) // URL de la imagen
+                .placeholder(R.drawable.logoccppeque) // opcional
+                .error(R.drawable.logoccppeque) // opcional
+                .into(imagenProducto)
+
+            //cantidadProducto.text = "Stock: $${producto.cantidad}"
+            cantidadProducto.visibility = View.GONE
             valor.visibility = View.GONE
         }
     }

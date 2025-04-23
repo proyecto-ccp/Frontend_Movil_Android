@@ -50,7 +50,7 @@ class VerPedidoActivity : AppCompatActivity() {
 
 
         buttonFin.setOnClickListener {
-            val intent = Intent(this, CatalogoProductosActivity::class.java)
+            val intent = Intent(this, FinalizarPedidoActivity::class.java)
             startActivity(intent)
         }
 
