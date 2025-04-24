@@ -31,7 +31,7 @@ class ConsultarClientesActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://clientes")
+            .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -47,10 +47,11 @@ class ConsultarClientesActivity : AppCompatActivity() {
     }
 
     private fun getClientes() {
-        apiService.getClientesPorZona().enqueue(object : Callback<List<Cliente>> {
-            override fun onResponse(call: Call<List<Cliente>>, response: Response<List<Cliente>>) {
+        val idZona = "11e86372-1b67-4d4b-b234-53f716dab601"
+        apiService.getClientesPorZona(idZona).enqueue(object : Callback<RespuestaCliente> {
+            override fun onResponse(call: Call<RespuestaCliente>, response: Response<RespuestaCliente>) {
                 if (response.isSuccessful) {
-                    val clienteList = response.body()
+                    val clienteList = response.body()?.clientes ?: emptyList()
                     if (clienteList != null) {
                         clientes.clear()
                         clientes.addAll(clienteList)
@@ -62,7 +63,7 @@ class ConsultarClientesActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Cliente>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaCliente>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@ConsultarClientesActivity, "Error de conexión en consultar clientes", Toast.LENGTH_SHORT).show()
             }

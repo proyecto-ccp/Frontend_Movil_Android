@@ -59,9 +59,6 @@ class CargarVideoActivity : AppCompatActivity() {
 
         cargarProveedoresDesdeApi()
         cargarClientesDesdeApi()
-        //val adapterc = ArrayAdapter(this, android.R.layout.simple_spinner_item, clientes)
-        //adapterc.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        //spinnerC.adapter = adapterc
 
         val buttonCargar = findViewById<Button>(R.id.buttonCargar)
         val buttonGaleria = findViewById<Button>(R.id.buttonGaleria)
@@ -71,7 +68,7 @@ class CargarVideoActivity : AppCompatActivity() {
             val posicionProducto = spinner.selectedItemPosition
             val posicionCliente = spinnerC.selectedItemPosition
 
-            if (posicionCliente == 0 || posicionProducto == 0 ) {
+            if (!validarSeleccion(posicionCliente, posicionProducto)) {
                 Toast.makeText(this, "Debes seleccionar un producto y un cliente", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -95,7 +92,7 @@ class CargarVideoActivity : AppCompatActivity() {
             val posicionP = spinner.selectedItemPosition
             val posicionC = spinnerC.selectedItemPosition
 
-            if (posicionP == 0 || posicionC == 0) {
+            if (!validarSeleccion(posicionC, posicionP)) {
                 Toast.makeText(this, "Debes seleccionar un producto y un cliente", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -127,6 +124,7 @@ class CargarVideoActivity : AppCompatActivity() {
                 val intent = Intent(this, ListaVideosActivity::class.java)
                 intent.putExtra("CLIENTE_ID", idCliente)
                 startActivity(intent)
+                spinnerC.setSelection(0)
             } else {
                 Toast.makeText(this, "Debes seleccionar un cliente de la lista", Toast.LENGTH_SHORT).show()
             }
@@ -272,16 +270,16 @@ class CargarVideoActivity : AppCompatActivity() {
 
     private fun cargarProveedoresDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/Proveedores/Listar/")
+            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
 
-        apiService.getProveedores().enqueue(object : Callback<List<Proveedor>> {
-            override fun onResponse(call: Call<List<Proveedor>>, response: Response<List<Proveedor>>) {
+        apiService.getProveedores().enqueue(object : Callback<RespuestaProveedor> {
+            override fun onResponse(call: Call<RespuestaProveedor>, response: Response<RespuestaProveedor>) {
                 if (response.isSuccessful) {
-                    val proveedores = response.body() ?: emptyList()
+                    val proveedores = response.body()?.proveedores ?: emptyList()
 
                     listaProveedores = proveedores
 
@@ -298,7 +296,7 @@ class CargarVideoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Proveedor>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaProveedor>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@CargarVideoActivity, "Error de conexión con proveedores", Toast.LENGTH_SHORT).show()
             }
@@ -307,16 +305,17 @@ class CargarVideoActivity : AppCompatActivity() {
 
     private fun cargarClientesDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://tu-microservicio.com/api/") // Reemplaza por la base real
+            .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/") // Reemplaza por la base real
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
+        val idZona = "11e86372-1b67-4d4b-b234-53f716dab601"
 
-        apiService.getClientes().enqueue(object : Callback<List<Cliente>> {
-            override fun onResponse(call: Call<List<Cliente>>, response: Response<List<Cliente>>) {
+        apiService.getClientesPorZona(idZona).enqueue(object : Callback<RespuestaCliente> {
+            override fun onResponse(call: Call<RespuestaCliente>, response: Response<RespuestaCliente>) {
                 if (response.isSuccessful) {
-                    val clientes = response.body() ?: emptyList()
+                    val clientes = response.body()?.clientes ?: emptyList()
 
                     listaClientes = clientes
 
@@ -333,7 +332,7 @@ class CargarVideoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Cliente>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaCliente>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@CargarVideoActivity, "Error de conexión con clientes", Toast.LENGTH_SHORT).show()
             }
@@ -342,15 +341,15 @@ class CargarVideoActivity : AppCompatActivity() {
 
     private fun cargarProductosDesdeApi(proveedorId: String) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://productos-596275467600.us-central1.run.app/api/Productos/ConsultarPorProveedor") // Cambia por tu URL real
+            .baseUrl("https://productos-596275467600.us-central1.run.app/api/") // Cambia por tu URL real
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
-        apiService.getProductosPorProveedor(proveedorId).enqueue(object : Callback<List<Producto>> {
-            override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
+        apiService.getProductosPorProveedor(proveedorId).enqueue(object : Callback<RespuestaProducto> {
+            override fun onResponse(call: Call<RespuestaProducto>, response: Response<RespuestaProducto>) {
                 if (response.isSuccessful) {
-                    listaProductos = response.body() ?: emptyList()
+                    listaProductos = response.body()?.productos ?: emptyList()
 
                     val nombresProductos = listaProductos.map { it.nombre }
                     val adapter = ArrayAdapter(
@@ -365,11 +364,48 @@ class CargarVideoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaProducto>, t: Throwable) {
                 Toast.makeText(this@CargarVideoActivity, "Error de conexión con productos", Toast.LENGTH_SHORT).show()
             }
         })
     }
+
+    // Validación de selección
+    fun validarSeleccion(clientePos: Int, productoPos: Int): Boolean {
+        return clientePos > 0 && productoPos > 0
+    }
+
+    // Nombre completo del cliente
+    fun obtenerNombreCompleto(nombre: String, apellido: String): String {
+        return "$nombre $apellido".trim()
+    }
+
+    // Traducción tipo documento
+    fun traducirTipoDocumento(tipo: String?): String {
+        return when (tipo) {
+            "CC" -> "Cédula de Ciudadanía"
+            "PS" -> "Pasaporte"
+            "NI" -> "Número de Identificación Tributario"
+            "CE" -> "Cédula de Extranjería"
+            else -> "Tipo desconocido"
+        }
+    }
+
+    // Conversión a base64
+    fun convertirVideoABase64(videoBytes: ByteArray): String {
+        return Base64.encodeToString(videoBytes, Base64.DEFAULT)
+    }
+
+    // Crear request
+    fun crearVideoRequest(clienteId: String, productoId: Int, nombre: String, videoBytes: ByteArray): VideoRequest {
+        return VideoRequest(
+            idCliente = clienteId,
+            idProducto = productoId,
+            nombre = nombre,
+            video = convertirVideoABase64(videoBytes)
+        )
+    }
+
 }
 
 

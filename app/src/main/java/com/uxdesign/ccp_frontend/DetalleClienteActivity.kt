@@ -15,15 +15,24 @@ class DetalleClienteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detalle_cliente)
 
         val nombre = intent.getStringExtra("cliente_nombre")
+        val apellido = intent.getStringExtra("cliente_apellido")
         val documento = intent.getStringExtra("cliente_documento")
         val direccion = intent.getStringExtra("cliente_direccion")
         val telefono = intent.getStringExtra("cliente_telefono")
-        val tipoDocumento = intent.getStringExtra("cliente_tipodoc")
+        val tipoDocumentoAbreviado = intent.getStringExtra("cliente_tipodoc")
         val ciudad = intent.getStringExtra("cliente_ciudad")
         val zona = intent.getStringExtra("cliente_ciudad")
-        val correo = intent.getStringExtra("correo")
+        val correo = intent.getStringExtra("cliente_correo")
 
-        findViewById<TextView>(R.id.textoNombre).text = "$nombre"
+        val tipoDocumento = when (tipoDocumentoAbreviado) {
+            "CC" -> "Cédula de Ciudadanía"
+            "PS" -> "Pasaporte"
+            "NI" -> "Número de Identificación Tributario"
+            "CE" -> "Cédula de Extranjería"
+            else -> "Tipo desconocido"
+        }
+
+        findViewById<TextView>(R.id.textoNombre).text = "$nombre $apellido"
         findViewById<TextView>(R.id.textoTipoDoc).text = "$tipoDocumento"
         findViewById<TextView>(R.id.textoNumDoc).text = "$documento"
         findViewById<TextView>(R.id.textoDireccion).text = "$direccion"

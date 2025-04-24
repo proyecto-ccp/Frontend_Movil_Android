@@ -7,15 +7,15 @@
     android:radius="8dp"
     app:cardBackgroundColor="@color/grey"
     android:layout_gravity="center"
-    android:elevation="4dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="4dp" >
+    android:elevation="4dp" >
 
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <ImageView
             android:id="@+id/imagenProducto"

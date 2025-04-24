@@ -114,7 +114,7 @@ class RegistrarClienteActivity : AppCompatActivity() {
             )
 
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/Cliente/CrearCliente")  // Aqui URL de microservicio
+                .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/")  // Aqui URL de microservicio
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

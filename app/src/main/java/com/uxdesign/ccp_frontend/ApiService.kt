@@ -11,6 +11,7 @@ import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -18,19 +19,16 @@ interface ApiService {
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
     @GET("Video/ObtenerVideosPorCliente/{clienteId}")
-    fun getVideosPorCliente(@Path("clienteId") clienteId: String): Call<List<Video>>
+    fun getVideosPorCliente(@Path("clienteId") clienteId: String): Call<RespuestaVideo>
 
-    @POST("cliente") // <- Ajusta el endpoint
+    @POST("Cliente/CrearCliente") // <- Ajusta el endpoint
     fun registrarCliente(@Body cliente: Cliente): Call<ResponseBody>
 
-    @GET("Cliente")
-    fun getClientes(): Call<List<Cliente>>
-
     @GET("Proveedores/Listar")
-    fun getProveedores(): Call<List<Proveedor>>
+    fun getProveedores(): Call<RespuestaProveedor>
 
-    @GET("Productos/ConsultarPorProveedor/{id}")
-    fun getProductosPorProveedor(@Path("id") proveedorId: String): Call<List<Producto>>
+    @GET("Productos/ConsultarPorProveedor")
+    fun getProductosPorProveedor(@Query("idProveedor") idProveedor: String): Call<RespuestaProducto>
 
     @GET("Productos/Consultar")
     fun getProductos(): Call<List<Producto>>
@@ -41,8 +39,8 @@ interface ApiService {
     @GET("Zona")
     fun getZonasPorCiudad(@Path("ciudadId") ciudadId: String): Call<List<Zona>>
 
-    @GET("Cliente")
-    fun getClientesPorZona(): Call<List<Cliente>>
+    @GET("Cliente/ObtenerClientesPorZona/{zonaId}")
+    fun getClientesPorZona(@Path("zonaId") zonaId: String): Call<RespuestaCliente>
 
     @GET("Pedidos/ConsultarPorCliente/{id}")
     fun getPedidosPorCliente(@Path("id") clienteId: String): Call<List<Pedido>>

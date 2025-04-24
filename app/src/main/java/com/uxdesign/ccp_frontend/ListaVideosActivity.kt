@@ -41,6 +41,7 @@ class ListaVideosActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
+
         apiService = retrofit.create(ApiService::class.java)
 
         getVideos(clienteId)
@@ -54,10 +55,10 @@ class ListaVideosActivity : AppCompatActivity() {
     }
 
     private fun getVideos(clienteId: String) {
-        apiService.getVideosPorCliente(clienteId).enqueue(object : Callback<List<Video>> {
-            override fun onResponse(call: Call<List<Video>>, response: Response<List<Video>>) {
+        apiService.getVideosPorCliente(clienteId).enqueue(object : Callback<RespuestaVideo> {
+            override fun onResponse(call: Call<RespuestaVideo>, response: Response<RespuestaVideo>) {
                 if (response.isSuccessful) {
-                    val videoList = response.body()
+                    val videoList = response.body()?.videos ?: emptyList()
                     if (videoList != null) {
                         videos.clear()
                         videos.addAll(videoList)
@@ -69,7 +70,7 @@ class ListaVideosActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Video>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaVideo>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@ListaVideosActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
             }

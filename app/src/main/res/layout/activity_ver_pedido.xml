@@ -75,7 +75,7 @@
             android:id="@+id/editNumProductos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTOP="4dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/spinner_borde"
             android:hint="0"
             android:focusable="false"
