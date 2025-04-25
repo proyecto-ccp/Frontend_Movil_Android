@@ -27,17 +27,20 @@ interface ApiService {
     @GET("Proveedores/Listar")
     fun getProveedores(): Call<RespuestaProveedor>
 
+    @GET("Documentos/TiposDocumento")
+    fun getTiposDocumento(): Call<RespuestaTiposDocs>
+
     @GET("Productos/ConsultarPorProveedor")
     fun getProductosPorProveedor(@Query("idProveedor") idProveedor: String): Call<RespuestaProducto>
 
     @GET("Productos/Consultar")
     fun getProductos(): Call<List<Producto>>
 
-    @GET("Ciudad")
-    fun getCiudades(): Call<List<Ciudad>>
+    @GET("Ciudad/ObtenerCiudades")
+    fun getCiudades(): Call<RespuestaCiudad>
 
-    @GET("Zona")
-    fun getZonasPorCiudad(@Path("ciudadId") ciudadId: String): Call<List<Zona>>
+    @GET("Zona/ObtenerZonasPorCiudad")
+    fun getZonasPorCiudad(@Query("idCiudad") idCiudad: String): Call<RespuestaZona>
 
     @GET("Cliente/ObtenerClientesPorZona/{zonaId}")
     fun getClientesPorZona(@Path("zonaId") zonaId: String): Call<RespuestaCliente>

@@ -39,6 +39,8 @@ class RegistrarClienteActivity : AppCompatActivity() {
     private var selectedCiudadId: String = ""
     private var listaZonas: List<Zona> = emptyList()
     private var selectedZonaId: String = ""
+    private var listaTiposDocs: List<TipoDocumento> = emptyList()
+    private var selectedTipoDoc: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +59,8 @@ class RegistrarClienteActivity : AppCompatActivity() {
         direccionText = findViewById(R.id.editDireccion)
         buttonCrear = findViewById(R.id.buttonCrearCliente)
 
-        val tipo_docs = resources.getStringArray(R.array.tipos_doc)
-        val valores = resources.getStringArray(R.array.values_doc)
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, tipo_docs)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerTipoDoc.adapter = adapter
-
         cargarCiudadesDesdeApi()
+        cargarTiposDocDesdeApi()
 
         spinnerCiudad.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -87,7 +83,7 @@ class RegistrarClienteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val tipoDocumento = valores[spinnerTipoDoc.selectedItemPosition]
+            val posicionTipoDocumento = spinnerTipoDoc.selectedItemPosition
             val posicionCiudad = spinnerCiudad.selectedItemPosition
             val posicionZona = spinnerZona.selectedItemPosition
 
@@ -99,12 +95,16 @@ class RegistrarClienteActivity : AppCompatActivity() {
             val idZona = zonaSeleccionado.id
             selectedZonaId = idZona
 
+            val tipoDocSeleccionado = listaTiposDocs[posicionTipoDocumento - 1]
+            val idTipoDoc = tipoDocSeleccionado.codigo
+            selectedTipoDoc = idTipoDoc
+
             val cliente = Cliente(
                 id = "",
                 nombre = nombreText.text.toString(),
                 apellido = apellidoText.text.toString(),
                 documento = numDocText.text.toString(),
-                tipoDocumento = tipoDocumento,
+                tipoDocumento = selectedTipoDoc,
                 telefono = telefonoText.text.toString(),
                 email = correoText.text.toString(),
                 direccion = direccionText.text.toString(),
@@ -167,16 +167,16 @@ class RegistrarClienteActivity : AppCompatActivity() {
 
     private fun cargarCiudadesDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://listarCiudadesApi")
+            .baseUrl("https://servicio-atributos-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
 
-        apiService.getCiudades().enqueue(object : Callback<List<Ciudad>> {
-            override fun onResponse(call: Call<List<Ciudad>>, response: Response<List<Ciudad>>) {
+        apiService.getCiudades().enqueue(object : Callback<RespuestaCiudad> {
+            override fun onResponse(call: Call<RespuestaCiudad>, response: Response<RespuestaCiudad>) {
                 if (response.isSuccessful) {
-                    val ciudades = response.body() ?: emptyList()
+                    val ciudades = response.body()?.ciudades ?: emptyList()
 
                     listaCiudades = ciudades
 
@@ -184,7 +184,7 @@ class RegistrarClienteActivity : AppCompatActivity() {
                     val adapter = ArrayAdapter(
                         this@RegistrarClienteActivity,
                         android.R.layout.simple_spinner_item,
-                        listOf("Selecciona uno") + nombresCiudades
+                        listOf("Selecciona una") + nombresCiudades
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerCiudad.adapter = adapter
@@ -193,26 +193,26 @@ class RegistrarClienteActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Ciudad>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaCiudad>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión en ciudades", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun cargarZonasDesdeApi(ciudadId: String) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://zonasApi") // Cambia por tu URL real
+            .baseUrl("https://servicio-atributos-596275467600.us-central1.run.app/api/") // Cambia por tu URL real
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
-        apiService.getZonasPorCiudad(ciudadId).enqueue(object : Callback<List<Zona>> {
-            override fun onResponse(call: Call<List<Zona>>, response: Response<List<Zona>>) {
+        apiService.getZonasPorCiudad(ciudadId).enqueue(object : Callback<RespuestaZona> {
+            override fun onResponse(call: Call<RespuestaZona>, response: Response<RespuestaZona>) {
                 if (response.isSuccessful) {
-                    listaZonas = response.body() ?: emptyList()
+                    listaZonas = response.body()?.zonas ?: emptyList()
 
-                    val nombresZonas = listaZonas.map { it.descripcion }
+                    val nombresZonas = listaZonas.map { it.nombre }
                     val adapter = ArrayAdapter(
                         this@RegistrarClienteActivity,
                         android.R.layout.simple_spinner_item,
@@ -225,8 +225,43 @@ class RegistrarClienteActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Zona>>, t: Throwable) {
-                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
+            override fun onFailure(call: Call<RespuestaZona>, t: Throwable) {
+                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión de zonas", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun cargarTiposDocDesdeApi() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getTiposDocumento().enqueue(object : Callback<RespuestaTiposDocs> {
+            override fun onResponse(call: Call<RespuestaTiposDocs>, response: Response<RespuestaTiposDocs>) {
+                if (response.isSuccessful) {
+                    val tiposDocs = response.body()?.documentos ?: emptyList()
+
+                    listaTiposDocs = tiposDocs
+
+                    val nombresTiposDocs = tiposDocs.map { "${it.nombre}" }
+                    val adapter = ArrayAdapter(
+                        this@RegistrarClienteActivity,
+                        android.R.layout.simple_spinner_item,
+                        listOf("Selecciona uno") + nombresTiposDocs
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinnerTipoDoc.adapter = adapter
+                } else {
+                    Toast.makeText(this@RegistrarClienteActivity, "Error al cargar tipos de documento", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RespuestaTiposDocs>, t: Throwable) {
+                t.printStackTrace()
+                Toast.makeText(this@RegistrarClienteActivity, "Error de conexión en tipos de documento", Toast.LENGTH_SHORT).show()
             }
         })
     }
