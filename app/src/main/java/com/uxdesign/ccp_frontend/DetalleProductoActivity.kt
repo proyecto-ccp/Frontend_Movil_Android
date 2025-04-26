@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,11 +25,15 @@ import retrofit2.Response
 
 class DetalleProductoActivity : AppCompatActivity() {
     private lateinit var apiService: ApiService
+    private var productoPrecio: Double = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_detalle_producto)
+
+        val editCantidad: EditText = findViewById(R.id.editCantidad)
+        val editValor: EditText = findViewById(R.id.editValor)
 
         //Adaptabilidad
         val mainLayout: ConstraintLayout = findViewById(R.id.main)
@@ -59,7 +64,7 @@ class DetalleProductoActivity : AppCompatActivity() {
 
         val productoId = intent.getIntExtra("producto_id", -1)
         val productoNombre = intent.getStringExtra("producto_nombre")
-        val productoPrecio = intent.getDoubleExtra("producto_precio", 0.0)
+        productoPrecio = intent.getDoubleExtra("producto_precio", 0.0)
         val productoDescripcion = intent.getStringExtra("producto_descripcion")
         val productoImagen = intent.getStringExtra("producto_imagen")
 
@@ -82,7 +87,17 @@ class DetalleProductoActivity : AppCompatActivity() {
 
         cargarStockDesdeApi(productoId)
 
-        val editCantidad: TextView = findViewById(R.id.editCantidad)
+        editCantidad.addTextChangedListener(object: android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val cantidad= s.toString().toIntOrNull() ?: 0
+                val total = cantidad * productoPrecio
+                editValor.setText("$%.2f".format(total))
+            }
+            override fun afterTextChanged(s: android.text.Editable?){}
+        })
+
+
 
         agregarButton.setOnClickListener {
             val cantidadText = editCantidad.text.toString().trim()
@@ -93,7 +108,7 @@ class DetalleProductoActivity : AppCompatActivity() {
             }
 
             val cantidad = cantidadText.toInt()
-            val idUsuario = "12345"
+            val idUsuario = "5ba9f1b7-ec06-4af0-8f84-25b039d95101"
 
             val productoRequest = ProductoCarrito(
                 idProducto = productoId,
@@ -151,12 +166,25 @@ class DetalleProductoActivity : AppCompatActivity() {
                     val cantidadStock = inventario?.cantidadStock ?: 0
                     findViewById<TextView>(R.id.textStock).text = "Stock: $cantidadStock unidades"
 
+                    if (cantidadStock <= 0) {
+                        findViewById<Button>(R.id.buttonAgregar).isEnabled = false
+                        findViewById<Button>(R.id.buttonAgregar).alpha = 0.5f
+                        findViewById<EditText>(R.id.editCantidad).isEnabled = false
+                    }
+
                 } else {
-                    Toast.makeText(this@DetalleProductoActivity, "Error al cargar stock", Toast.LENGTH_SHORT).show()
+                    findViewById<TextView>(R.id.textStock).text = "Stock: 0 unidades, producto no disponible"
+                    findViewById<Button>(R.id.buttonAgregar).isEnabled = false
+                    findViewById<Button>(R.id.buttonAgregar).alpha = 0.5f
+                    findViewById<EditText>(R.id.editCantidad).isEnabled = false
+                    //Toast.makeText(this@DetalleProductoActivity, "Error al cargar stock", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<RespuestaInventario>, t: Throwable) {
+                findViewById<Button>(R.id.buttonAgregar).isEnabled = false
+                findViewById<Button>(R.id.buttonAgregar).alpha = 0.5f
+                findViewById<EditText>(R.id.editCantidad).isEnabled = false
                 Toast.makeText(this@DetalleProductoActivity, "Error de conexión con inventario", Toast.LENGTH_SHORT).show()
             }
         })

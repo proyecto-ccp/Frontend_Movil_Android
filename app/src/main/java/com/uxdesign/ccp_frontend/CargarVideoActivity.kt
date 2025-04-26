@@ -80,7 +80,7 @@ class CargarVideoActivity : AppCompatActivity() {
             val clienteSeleccionado = listaClientes[posicionCliente - 1]
             val idCliente = clienteSeleccionado.id
             selectedClienteId = idCliente
-            nombreVideo = editTextNombreVideo.text.toString()
+            nombreVideo = editTextNombreVideo.text.toString()+".mp4"
 
             val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)
@@ -103,7 +103,7 @@ class CargarVideoActivity : AppCompatActivity() {
             val clienteSeleccionado = listaClientes[posicionC - 1]
             val idCliente = clienteSeleccionado.id
 
-            nombreVideo = editTextNombreVideo.text.toString()
+            nombreVideo = editTextNombreVideo.text.toString().trim()+".mp4"
 
             val pickVideoIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
             pickVideoIntent.type = "video/*"

@@ -16,7 +16,7 @@ class GenerarRecomendacionActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_generar_recomendacion)
 
-        val imagen = intent.getStringExtra("video_url_imagen")
+        val imagen = intent.getStringExtra("video_imagen")
         //val minuto = intent.getStringExtra("video_minuto")
 
         val imageView: ImageView = findViewById<ImageView>(R.id.imagenRecomendacion)
