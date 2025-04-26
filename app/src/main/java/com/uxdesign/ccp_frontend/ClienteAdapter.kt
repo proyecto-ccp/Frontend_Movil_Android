@@ -28,8 +28,8 @@ class ClienteAdapter (private val clientes: List<Cliente>) : RecyclerView.Adapte
                 putExtra("cliente_documento", cliente.documento)
                 putExtra("cliente_telefono", cliente.telefono)
                 putExtra("cliente_direccion", cliente.direccion)
-                putExtra("cliente_ciudad", cliente.idCiudad)
-                putExtra("cliente_zona", cliente.idZona)
+                putExtra("cliente_ciudad", cliente.ciudad)
+                putExtra("cliente_zona", cliente.zona)
                 putExtra("cliente_correo", cliente.email)
             }
             context.startActivity(intent)
@@ -46,7 +46,7 @@ class ClienteAdapter (private val clientes: List<Cliente>) : RecyclerView.Adapte
 
         fun bind(cliente: Cliente) {
             nombreCliente.text = "${cliente.nombre} ${cliente.apellido}"
-            ciudadCliente.text = cliente.idCiudad
+            ciudadCliente.text = cliente.ciudad
         }
     }
 }

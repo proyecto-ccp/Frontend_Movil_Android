@@ -37,8 +37,10 @@ class RegistrarClienteActivity : AppCompatActivity() {
     private lateinit var spinnerZona: Spinner
     private var listaCiudades: List<Ciudad> = emptyList()
     private var selectedCiudadId: String = ""
+    private var nombreCiudad: String = ""
     private var listaZonas: List<Zona> = emptyList()
     private var selectedZonaId: String = ""
+    private var nombreZona: String = ""
     private var listaTiposDocs: List<TipoDocumento> = emptyList()
     private var selectedTipoDoc: String = ""
 
@@ -70,6 +72,7 @@ class RegistrarClienteActivity : AppCompatActivity() {
 
                 val ciudadSeleccionada = listaCiudades[position - 1]
                 selectedCiudadId = ciudadSeleccionada.id
+                nombreCiudad = ciudadSeleccionada.nombre
 
                 cargarZonasDesdeApi(selectedCiudadId)
             }
@@ -90,10 +93,12 @@ class RegistrarClienteActivity : AppCompatActivity() {
             val ciudadSeleccionado = listaCiudades[posicionCiudad - 1]
             val idCiudad = ciudadSeleccionado.id
             selectedCiudadId = idCiudad
+            nombreCiudad = ciudadSeleccionado.nombre
 
             val zonaSeleccionado = listaZonas[posicionZona - 1]
             val idZona = zonaSeleccionado.id
             selectedZonaId = idZona
+            nombreZona = zonaSeleccionado.nombre
 
             val tipoDocSeleccionado = listaTiposDocs[posicionTipoDocumento - 1]
             val idTipoDoc = tipoDocSeleccionado.codigo
@@ -108,8 +113,9 @@ class RegistrarClienteActivity : AppCompatActivity() {
                 telefono = telefonoText.text.toString(),
                 email = correoText.text.toString(),
                 direccion = direccionText.text.toString(),
-                idCiudad = selectedCiudadId,
-                idZona = selectedZonaId
+                ciudad = nombreCiudad,
+                idZona = selectedZonaId,
+                zona = nombreZona
                 //contrasenia = contraseniaText.text.toString()
             )
 

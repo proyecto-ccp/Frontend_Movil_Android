@@ -53,8 +53,8 @@ class ProductoAdapter(private val productos: List<Producto>) : RecyclerView.Adap
 
             Glide.with(itemView.context)
                 .load(producto.urlFoto1) // URL de la imagen
-                .placeholder(R.drawable.logoccppeque) // opcional
-                .error(R.drawable.logoccppeque) // opcional
+                .placeholder(R.drawable.errorphotopeque) // opcional
+                .error(R.drawable.errorphotopeque) // opcional
                 .into(imagenProducto)
 
             //cantidadProducto.text = "Stock: $${producto.cantidad}"

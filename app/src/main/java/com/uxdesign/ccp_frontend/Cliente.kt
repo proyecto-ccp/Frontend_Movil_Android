@@ -9,8 +9,9 @@ data class Cliente(
     val telefono: String,
     val email: String,
     val direccion: String,
-    val idCiudad: String,
-    val idZona: String
+    val ciudad: String,
+    val idZona: String,
+    val zona: String
     //val contrasenia: String
 
 )

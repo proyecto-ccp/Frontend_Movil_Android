@@ -21,7 +21,7 @@ class DetalleClienteActivity : AppCompatActivity() {
         val telefono = intent.getStringExtra("cliente_telefono")
         val tipoDocumentoAbreviado = intent.getStringExtra("cliente_tipodoc")
         val ciudad = intent.getStringExtra("cliente_ciudad")
-        val zona = intent.getStringExtra("cliente_ciudad")
+        val zona = intent.getStringExtra("cliente_zona")
         val correo = intent.getStringExtra("cliente_correo")
 
         val tipoDocumento = when (tipoDocumentoAbreviado) {

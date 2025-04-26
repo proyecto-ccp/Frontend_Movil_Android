@@ -34,7 +34,7 @@ interface ApiService {
     fun getProductosPorProveedor(@Query("idProveedor") idProveedor: String): Call<RespuestaProducto>
 
     @GET("Productos/Consultar")
-    fun getProductos(): Call<List<Producto>>
+    fun getProductos(): Call<RespuestaProducto>
 
     @GET("Ciudad/ObtenerCiudades")
     fun getCiudades(): Call<RespuestaCiudad>
@@ -51,4 +51,6 @@ interface ApiService {
     @POST("carrito/agregar")
     fun agregarProducto(@Body producto: ProductoCarrito): Call<Void>
 
+    @GET("Inventarios/Consultar")
+    fun getStockProducto(@Query("idProducto") idProducto: Int): Call<RespuestaInventario>
 }

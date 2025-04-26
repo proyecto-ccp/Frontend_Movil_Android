@@ -3,6 +3,7 @@ package com.uxdesign.ccp_frontend
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,6 +23,8 @@ import retrofit2.Response
 
 
 class DetalleProductoActivity : AppCompatActivity() {
+    private lateinit var apiService: ApiService
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,7 +37,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         val agregarButton: Button = findViewById(R.id.buttonAgregar)
         val imageEye: ImageView = findViewById(R.id.imageOjoN)
 
-        imageEye.visibility = View.VISIBLE
+        imageEye.visibility = View.GONE
 
         imageEye.setOnClickListener {
 
@@ -54,9 +57,9 @@ class DetalleProductoActivity : AppCompatActivity() {
         // titleCanti.setTextColor(resources.getColor(R.color.pink, null))
         // titleValue.setTextColor(resources.getColor(R.color.pink, null))
 
-        val productoId = intent.getStringExtra("producto_id")
+        val productoId = intent.getIntExtra("producto_id", -1)
         val productoNombre = intent.getStringExtra("producto_nombre")
-        val productoPrecio = intent.getStringExtra("producto_precio")
+        val productoPrecio = intent.getDoubleExtra("producto_precio", 0.0)
         val productoDescripcion = intent.getStringExtra("producto_descripcion")
         val productoImagen = intent.getStringExtra("producto_imagen")
 
@@ -64,6 +67,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         val nombreProducto: TextView = findViewById(R.id.textNombreProducto)
         val precioProducto: TextView = findViewById(R.id.textPrecioProducto)
         val descripcionProducto: TextView = findViewById(R.id.textDescripcionProducto)
+        val stockProducto: TextView = findViewById(R.id.textStock)
 
         // Establecer los datos recibidos
         nombreProducto.text = productoNombre
@@ -72,9 +76,11 @@ class DetalleProductoActivity : AppCompatActivity() {
 
         Glide.with(this)
             .load(productoImagen) // URL de la imagen
-            .placeholder(R.drawable.logoccppeque) // opcional
-            .error(R.drawable.logoccppeque) // opcional
+            .placeholder(R.drawable.errorphotopeque) // opcional
+            .error(R.drawable.errorphotopeque) // opcional
             .into(imageProducto)
+
+        cargarStockDesdeApi(productoId)
 
         val editCantidad: TextView = findViewById(R.id.editCantidad)
 
@@ -90,7 +96,7 @@ class DetalleProductoActivity : AppCompatActivity() {
             val idUsuario = "12345"
 
             val productoRequest = ProductoCarrito(
-                idProducto = productoId ?: "",
+                idProducto = productoId,
                 cantidad = cantidad,
                 idUsuario = idUsuario
             )
@@ -125,5 +131,34 @@ class DetalleProductoActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    private fun cargarStockDesdeApi(productoId: Int) {
+        if (productoId == null) {
+            Toast.makeText(this, "ID del producto no disponible", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/") // Cambia por tu URL real
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+        apiService.getStockProducto(productoId).enqueue(object : Callback<RespuestaInventario> {
+            override fun onResponse(call: Call<RespuestaInventario>, response: Response<RespuestaInventario>) {
+                if (response.isSuccessful) {
+                    val inventario = response.body()?.inventario
+                    val cantidadStock = inventario?.cantidadStock ?: 0
+                    findViewById<TextView>(R.id.textStock).text = "Stock: $cantidadStock unidades"
+
+                } else {
+                    Toast.makeText(this@DetalleProductoActivity, "Error al cargar stock", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RespuestaInventario>, t: Throwable) {
+                Toast.makeText(this@DetalleProductoActivity, "Error de conexión con inventario", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

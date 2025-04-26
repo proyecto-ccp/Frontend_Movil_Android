@@ -36,7 +36,7 @@ class CatalogoProductosActivity : AppCompatActivity() {
         val buttonPedido: Button = findViewById(R.id.botonPedido)
         val imageEye: ImageView = findViewById(R.id.imageOjoN)
 
-        imageEye.visibility = View.VISIBLE
+        imageEye.visibility = View.GONE
 
         imageEye.setOnClickListener {
 
@@ -63,7 +63,7 @@ class CatalogoProductosActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://catalogo")
+            .baseUrl("https://productos-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -79,10 +79,10 @@ class CatalogoProductosActivity : AppCompatActivity() {
     }
 
     private fun getCatalogo() {
-        apiService.getProductos().enqueue(object : Callback<List<Producto>> {
-            override fun onResponse(call: Call<List<Producto>>, response: Response<List<Producto>>) {
+        apiService.getProductos().enqueue(object : Callback<RespuestaProducto> {
+            override fun onResponse(call: Call<RespuestaProducto>, response: Response<RespuestaProducto>) {
                 if (response.isSuccessful) {
-                    val productoList = response.body()
+                    val productoList = response.body()?.productos ?: emptyList()
                     if (productoList != null) {
                         productos.clear()
                         productos.addAll(productoList)
@@ -94,7 +94,7 @@ class CatalogoProductosActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Producto>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaProducto>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@CatalogoProductosActivity, "Error de conexión en catálogo", Toast.LENGTH_SHORT).show()
             }
