@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange"
+    tools:context="com.uxdesign.ccp_frontend.RegistrarClienteActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageLogoPeque"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/logo_peque_o"
+            android:src="@drawable/logoccppeque"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:id="@+id/cuadroRectangular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/cuadrado_borde"
+            android:orientation="vertical"
+            android:padding="16dp" >
+
+            <TextView
+                android:id="@+id/tituloNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Nombres"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editNombres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:hint="Escribe tu nombre"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloApellido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Apellidos"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:hint="Escribe tu apellido"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloContrasenia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Contraseña"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editContrasenia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:inputType="textPassword"
+                android:importantForAccessibility="yes"
+                android:hint="Crea una contraseña"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloTipoDoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Tipo de Documento"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerTipoDoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/spinner_borde"
+                android:contentDescription="Selecciona uno"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloDocumento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="No. Documento"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editDocumento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:hint="Ingresa tu número de documento"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloTelefono"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Teléfono"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:hint="Ingresa tu número de teléfono"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloMail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Correo"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editMail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:hint="correo@ejemplo.com"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloDireccion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Dirección"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/editDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:paddingLeft="20dp"
+                android:background="@drawable/spinner_borde"
+                android:hint="Ingresa tu dirección"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloCiudad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Ciudad"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerCiudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/spinner_borde"
+                android:contentDescription="Selecciona una"
+                android:minHeight="48dp" />
+
+            <TextView
+                android:id="@+id/tituloZona"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="6dp"
+                android:text="Zona"
+                android:textColor="@color/orange"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerZona"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/spinner_borde"
+                android:contentDescription="Selecciona una"
+                android:minHeight="48dp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonCrearCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:width="200dp"
+            android:background="@android:color/black"
+            android:text="Registrar"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+</ScrollView>
+

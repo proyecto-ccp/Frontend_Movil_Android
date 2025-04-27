@@ -9,9 +9,11 @@
     android:elevation="4dp">
 
 <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp">
 
     <!-- Imagen del producto a la izquierda -->
         <ImageView
@@ -54,6 +56,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Precio"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/cantidadProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stock"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/valorTotalProducto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Valor"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp" />
     </LinearLayout>

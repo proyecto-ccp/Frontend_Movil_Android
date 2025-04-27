@@ -25,35 +25,31 @@
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintTop_toBottomOf="@id/imageLogoPeque"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/opcionesContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/opcionesContainer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:background="@drawable/cuadrado_borde"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginLeft="40dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="16dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="40dp"
         app:layout_constraintTop_toBottomOf="@id/recyclerViewProductosPedido"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonFin">
 
         <TextView
             android:id="@+id/tituloTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="16dp"
-            android:text="Total"
+            android:text="Valor Total"
             android:textColor="@color/blue"
             android:textSize="16sp" />
 
@@ -61,22 +57,22 @@
             android:id="@+id/editTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:paddingLeft="20dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/spinner_borde"
             android:hint="0"
             android:focusable="false"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"/>
 
         <TextView
             android:id="@+id/tituloNumProductos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="5dp"
-            android:text="Valor Total"
+            android:layout_marginTop="8dp"
+            android:text="Cantidad Productos"
             android:textColor="@color/blue"
             android:textSize="16sp" />
 
@@ -84,14 +80,15 @@
             android:id="@+id/editNumProductos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:paddingLeft="20dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/spinner_borde"
             android:hint="0"
             android:focusable="false"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp" />
 
     </LinearLayout>
 
@@ -99,7 +96,7 @@
         android:id="@+id/buttonFin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="16dp"
         android:width="200dp"
         android:background="@android:color/black"
         android:text="Finalizar Pedido"

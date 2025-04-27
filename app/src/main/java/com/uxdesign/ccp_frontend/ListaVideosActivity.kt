@@ -24,22 +24,19 @@ class ListaVideosActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_lista_videos)
 
-
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewVideos)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
         val adapter = VideoAdapter(videos)
         recyclerView.adapter = adapter
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.tuservicio.com/") // URL base del microservicio
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val clienteId = intent.getStringExtra("CLIENTE_ID")
+        if (clienteId.isNullOrEmpty()) {
+            Toast.makeText(this, "ID de cliente no recibido", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
 
-        apiService = retrofit.create(ApiService::class.java)
-
-        getVideos()
+        getVideos(clienteId)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -49,11 +46,19 @@ class ListaVideosActivity : AppCompatActivity() {
 
     }
 
-    private fun getVideos() {
-        apiService.getRecomendacion().enqueue(object : Callback<List<Video>> {
-            override fun onResponse(call: Call<List<Video>>, response: Response<List<Video>>) {
+    private fun getVideos(clienteId: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/") // URL base del microservicio
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+        apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getVideosPorCliente(clienteId).enqueue(object : Callback<RespuestaVideo> {
+            override fun onResponse(call: Call<RespuestaVideo>, response: Response<RespuestaVideo>) {
                 if (response.isSuccessful) {
-                    val videoList = response.body()
+                    val videoList = response.body()?.videos ?: emptyList()
                     if (videoList != null) {
                         videos.clear()
                         videos.addAll(videoList)
@@ -65,7 +70,7 @@ class ListaVideosActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<List<Video>>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaVideo>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@ListaVideosActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
             }

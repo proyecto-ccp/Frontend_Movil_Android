@@ -7,24 +7,16 @@
     android:radius="8dp"
     app:cardBackgroundColor="@color/grey"
     android:layout_gravity="center"
-    android:elevation="4dp"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="4dp" >
+    android:elevation="4dp" >
 
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
-        <ImageView
-            android:id="@+id/imagenProducto"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:contentDescription="@string/imagen_del_producto"
-            android:src="@drawable/logoccppeque"
-            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -43,14 +35,6 @@
                 android:text="Producto"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/descripcionProducto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Descripcion"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/cantidadProducto"
