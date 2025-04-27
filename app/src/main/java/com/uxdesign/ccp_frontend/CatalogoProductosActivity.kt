@@ -51,9 +51,19 @@ class CatalogoProductosActivity : AppCompatActivity() {
         // mainLayout.setBackgroundColor(resources.getColor(R.color.orange, null))
         //imageEye.visibility = View.VISIBLE
 
-         buttonFinalizar.setOnClickListener {
-            val intent = Intent(this, FinalizarPedidoActivity::class.java)
+        val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
+
+        buttonPedido.setOnClickListener {
+            val intent = Intent(this, VerPedidoActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
+        }
+
+        buttonFinalizar.isEnabled = false
+        buttonFinalizar.setOnClickListener {
+             val intent = Intent(this, FinalizarPedidoActivity::class.java)
+             intent.putExtra("id_usuario", idUsuario)
+             startActivity(intent)
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProductos)

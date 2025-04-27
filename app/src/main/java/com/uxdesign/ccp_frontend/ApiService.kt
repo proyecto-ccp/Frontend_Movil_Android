@@ -9,6 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -45,12 +46,30 @@ interface ApiService {
     @GET("Cliente/ObtenerClientesPorZona/{zonaId}")
     fun getClientesPorZona(@Path("zonaId") zonaId: String): Call<RespuestaCliente>
 
-    @GET("Pedidos/ConsultarPorCliente/{id}")
-    fun getPedidosPorCliente(@Path("id") clienteId: String): Call<List<Pedido>>
+    @GET("Pedido/ObtenerPedidosPorCliente/{clienteId}/{estado}")
+    fun getPedidosPorCliente(@Path("clienteId") clienteId: String, @Path("estado") estado: String
+    ): Call<RespuestaPedidoProcesado>
 
-    @POST("carrito/agregar")
-    fun agregarProducto(@Body producto: ProductoCarrito): Call<Void>
+    @GET("Pedido/ObtenerPedidosPorVendedor/{vendedorId}/{estado}")
+    fun getPedidosPorVendedor(@Path("vendedorId") vendedorId: String, @Path("estado") estado: String
+    ): Call<RespuestaPedido>
+
+    @POST("DetallePedido/AgregarDetalle")
+    fun agregarDetallePedido(@Body detalle: ProductoCarrito): Call<Void>
 
     @GET("Inventarios/Consultar")
     fun getStockProducto(@Query("idProducto") idProducto: Int): Call<RespuestaInventario>
+
+    @GET("DetallePedido/ObtenerDetallesUsuario/{id}")
+    fun getDetallePedidoUsuario(@Path("id") clienteId: String): Call<RespuestaDetalleCarrito>
+
+    @GET("Vendedor/{idVendedor}")
+    fun getVendedor(@Path("idVendedor") vendedorId: String): Call<RespuestaVendedor>
+
+    @POST("Pedido/CrearPedido")
+    fun crearPedido(@Body request: Pedido): Call<RespuestaRequestPedido>
+
+    @PUT("DetallePedido/ActualizarDetalles/{idUsuario}/{idPedido}")
+    fun enlazarDetallePedido(@Path("idUsuario") idUsuario: String,
+        @Path("idPedido") idPedido: String): Call<RespuestaRequestPedido>
 }

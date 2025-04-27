@@ -7,10 +7,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-class PedidoAdapter(private val pedidos: List<Pedido>) : RecyclerView.Adapter<PedidoAdapter.PedidoViewHolder>() {
+class PedidoAdapter(private val pedidos: List<PedidoProcesado>) : RecyclerView.Adapter<PedidoAdapter.PedidoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PedidoViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_cliente, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_estado_pedido, parent, false)
         return PedidoViewHolder(itemView)
     }
 
@@ -32,14 +35,23 @@ class PedidoAdapter(private val pedidos: List<Pedido>) : RecyclerView.Adapter<Pe
     }
 
     class PedidoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         private val pedidoFecha: TextView = itemView.findViewById(R.id.fechaPedido)
         private val pedidoEstado: TextView = itemView.findViewById(R.id.estadoPedido)
         private val pedidoValor: TextView = itemView.findViewById(R.id.valorPedido)
 
-        fun bind(pedido: Pedido) {
-            pedidoFecha.text = pedido.fecha
-            pedidoEstado.text = pedido.estado
-            pedidoValor.text = pedido.valor.toString()
+        fun bind(pedido: PedidoProcesado) {
+            val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val fechaFormateada = try {
+                val fecha = formato.parse(pedido.fechaEntrega)
+                formato.format(fecha ?: Date())
+            } catch (e: Exception) {
+                pedido.fechaEntrega
+            }
+
+            pedidoFecha.text = fechaFormateada
+            pedidoEstado.text = pedido.estadoPedido
+            pedidoValor.text = String.format(Locale.getDefault(), "$%.2f", pedido.valorTotal)
         }
     }
 }

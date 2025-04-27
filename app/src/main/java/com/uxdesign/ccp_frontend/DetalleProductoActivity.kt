@@ -108,27 +108,31 @@ class DetalleProductoActivity : AppCompatActivity() {
             }
 
             val cantidad = cantidadText.toInt()
-            val idUsuario = "5ba9f1b7-ec06-4af0-8f84-25b039d95101"
+            val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
 
             val productoRequest = ProductoCarrito(
                 idProducto = productoId,
                 cantidad = cantidad,
-                idUsuario = idUsuario
+                idUsuario = idUsuario,
+                precioUnitario = productoPrecio
             )
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://tuservidor.com/api/") // Cambia a tu URL real
+                .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/") // Cambia a tu URL real
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
             val api = retrofit.create(ApiService::class.java)
 
-            api.agregarProducto(productoRequest).enqueue(object : Callback<Void> {
+            api.agregarDetallePedido(productoRequest).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.isSuccessful) {
                         Toast.makeText(this@DetalleProductoActivity, "Producto agregado al carrito", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this@DetalleProductoActivity, VerPedidoActivity::class.java))
+                        val intent = Intent(this@DetalleProductoActivity, VerPedidoActivity::class.java).apply {
+                            putExtra("id_usuario", idUsuario)
+                        }
+                        startActivity(intent)
                     } else {
-                        Toast.makeText(this@DetalleProductoActivity, "Error al agregar", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@DetalleProductoActivity, "Error al agregar producto", Toast.LENGTH_SHORT).show()
                     }
                 }
 

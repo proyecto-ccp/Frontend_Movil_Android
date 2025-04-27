@@ -35,7 +35,7 @@ class MenuActivity : AppCompatActivity() {
 
         val buttonEstadoPedido: Button = findViewById(R.id.buttonConsultarEstadoPedido)
         buttonEstadoPedido.setOnClickListener {
-            val intent = Intent(this, ConsultarClientesActivity::class.java)
+            val intent = Intent(this, ConsultarEstadoPedidosActivity::class.java)
             startActivity(intent)
         }
 

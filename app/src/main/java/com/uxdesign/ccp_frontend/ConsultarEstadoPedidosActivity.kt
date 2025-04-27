@@ -16,13 +16,14 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ConsultarEstadoPedidosActivity : AppCompatActivity() {
-    private val pedidos = mutableListOf<Pedido>()
+    private val pedidos = mutableListOf<PedidoProcesado>()
     private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_consultar_estado_pedidos)
+        val idUsuario = "5ba9f1b7-ec06-4af0-8f84-25b039d95101"
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewEstadoPedidos)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -30,14 +31,7 @@ class ConsultarEstadoPedidosActivity : AppCompatActivity() {
         val adapter = PedidoAdapter(pedidos)
         recyclerView.adapter = adapter
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://pedidos")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        apiService = retrofit.create(ApiService::class.java)
-
-        getPedidos()
+        getPedidos(idUsuario)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -47,15 +41,26 @@ class ConsultarEstadoPedidosActivity : AppCompatActivity() {
     }
 
 
-    private fun getPedidos() {
-          apiService.getPedidosPorCliente("").enqueue(object : Callback<List<Pedido>> {
-               override fun onResponse(call: Call<List<Pedido>>, response: Response<List<Pedido>>) {
+    private fun getPedidos(idUsuario: String?) {
+        if (idUsuario.isNullOrEmpty()) {
+            Toast.makeText(this, "ID de usuario no disponible", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val estado = "CREADO"
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getPedidosPorCliente(idUsuario, estado).enqueue(object : Callback<RespuestaPedidoProcesado> {
+               override fun onResponse(call: Call<RespuestaPedidoProcesado>, response: Response<RespuestaPedidoProcesado>) {
                     if (response.isSuccessful) {
-                        val pedidoList = response.body()
+                        val pedidoList = response.body()?.pedidos
                         if (pedidoList != null) {
                             pedidos.clear()
                             pedidos.addAll(pedidoList)
-                            // Notificar al adaptador que los datos han cambiado
                             (findViewById<RecyclerView>(R.id.recyclerViewEstadoPedidos).adapter as PedidoAdapter).notifyDataSetChanged()
                         }
                     } else {
@@ -63,7 +68,7 @@ class ConsultarEstadoPedidosActivity : AppCompatActivity() {
                     }
                 }
 
-                override fun onFailure(call: Call<List<Pedido>>, t: Throwable) {
+                override fun onFailure(call: Call<RespuestaPedidoProcesado>, t: Throwable) {
                     t.printStackTrace()
                     Toast.makeText(this@ConsultarEstadoPedidosActivity, "Error de conexión de pedidos", Toast.LENGTH_SHORT).show()
                 }

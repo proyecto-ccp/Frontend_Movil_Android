@@ -1,7 +1,9 @@
 package com.uxdesign.ccp_frontend
 
-data class Pedido(
+data class PedidoProcesado(
+    val id: String,
     val idCliente: String,
+    val fechaRealizado: String,
     val fechaEntrega: String,
     val estadoPedido: String,
     val valorTotal: Double,

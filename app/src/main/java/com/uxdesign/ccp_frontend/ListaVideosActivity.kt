@@ -36,14 +36,6 @@ class ListaVideosActivity : AppCompatActivity() {
             return
         }
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/") // URL base del microservicio
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-
-        apiService = retrofit.create(ApiService::class.java)
-
         getVideos(clienteId)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -55,6 +47,14 @@ class ListaVideosActivity : AppCompatActivity() {
     }
 
     private fun getVideos(clienteId: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/") // URL base del microservicio
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+        apiService = retrofit.create(ApiService::class.java)
+
         apiService.getVideosPorCliente(clienteId).enqueue(object : Callback<RespuestaVideo> {
             override fun onResponse(call: Call<RespuestaVideo>, response: Response<RespuestaVideo>) {
                 if (response.isSuccessful) {
