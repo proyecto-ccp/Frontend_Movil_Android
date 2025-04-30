@@ -132,7 +132,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 idMoneda = 11
             )
 
-            enviarPedido(pedido)
+            enviarPedido(pedido, idUsuario)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -231,6 +231,11 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             return false
         }
 
+        if (!validarHora(editHora.text.toString().trim())) {
+            showToast("La hora debe tener el formato HH:MM")
+            return false
+        }
+
 
         if (editHora.text.toString().trim().isEmpty()) {
             showToast("Ingrese la hora")
@@ -251,6 +256,11 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
     }
 
+    fun validarHora(hora: String): Boolean {
+        val regex = "^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$".toRegex()
+        return hora.matches(regex)
+    }
+
     private fun validarFecha(fecha: String): Boolean {
         val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -269,7 +279,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
     }
 
-    private fun enviarPedido(pedido: Pedido) {
+    private fun enviarPedido(pedido: Pedido, idUsuario: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -282,7 +292,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     val respuesta = response.body()
                     val idPedido = respuesta?.id
                     if (idPedido != null){
-                        asociarDetalles(pedido.idCliente, idPedido)
+                        asociarDetalles(idUsuario, idPedido)
                     } else {
 
                     Toast.makeText(this@FinalizarPedidoActivity, "No fue posible crear el pedido, intente de nuevo", Toast.LENGTH_SHORT).show()
@@ -316,9 +326,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                     if (status == 201){
                         Toast.makeText(this@FinalizarPedidoActivity, "El pedido ha sido registrado exitosamente", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@FinalizarPedidoActivity, CatalogoProductosActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
-
-                        finish()
                     } else {
 
                         Toast.makeText(this@FinalizarPedidoActivity, "No fue posible agregar detalles, intente de nuevo", Toast.LENGTH_SHORT).show()

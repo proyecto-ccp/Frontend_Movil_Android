@@ -239,7 +239,7 @@ class RegistrarClienteActivity : AppCompatActivity() {
 
     private fun cargarTiposDocDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://proveedores-596275467600.us-central1.run.app/api/")
+            .baseUrl("https://servicio-atributos-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -248,7 +248,7 @@ class RegistrarClienteActivity : AppCompatActivity() {
         apiService.getTiposDocumento().enqueue(object : Callback<RespuestaTiposDocs> {
             override fun onResponse(call: Call<RespuestaTiposDocs>, response: Response<RespuestaTiposDocs>) {
                 if (response.isSuccessful) {
-                    val tiposDocs = response.body()?.documentos ?: emptyList()
+                    val tiposDocs = response.body()?.tiposDocumentos ?: emptyList()
 
                     listaTiposDocs = tiposDocs
 
@@ -316,8 +316,11 @@ class RegistrarClienteActivity : AppCompatActivity() {
         if (telefono.isEmpty()) {
             telefonoText.error = "El teléfono no puede estar vacío"
             return false
+        } else if (!telefono.matches(Regex("^\\d+$"))) {
+            telefonoText.error = "El teléfono solo debe contener números"
+            return false
         } else if (telefono.length < 7) {
-            telefonoText.error = "Por favor ingresa un número de teléfono válido"
+            telefonoText.error = "El número de teléfono debe tener al menos 7 dígitos"
             return false
         }
 
@@ -335,9 +338,9 @@ class RegistrarClienteActivity : AppCompatActivity() {
             return false
         }
 
-        val selectedSpinnerZ = spinnerZona.selectedItem.toString()
-        if (selectedSpinnerZ == "Selecciona uno") {
-            Toast.makeText(this, "Por favor selecciona una zona", Toast.LENGTH_SHORT)
+        val selectedSpinnerZ = spinnerZona.selectedItem
+        if (selectedSpinnerZ == null || selectedSpinnerZ.toString() == "Selecciona uno") {
+            Toast.makeText(this, "Por favor verifica que hayas selecciona una ciudad y luego una zona", Toast.LENGTH_SHORT)
                 .show()
             return false
         }
