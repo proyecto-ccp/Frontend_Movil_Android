@@ -26,6 +26,7 @@ import retrofit2.Response
 class DetalleProductoActivity : AppCompatActivity() {
     private lateinit var apiService: ApiService
     private var productoPrecio: Double = 0.0
+    private var stockDisponible: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -110,6 +111,11 @@ class DetalleProductoActivity : AppCompatActivity() {
             val cantidad = cantidadText.toInt()
             val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
 
+            if (cantidad > stockDisponible) {
+                Toast.makeText(this, "La cantidad ingresada excede el stock disponible ($stockDisponible)", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val productoRequest = ProductoCarrito(
                 idProducto = productoId,
                 cantidad = cantidad,
@@ -168,6 +174,7 @@ class DetalleProductoActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val inventario = response.body()?.inventario
                     val cantidadStock = inventario?.cantidadStock ?: 0
+                    stockDisponible = cantidadStock
                     findViewById<TextView>(R.id.textStock).text = "Stock: $cantidadStock unidades"
 
                     if (cantidadStock <= 0) {
