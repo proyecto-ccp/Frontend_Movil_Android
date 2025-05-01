@@ -16,12 +16,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val registrar: TextView = findViewById(R.id.textoRegistrarme)
-        registrar.setOnClickListener {
-            val intent = Intent(this, RegistrarClienteActivity::class.java)
-            startActivity(intent)
-        }
-
         val buttonIngresar: Button = findViewById(R.id.buttonIngresar)
         buttonIngresar.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)

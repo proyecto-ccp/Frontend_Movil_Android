@@ -56,22 +56,22 @@
             android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/buttonConsultarEstadoPedido"
+            android:id="@+id/buttonRecomendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/black"
-            android:text="Consultar Estado de Pedidos"
+            android:text="@string/recomendar_localizaci_n_productos"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:layout_marginBottom="16dp" />
 
         <Button
-            android:id="@+id/buttonRecomendar"
+            android:id="@+id/buttonCerrarSesion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/black"
-            android:text="@string/recomendar_localizaci_n_productos"
+            android:text="Cerrar Sesión"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:textSize="16sp"

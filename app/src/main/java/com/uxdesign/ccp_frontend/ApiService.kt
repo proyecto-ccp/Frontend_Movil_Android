@@ -49,7 +49,7 @@ interface ApiService {
     @GET("Pedido/ObtenerPedidosPorCliente/{clienteId}/{estado}")
     fun getPedidosPorCliente(@Path("clienteId") clienteId: String, @Path("estado") estado: String
     ): Call<RespuestaPedidoProcesado>
-
+    
     @GET("Pedido/ObtenerPedidosPorVendedor/{vendedorId}/{estado}")
     fun getPedidosPorVendedor(@Path("vendedorId") vendedorId: String, @Path("estado") estado: String
     ): Call<RespuestaPedido>

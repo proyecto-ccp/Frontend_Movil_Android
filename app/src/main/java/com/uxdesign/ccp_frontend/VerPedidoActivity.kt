@@ -35,33 +35,7 @@ class VerPedidoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_ver_pedido)
         val idUsuario = intent.getStringExtra("id_usuario")
 
-        //Adaptabilidad
-        val mainLayout: ConstraintLayout = findViewById(R.id.main)
-        val titleTotal: TextView = findViewById(R.id.tituloTotal)
-        val titleCantidad: TextView = findViewById(R.id.tituloNumProductos)
         val buttonFin: Button = findViewById(R.id.buttonFin)
-        val imageEye: ImageView = findViewById(R.id.imageOjoN)
-
-        imageEye.visibility = View.GONE
-
-        imageEye.setOnClickListener {
-
-
-        //val buttonOjo: Button = findViewById(R.id.botonOjo)
-        //buttonOjo.setOnClickListener {
-        // mainLayout.setBackgroundColor(resources.getColor(R.color.darkgrey, null))
-        // titleTotal.setTextColor(resources.getColor(R.color.greytext, null))
-        // titleCantidad.setTextColor(resources.getColor(R.color.greytext, null))
-        // buttonFin.setBackgroundColor(resources.getColor(R.color.greytext, null))
-        imageEye.setImageResource(R.drawable.blackeye)
-        imageEye.visibility = View.GONE
-        }
-
-        //User interface
-        // mainLayout.setBackgroundColor(resources.getColor(R.color.orange, null))
-        // titleTotal.setTextColor(resources.getColor(R.color.pink, null))
-        // titleCantidad.setTextColor(resources.getColor(R.color.pink, null))
-
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProductosPedido)
         recyclerView.layoutManager = LinearLayoutManager(this)

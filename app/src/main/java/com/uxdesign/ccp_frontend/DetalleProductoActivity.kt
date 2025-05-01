@@ -36,32 +36,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         val editCantidad: EditText = findViewById(R.id.editCantidad)
         val editValor: EditText = findViewById(R.id.editValor)
 
-        //Adaptabilidad
-        val mainLayout: ConstraintLayout = findViewById(R.id.main)
-        val titleCanti: TextView = findViewById(R.id.tituloCantidad)
-        val titleValue: TextView = findViewById(R.id.tituloValor)
         val agregarButton: Button = findViewById(R.id.buttonAgregar)
-        val imageEye: ImageView = findViewById(R.id.imageOjoN)
-
-        imageEye.visibility = View.GONE
-
-        imageEye.setOnClickListener {
-
-
-        //val buttonOjo: Button = findViewById(R.id.botonOjo)
-        //buttonOjo.setOnClickListener {
-        // mainLayout.setBackgroundColor(resources.getColor(R.color.darkgrey, null))
-        // titleCanti.setTextColor(resources.getColor(R.color.greytext, null))
-        // titleValue.setTextColor(resources.getColor(R.color.greytext, null))
-        // agregarButton.setBackgroundColor(resources.getColor(R.color.buttonAgregar, null))
-            imageEye.setImageResource(R.drawable.blackeye)
-            imageEye.visibility = View.GONE
-        }
-
-        //User interface
-        // mainLayout.setBackgroundColor(resources.getColor(R.color.orange, null))
-        // titleCanti.setTextColor(resources.getColor(R.color.pink, null))
-        // titleValue.setTextColor(resources.getColor(R.color.pink, null))
 
         val productoId = intent.getIntExtra("producto_id", -1)
         val productoNombre = intent.getStringExtra("producto_nombre")

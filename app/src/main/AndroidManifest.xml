@@ -26,16 +26,10 @@
             android:name="com.uxdesign.ccp_frontend.DetallePedidoActivity"
             android:exported="false" />
         <activity
-            android:name="com.uxdesign.ccp_frontend.ConsultarEstadoPedidosActivity"
-            android:exported="false" />
-        <activity
             android:name="com.uxdesign.ccp_frontend.DetalleClienteActivity"
             android:exported="false" />
         <activity
             android:name="com.uxdesign.ccp_frontend.ConsultarClientesActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.uxdesign.ccp_frontend.RegistrarClienteActivity"
             android:exported="false" />
         <activity
             android:name="com.uxdesign.ccp_frontend.ListaVideosActivity"
@@ -45,9 +39,6 @@
             android:exported="false" />
         <activity
             android:name="com.uxdesign.ccp_frontend.CargarVideoActivity"
-            android:exported="false" />
-        <activity
-            android:name="com.uxdesign.ccp_frontend.LoadingActivity"
             android:exported="false" />
         <activity
             android:name="com.uxdesign.ccp_frontend.VerPedidoActivity"

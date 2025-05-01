@@ -39,7 +39,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Botón 1 -->
         <Button
             android:id="@+id/botonPedido"
             android:layout_width="0dp"
@@ -51,7 +50,6 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white" />
 
-        <!-- Botón 2 -->
         <Button
             android:id="@+id/botonFinalizar"
             android:layout_width="0dp"
@@ -64,18 +62,5 @@
             android:textColor="@android:color/white" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageOjoN"
-        android:layout_width="63dp"
-        android:layout_height="48dp"
-        android:clickable="true"
-        android:contentDescription="Cambiar color"
-        android:focusable="true"
-        app:srcCompat="@drawable/pinkeye"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="332dp"
-        tools:layout_editor_absoluteY="16dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
