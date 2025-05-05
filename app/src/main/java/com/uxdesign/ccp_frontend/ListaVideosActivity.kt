@@ -59,14 +59,19 @@ class ListaVideosActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RespuestaVideo>, response: Response<RespuestaVideo>) {
                 if (response.isSuccessful) {
                     val videoList = response.body()?.videos ?: emptyList()
-                    if (videoList != null) {
+                    if (videoList.isEmpty()) {
+                        Toast.makeText(
+                            this@ListaVideosActivity,
+                            "No hay videos cargados para el cliente seleccionado",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
                         videos.clear()
                         videos.addAll(videoList)
-                        // Notificar al adaptador que los datos han cambiado
                         (findViewById<RecyclerView>(R.id.recyclerViewVideos).adapter as VideoAdapter).notifyDataSetChanged()
                     }
                 } else {
-                    Toast.makeText(this@ListaVideosActivity, "Error al cargar los videos", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ListaVideosActivity, "El cliente seleccionado no tiene videos cargados", Toast.LENGTH_SHORT).show()
                 }
             }
 

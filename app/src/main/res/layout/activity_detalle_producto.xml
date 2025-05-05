@@ -188,17 +188,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageOjoN"
-        android:contentDescription="Cambiar color"
-        android:layout_width="63dp"
-        android:layout_height="48dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:srcCompat="@drawable/pinkeye"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="355dp"
-        tools:layout_editor_absoluteY="16dp"
-        tools:srcCompat="@drawable/pinkeye" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

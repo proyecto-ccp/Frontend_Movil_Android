@@ -16,19 +16,19 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @POST("CargarVideo")  // Reemplaza con la URL de tu microservicio
+    @POST("CargarVideo")
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
     @GET("Video/ObtenerVideosPorCliente/{clienteId}")
     fun getVideosPorCliente(@Path("clienteId") clienteId: String): Call<RespuestaVideo>
 
-    @POST("Cliente/CrearCliente") // <- Ajusta el endpoint
+    @POST("Cliente/CrearCliente")
     fun registrarCliente(@Body cliente: Cliente): Call<ResponseBody>
 
     @GET("Proveedores/Listar")
     fun getProveedores(): Call<RespuestaProveedor>
 
-    @GET("Documentos/TiposDocumento")
+    @GET("Atributos/TiposDocumento")
     fun getTiposDocumento(): Call<RespuestaTiposDocs>
 
     @GET("Productos/ConsultarPorProveedor")
@@ -37,11 +37,11 @@ interface ApiService {
     @GET("Productos/Consultar")
     fun getProductos(): Call<RespuestaProducto>
 
-    @GET("Ciudad/ObtenerCiudades")
+    @GET("atributos/Localizacion/Ciudades")
     fun getCiudades(): Call<RespuestaCiudad>
 
-    @GET("Zona/ObtenerZonasPorCiudad")
-    fun getZonasPorCiudad(@Query("idCiudad") idCiudad: String): Call<RespuestaZona>
+    @GET("Atributos/Localizacion/Ciudad/{IdCiudad}/Zonas")
+    fun getZonasPorCiudad(@Path("IdCiudad") idCiudad: String): Call<RespuestaZona>
 
     @GET("Cliente/ObtenerClientesPorZona/{zonaId}")
     fun getClientesPorZona(@Path("zonaId") zonaId: String): Call<RespuestaCliente>
@@ -49,7 +49,7 @@ interface ApiService {
     @GET("Pedido/ObtenerPedidosPorCliente/{clienteId}/{estado}")
     fun getPedidosPorCliente(@Path("clienteId") clienteId: String, @Path("estado") estado: String
     ): Call<RespuestaPedidoProcesado>
-
+    
     @GET("Pedido/ObtenerPedidosPorVendedor/{vendedorId}/{estado}")
     fun getPedidosPorVendedor(@Path("vendedorId") vendedorId: String, @Path("estado") estado: String
     ): Call<RespuestaPedido>

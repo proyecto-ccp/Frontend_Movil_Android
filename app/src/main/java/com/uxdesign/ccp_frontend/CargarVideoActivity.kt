@@ -350,7 +350,6 @@ class CargarVideoActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RespuestaProducto>, response: Response<RespuestaProducto>) {
                 if (response.isSuccessful) {
                     listaProductos = response.body()?.productos ?: emptyList()
-
                     val nombresProductos = listaProductos.map { it.nombre }
                     val adapter = ArrayAdapter(
                         this@CargarVideoActivity,
