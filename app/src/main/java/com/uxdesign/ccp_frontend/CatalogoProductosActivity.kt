@@ -29,7 +29,6 @@ class CatalogoProductosActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_catalogo_productos)
 
-        val buttonFinalizar: Button = findViewById(R.id.botonFinalizar)
         val buttonPedido: Button = findViewById(R.id.botonPedido)
 
         val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
@@ -38,13 +37,6 @@ class CatalogoProductosActivity : AppCompatActivity() {
             val intent = Intent(this, VerPedidoActivity::class.java)
             intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
-        }
-
-        buttonFinalizar.isEnabled = false
-        buttonFinalizar.setOnClickListener {
-             val intent = Intent(this, FinalizarPedidoActivity::class.java)
-             intent.putExtra("id_usuario", idUsuario)
-             startActivity(intent)
         }
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProductos)

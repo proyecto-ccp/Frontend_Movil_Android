@@ -16,13 +16,13 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @POST("CargarVideo")  // Reemplaza con la URL de tu microservicio
+    @POST("CargarVideo")
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
     @GET("Video/ObtenerVideosPorCliente/{clienteId}")
     fun getVideosPorCliente(@Path("clienteId") clienteId: String): Call<RespuestaVideo>
 
-    @POST("Cliente/CrearCliente") // <- Ajusta el endpoint
+    @POST("Cliente/CrearCliente")
     fun registrarCliente(@Body cliente: Cliente): Call<ResponseBody>
 
     @GET("Proveedores/Listar")
