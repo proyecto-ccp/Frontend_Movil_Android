@@ -28,7 +28,6 @@ import java.text.ParseException
 class FinalizarPedidoActivity : AppCompatActivity() {
     private lateinit var spinnerCliente: Spinner
     private lateinit var editFecha: EditText
-    private lateinit var editHora: EditText
     private lateinit var editNumProductos: EditText
     private lateinit var editTotal: EditText
     private lateinit var editComentarios: EditText
@@ -47,7 +46,6 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFechaEntrega)
-        editHora = findViewById(R.id.editHora)
         editNumProductos = findViewById(R.id.editNumProductos)
         editTotal = findViewById(R.id.editTotal)
         editComentarios = findViewById(R.id.editComentarios)
@@ -74,12 +72,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val cliente = spinnerCliente.selectedItem.toString()
             val fechaEntrega = editFecha.text.toString().trim()
-            val hora = editHora.text.toString().trim()
             val comentarios = editComentarios.text.toString().trim()
-            //val numProductos = editNumProductos.text.toString().trim().toInt()
-            //val total = editTotal.text.toString().trim().toDouble()
 
            val pedido = Pedido(
                 idCliente = selectedClienteId,
@@ -190,17 +184,6 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             return false
         }
 
-        if (!validarHora(editHora.text.toString().trim())) {
-            showToast("La hora debe tener el formato HH:MM")
-            return false
-        }
-
-
-        if (editHora.text.toString().trim().isEmpty()) {
-            showToast("Ingrese la hora")
-            return false
-        }
-
         if (editNumProductos.text.toString().trim().isEmpty()) {
             showToast("Número de productos es obligatorio")
             return false
@@ -213,11 +196,6 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         return true
 
-    }
-
-    fun validarHora(hora: String): Boolean {
-        val regex = "^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$".toRegex()
-        return hora.matches(regex)
     }
 
     private fun validarFecha(fecha: String): Boolean {
@@ -245,8 +223,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
-        apiService.crearPedido(pedido).enqueue(object : Callback<RespuestaRequestPedido> {
-            override fun onResponse(call: Call<RespuestaRequestPedido>, response: Response<RespuestaRequestPedido>) {
+        apiService.crearPedido(pedido).enqueue(object : Callback<RespuestaRequest> {
+            override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
                     val respuesta = response.body()
                     val idPedido = respuesta?.id
@@ -262,7 +240,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<RespuestaRequestPedido>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }
@@ -277,8 +255,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         val apiService = retrofit.create(ApiService::class.java)
 
-        apiService.enlazarDetallePedido(idUsuario, idPedido).enqueue(object : Callback<RespuestaRequestPedido> {
-            override fun onResponse(call: Call<RespuestaRequestPedido>, response: Response<RespuestaRequestPedido>) {
+        apiService.enlazarDetallePedido(idUsuario, idPedido).enqueue(object : Callback<RespuestaRequest> {
+            override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
                     val respuesta = response.body()
                     val status = respuesta?.status
@@ -297,7 +275,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<RespuestaRequestPedido>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }

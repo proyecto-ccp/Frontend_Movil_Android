@@ -84,28 +84,6 @@
                 android:minHeight="48dp" />
 
             <TextView
-                android:id="@+id/tituloHora"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="6dp"
-                android:text="Hora"
-                android:textColor="@color/blue"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editHora"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="4dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/spinner_borde"
-                android:hint="HH:MM"
-                android:minHeight="48dp" />
-
-            <TextView
                 android:id="@+id/tituloNumProductos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

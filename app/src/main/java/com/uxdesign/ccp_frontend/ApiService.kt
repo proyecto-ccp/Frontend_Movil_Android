@@ -67,9 +67,12 @@ interface ApiService {
     fun getVendedor(@Path("idVendedor") vendedorId: String): Call<RespuestaVendedor>
 
     @POST("Pedido/CrearPedido")
-    fun crearPedido(@Body request: Pedido): Call<RespuestaRequestPedido>
+    fun crearPedido(@Body request: Pedido): Call<RespuestaRequest>
 
     @PUT("DetallePedido/ActualizarDetalles/{idUsuario}/{idPedido}")
     fun enlazarDetallePedido(@Path("idUsuario") idUsuario: String,
-        @Path("idPedido") idPedido: String): Call<RespuestaRequestPedido>
+        @Path("idPedido") idPedido: String): Call<RespuestaRequest>
+
+    @POST("Visita/CrearVisita")
+    fun crearVisita(@Body request: Visita): Call<RespuestaRequest>
 }
