@@ -98,17 +98,17 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val posicionCliente = spinnerCliente.selectedItemPosition
-            val clienteSeleccionado = listaClientes[posicionCliente - 1]
-            val idCliente = clienteSeleccionado.id
-            selectedClienteId = idCliente
-
             val motivoSeleccionado = spinnerMotivo.selectedItem.toString()
             selectedMotivo = motivoSeleccionado
 
             if (!validarCampos()) {
                 return@setOnClickListener
             }
+
+            val posicionCliente = spinnerCliente.selectedItemPosition
+            val clienteSeleccionado = listaClientes[posicionCliente - 1]
+            val idCliente = clienteSeleccionado.id
+            selectedClienteId = idCliente
 
             val fecha = editFecha.text.toString().trim()
             val fechaISO = convertirFechaAISO8601(fecha)
@@ -221,8 +221,8 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     }
 
     private fun validarCampos(): Boolean {
-        val selectedSpinnerC = spinnerCliente.selectedItem.toString()
-        if (selectedSpinnerC == "Selecciona uno") {
+        val selectedSpinnerC = spinnerCliente.selectedItemPosition
+        if (selectedSpinnerC <= 0 || listaClientes.isEmpty()) {
             Toast.makeText(this, "Por favor selecciona un cliente", Toast.LENGTH_SHORT)
                 .show()
             return false

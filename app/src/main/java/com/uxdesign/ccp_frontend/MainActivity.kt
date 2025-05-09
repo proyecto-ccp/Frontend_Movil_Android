@@ -16,6 +16,10 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
+        val textVersion = findViewById<TextView>(R.id.textVersion)
+        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
+        textVersion.text = "Versión: $versionName"
+
         val buttonIngresar: Button = findViewById(R.id.buttonIngresar)
         buttonIngresar.setOnClickListener {
             val intent = Intent(this, MenuActivity::class.java)

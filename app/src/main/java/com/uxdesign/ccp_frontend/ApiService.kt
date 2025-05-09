@@ -16,7 +16,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @POST("CargarVideo")
+    @POST("Video/CargarVideo")
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
     @GET("Video/ObtenerVideosPorCliente/{clienteId}")
