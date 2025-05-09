@@ -2,8 +2,8 @@ package com.uxdesign.ccp_frontend
 
 data class Visita(
     val idCliente: String,
-    val fecha: String,
-    val hora: String,
+    val idVendedor: String,
+    val fechaVisita: String,
     val motivo: String,
-    val estado: String
+    //val estado: String
 )

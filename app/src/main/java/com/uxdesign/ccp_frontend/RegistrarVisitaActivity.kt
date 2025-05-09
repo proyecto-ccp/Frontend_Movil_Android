@@ -1,16 +1,20 @@
 package com.uxdesign.ccp_frontend
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.gson.Gson
 import com.uxdesign.cpp.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,35 +23,60 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class RegistrarVisitaActivity : AppCompatActivity() {
     private lateinit var spinnerCliente: Spinner
     private lateinit var editFecha: EditText
-    private lateinit var editHora: EditText
     private lateinit var spinnerMotivo: Spinner
     private var listaClientes: List<Cliente> = emptyList()
     private var selectedClienteId: String = ""
     private var selectedMotivo: String = ""
     private lateinit var vendedor: Vendedor
-    private val listaMotivos = listOf(
-        "Selecciona uno",
-        "Presentación de producto",
-        "Seguimiento de pedido",
-        "Cobranza",
-        "Visita de cortesía",
-        "Otro"
-    )
+    private lateinit var listaMotivos: List<String>
+
+    override fun attachBaseContext(newBase: Context) {
+        val idioma = obtenerIdiomaGuardado(newBase)
+        val context = cambiarIdioma(newBase, idioma)
+        super.attachBaseContext(context)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_registrar_visita)
 
+        listaMotivos = listOf(
+            getString(R.string.selecciona_uno),
+            getString(R.string.presentaci_n_de_producto),
+            getString(R.string.seguimiento_de_pedido),
+            getString(R.string.cobranza),
+            getString(R.string.visita_de_cortes_a),
+            getString(R.string.otro)
+        )
+
+        val ojoIng = findViewById<ImageView>(R.id.imageOjoIng)
+        val ojoPor = findViewById<ImageView>(R.id.imageOjoPor)
+
+        ojoIng.setOnClickListener {
+            val idiomaActual = obtenerIdiomaGuardado(this)
+            val nuevoIdioma = if (idiomaActual == "en") "es" else "en"
+            guardarIdioma(this, nuevoIdioma)
+            recrearConNuevoIdioma(nuevoIdioma)
+        }
+
+        ojoPor.setOnClickListener {
+            val idiomaActual = obtenerIdiomaGuardado(this)
+            val nuevoIdioma = if (idiomaActual == "pt") "es" else "pt"
+            guardarIdioma(this, nuevoIdioma)
+            recrearConNuevoIdioma(nuevoIdioma)
+        }
+
         val idUsuario = intent.getStringExtra("id_usuario")
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFecha)
-        editHora = findViewById(R.id.editHora)
         spinnerMotivo = findViewById(R.id.spinnerMotivo)
         val adapterMotivos = ArrayAdapter(
             this,
@@ -64,7 +93,8 @@ class RegistrarVisitaActivity : AppCompatActivity() {
 
         buttonRegistrar.setOnClickListener {
             if (idUsuario.isNullOrEmpty()) {
-                Toast.makeText(this, "ID de usuario no disponible", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                    getString(R.string.id_de_usuario_no_disponible), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -81,14 +111,13 @@ class RegistrarVisitaActivity : AppCompatActivity() {
             }
 
             val fecha = editFecha.text.toString().trim()
-            val hora = editHora.text.toString().trim()
-
+            val fechaISO = convertirFechaAISO8601(fecha)
             val visita = Visita(
                 idCliente = selectedClienteId,
-                fecha = fecha,
-                hora = hora,
+                idVendedor = idUsuario,
+                fechaVisita = fechaISO,
                 motivo = motivoSeleccionado,
-                estado = "PENDIENTE"
+                //estado = "PENDIENTE"
             )
 
             registrarVisita(visita, idUsuario)
@@ -126,25 +155,27 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerCliente.adapter = adapter
                 } else {
-                    Toast.makeText(this@RegistrarVisitaActivity, "Error al cargar clientes", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegistrarVisitaActivity,
+                        getString(R.string.error_al_cargar_clientes), Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<RespuestaCliente>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(this@RegistrarVisitaActivity, "Error de conexión con clientes", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegistrarVisitaActivity,
+                    getString(R.string.error_de_conexi_n_con_clientes), Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun obtenerZonaVendedor(idUsuario: String?) {
         if (idUsuario.isNullOrEmpty()) {
-            Toast.makeText(this, "ID de usuario no disponible", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.id_de_usuario_no_disponible), Toast.LENGTH_SHORT).show()
             return
         }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://vendedor-596275467600.us-central1.run.app/api/") // Reemplaza por la base real
+            .baseUrl("https://vendedor-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -162,13 +193,13 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                         vendedor = vendedorS
                         cargarClientesDesdeApi()
                     } else {
-                        showToast("Datos de vendedor no válidos")
+                        showToast(getString(R.string.datos_de_vendedor_no_v_lidos))
                     }
 
                 } else {
                     Toast.makeText(
                         this@RegistrarVisitaActivity,
-                        "Error al cargar clientes",
+                        getString(R.string.error_al_cargar_clientes),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -178,7 +209,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                 t.printStackTrace()
                 Toast.makeText(
                     this@RegistrarVisitaActivity,
-                    "Error de conexión con clientes",
+                    R.string.error_de_conexi_n_con_clientes,
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -190,40 +221,33 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     }
 
     private fun validarCampos(): Boolean {
-        if (spinnerCliente.selectedItem == null || spinnerCliente.selectedItem.toString().isEmpty()) {
-            showToast("Seleccione un cliente")
+        val selectedSpinnerC = spinnerCliente.selectedItem.toString()
+        if (selectedSpinnerC == "Selecciona uno") {
+            Toast.makeText(this, "Por favor selecciona un cliente", Toast.LENGTH_SHORT)
+                .show()
             return false
         }
 
-        if (spinnerMotivo.selectedItem == null || spinnerMotivo.selectedItem.toString().isEmpty()) {
-            showToast("Seleccione un motivo de visita")
+        val selectedSpinnerM = spinnerMotivo.selectedItem.toString()
+        if (selectedSpinnerM == "Selecciona uno") {
+            Toast.makeText(this, "Por favor selecciona un motivo", Toast.LENGTH_SHORT)
+                .show()
             return false
         }
 
         if (editFecha.text.toString().trim().isEmpty()) {
-            showToast("Ingrese la fecha de entrega")
+            showToast(getString(R.string.ingrese_la_fecha_de_entrega))
             return false
         }
 
         if (!validarFecha(editFecha.text.toString().trim())) {
-            showToast("La fecha de visita debe tener el formato yyyy-MM-dd")
-            return false
-        }
-
-        if (!validarHora(editHora.text.toString().trim())) {
-            showToast("La hora de visista debe tener el formato HH:SS (hora militar)")
+            showToast(getString(R.string.la_fecha_de_visita_debe_tener_el_formato_yyyy_mm_dd))
             return false
         }
 
         return true
 
     }
-
-    fun validarHora(hora: String): Boolean {
-        val regex = "^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$".toRegex()
-        return hora.matches(regex)
-    }
-
     private fun validarFecha(fecha: String): Boolean {
         val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
@@ -240,31 +264,70 @@ class RegistrarVisitaActivity : AppCompatActivity() {
 
     private fun registrarVisita(visita: Visita, idUsuario: String) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .baseUrl("https://servicio-visitas-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
+        Log.d("VISITA", Gson().toJson(visita))
         apiService.crearVisita(visita).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
                     val respuesta = response.body()
-                    Toast.makeText(this@RegistrarVisitaActivity, "La visita ha sido registrada exitosamente", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@RegistrarVisitaActivity,
+                        getString(R.string.la_visita_ha_sido_registrada_exitosamente), Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@RegistrarVisitaActivity, MenuActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
 
-                        Toast.makeText(this@RegistrarVisitaActivity, "No fue posible crear la visita, intente de nuevo", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@RegistrarVisitaActivity,
+                            getString(R.string.no_fue_posible_crear_la_visita_intente_de_nuevo), Toast.LENGTH_SHORT).show()
                     }
 
             }
 
             override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
-                Toast.makeText(this@RegistrarVisitaActivity, "Error de conexión con visita", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@RegistrarVisitaActivity,
+                    getString(R.string.error_de_conexi_n_con_visita), Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun cambiarIdioma(context: Context, codigoIdioma: String): Context {
+        val locale = Locale(codigoIdioma)
+        Locale.setDefault(locale)
+        val config = context.resources.configuration
+        config.setLocale(locale)
+        config.setLayoutDirection(locale)
+        return context.createConfigurationContext(config)
+    }
+
+    private fun guardarIdioma(context: Context, idioma: String) {
+        val prefs = context.getSharedPreferences("Ajustes", Context.MODE_PRIVATE)
+        prefs.edit().putString("idioma", idioma).apply()
+    }
+
+    private fun obtenerIdiomaGuardado(context: Context): String {
+        val prefs = context.getSharedPreferences("Ajustes", Context.MODE_PRIVATE)
+        return prefs.getString("idioma", "es") ?: "es"
+    }
+
+    private fun recrearConNuevoIdioma(codigoIdioma: String) {
+        val context = cambiarIdioma(this, codigoIdioma)
+        val intent = intent
+        finish()
+        startActivity(intent)
+    }
+
+    private fun convertirFechaAISO8601(fecha: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        outputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date: Date = inputFormat.parse(fecha)!!
+        return outputFormat.format(date)
     }
 
 }

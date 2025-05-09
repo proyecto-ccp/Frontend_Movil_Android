@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="selecciona_uno">Selecione um</string>
+    <string name="cliente">Cliente</string>
+    <string name="fecha">Data</string>
+    <string name="yyyy_mm_dd">AAAA-MM-DD</string>
+    <string name="hora">Hora</string>
+    <string name="motivo_visita">Motivo da visita</string>
+    <string name="registrar">Registrar</string>
+    <string name="hh_mm">HH:MM</string>
+    <string name="presentaci_n_de_producto">Apresentação do produto</string>
+    <string name="seguimiento_de_pedido">Acompanhamento do pedido</string>
+    <string name="visita_de_cortes_a">Visita de cortesia</string>
+    <string name="otro">Outro</string>
+    <string name="cobranza">Cobrança</string>
+    <string name="id_de_usuario_no_disponible">ID de usuário não disponível</string>
+    <string name="error_al_cargar_clientes">Erro ao carregar clientes</string>
+    <string name="error_de_conexi_n_con_clientes">Erro de conexão com clientes</string>
+    <string name="datos_de_vendedor_no_v_lidos">Dados do vendedor inválidos</string>
+    <string name="seleccione_un_cliente">Selecione um cliente</string>
+    <string name="seleccione_un_motivo_de_visita">Selecione um motivo da visita</string>
+    <string name="ingrese_la_fecha_de_entrega">Insira a data de entrega</string>
+    <string name="la_fecha_de_visita_debe_tener_el_formato_yyyy_mm_dd">A data da visita deve estar no formato aaaa-MM-dd</string>
+    <string name="la_hora_de_visista_debe_tener_el_formato_hh_ss_hora_militar">O horário da visita deve estar no formato HH:SS (formato 24h)</string>
+    <string name="la_visita_ha_sido_registrada_exitosamente">A visita foi registrada com sucesso</string>
+    <string name="no_fue_posible_crear_la_visita_intente_de_nuevo">Não foi possível registrar a visita, tente novamente</string>
+    <string name="error_de_conexi_n_con_visita">Erro de conexão com a visita</string>
+</resources>

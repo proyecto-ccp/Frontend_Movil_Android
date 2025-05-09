@@ -41,6 +41,7 @@ class MenuActivity : AppCompatActivity() {
         val buttonRegistrarVisita: Button = findViewById(R.id.buttonRegistrarVisita)
         buttonRegistrarVisita.setOnClickListener {
             val intent = Intent(this, RegistrarVisitaActivity::class.java)
+            intent.putExtra("id_usuario", "c807fbe9-8c83-451c-b264-389426371e3e")
             startActivity(intent)
         }
 

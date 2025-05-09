@@ -15,9 +15,16 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical">
 
         <ImageView
-            android:id="@+id/imageOjoN"
+            android:id="@+id/imageOjoIng"
             android:layout_width="63dp"
             android:layout_height="48dp"
             android:clickable="true"
@@ -28,6 +35,23 @@
             tools:layout_editor_absoluteX="332dp"
             tools:layout_editor_absoluteY="16dp" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imageOjoPor"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/whiteeye"
+            android:contentDescription="Ojo superior"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imageLogoPeque"
@@ -59,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
-                android:text="Cliente"
+                android:text="@string/cliente"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
@@ -71,7 +95,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/spinner_borde"
-                android:contentDescription="Selecciona uno"
+                android:contentDescription="@string/selecciona_uno"
                 android:minHeight="48dp" />
 
             <TextView
@@ -80,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
-                android:text="Fecha"
+                android:text="@string/fecha"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
@@ -93,29 +117,7 @@
                 android:layout_marginBottom="4dp"
                 android:paddingLeft="20dp"
                 android:background="@drawable/spinner_borde"
-                android:hint="YYYY-MM-DD"
-                android:minHeight="48dp" />
-
-            <TextView
-                android:id="@+id/tituloHora"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="6dp"
-                android:text="Hora"
-                android:textColor="@color/blue"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editHora"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="4dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/spinner_borde"
-                android:hint="HH:MM"
+                android:hint="@string/yyyy_mm_dd"
                 android:minHeight="48dp" />
 
             <TextView
@@ -124,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
-                android:text="Motivo Visita"
+                android:text="@string/motivo_visita"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
@@ -136,7 +138,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/spinner_borde"
-                android:contentDescription="Selecciona uno"
+                android:contentDescription="@string/selecciona_uno"
                 android:minHeight="48dp" />
 
         </LinearLayout>
@@ -148,7 +150,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="60dp"
             android:background="@android:color/black"
-            android:text="Registrar"
+            android:text="@string/registrar"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
