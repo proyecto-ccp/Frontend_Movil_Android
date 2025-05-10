@@ -139,7 +139,7 @@ class DetalleProductoActivity : AppCompatActivity() {
             return
         }
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/") // Cambia por tu URL real
+            .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
