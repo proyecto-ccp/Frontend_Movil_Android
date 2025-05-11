@@ -30,7 +30,7 @@
             android:clickable="true"
             android:contentDescription="Cambiar color"
             android:focusable="true"
-            app:srcCompat="@drawable/whiteeye"
+            app:srcCompat="@drawable/usa"
             tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="332dp"
             tools:layout_editor_absoluteY="16dp" />
@@ -41,10 +41,24 @@
             android:layout_weight="1" />
 
         <ImageView
+            android:id="@+id/imageOjoEsp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/col"
+            android:contentDescription="Cambiar a español"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
             android:id="@+id/imageOjoPor"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/whiteeye"
+            android:src="@drawable/br"
             android:contentDescription="Ojo superior"
             android:layout_gravity="end"
             android:layout_marginTop="8dp"

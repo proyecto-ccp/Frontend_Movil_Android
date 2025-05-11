@@ -60,19 +60,30 @@ class RegistrarVisitaActivity : AppCompatActivity() {
 
         val ojoIng = findViewById<ImageView>(R.id.imageOjoIng)
         val ojoPor = findViewById<ImageView>(R.id.imageOjoPor)
+        val ojoEsp = findViewById<ImageView>(R.id.imageOjoEsp)
 
         ojoIng.setOnClickListener {
             val idiomaActual = obtenerIdiomaGuardado(this)
-            val nuevoIdioma = if (idiomaActual == "en") "es" else "en"
-            guardarIdioma(this, nuevoIdioma)
-            recrearConNuevoIdioma(nuevoIdioma)
+            if (idiomaActual != "en") {
+                guardarIdioma(this, "en")
+                recrearConNuevoIdioma("en")
+            }
         }
 
         ojoPor.setOnClickListener {
             val idiomaActual = obtenerIdiomaGuardado(this)
-            val nuevoIdioma = if (idiomaActual == "pt") "es" else "pt"
-            guardarIdioma(this, nuevoIdioma)
-            recrearConNuevoIdioma(nuevoIdioma)
+            if (idiomaActual != "pt") {
+                guardarIdioma(this, "pt")
+                recrearConNuevoIdioma("pt")
+            }
+        }
+
+        ojoEsp.setOnClickListener {
+            val idiomaActual = obtenerIdiomaGuardado(this)
+            if (idiomaActual != "es") {
+                guardarIdioma(this, "es")
+                recrearConNuevoIdioma("es")
+            }
         }
 
         val idUsuario = intent.getStringExtra("id_usuario")
