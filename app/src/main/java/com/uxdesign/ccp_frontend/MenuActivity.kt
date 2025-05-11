@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
 
 class MenuActivity : AppCompatActivity() {
+    val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,7 +42,14 @@ class MenuActivity : AppCompatActivity() {
         val buttonRegistrarVisita: Button = findViewById(R.id.buttonRegistrarVisita)
         buttonRegistrarVisita.setOnClickListener {
             val intent = Intent(this, RegistrarVisitaActivity::class.java)
-            intent.putExtra("id_usuario", "c807fbe9-8c83-451c-b264-389426371e3e")
+            intent.putExtra("id_usuario", idUsuario)
+            startActivity(intent)
+        }
+
+        val buttonRutaVisita: Button = findViewById(R.id.buttonRutaVisita)
+        buttonRutaVisita.setOnClickListener {
+            val intent = Intent(this, ConsultarVisitaActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
 

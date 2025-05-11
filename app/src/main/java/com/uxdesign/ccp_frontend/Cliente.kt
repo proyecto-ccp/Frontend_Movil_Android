@@ -1,5 +1,7 @@
 package com.uxdesign.ccp_frontend
 
+import java.io.Serializable
+
 data class Cliente(
     val id: String,
     val nombre: String,
@@ -14,4 +16,4 @@ data class Cliente(
     val zona: String
     //val contrasenia: String
 
-)
+): Serializable

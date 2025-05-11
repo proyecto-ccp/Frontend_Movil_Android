@@ -5,5 +5,5 @@ data class Visita(
     val idVendedor: String,
     val fechaVisita: String,
     val motivo: String,
-    //val estado: String
+    val estado: String?
 )
