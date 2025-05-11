@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +24,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -77,6 +79,25 @@ class RegistrarVisitaActivity : AppCompatActivity() {
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFecha)
+        editFecha.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val year = calendario.get(Calendar.YEAR)
+            val month = calendario.get(Calendar.MONTH)
+            val day = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val fechaSeleccionada = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    editFecha.setText(fechaSeleccionada)
+                },
+                year, month, day
+            )
+
+            datePicker.show()
+        }
+
+
         spinnerMotivo = findViewById(R.id.spinnerMotivo)
         val adapterMotivos = ArrayAdapter(
             this,
@@ -117,7 +138,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                 idVendedor = idUsuario,
                 fechaVisita = fechaISO,
                 motivo = motivoSeleccionado,
-                //estado = "PENDIENTE"
+                estado = "PENDIENTE"
             )
 
             registrarVisita(visita, idUsuario)

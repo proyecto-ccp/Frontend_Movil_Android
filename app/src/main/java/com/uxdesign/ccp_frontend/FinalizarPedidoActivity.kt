@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import java.text.SimpleDateFormat
@@ -24,6 +25,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.ParseException
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
 class FinalizarPedidoActivity : AppCompatActivity() {
     private lateinit var spinnerCliente: Spinner
@@ -46,6 +50,25 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFechaEntrega)
+
+        editFecha.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val year = calendario.get(Calendar.YEAR)
+            val month = calendario.get(Calendar.MONTH)
+            val day = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val fechaSeleccionada = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    editFecha.setText(fechaSeleccionada)
+                },
+                year, month, day
+            )
+
+            datePicker.show()
+        }
+
         editNumProductos = findViewById(R.id.editNumProductos)
         editTotal = findViewById(R.id.editTotal)
         editComentarios = findViewById(R.id.editComentarios)
@@ -73,11 +96,12 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             }
 
             val fechaEntrega = editFecha.text.toString().trim()
+            val fechaISO = convertirFechaAISO8601(fechaEntrega)
             val comentarios = editComentarios.text.toString().trim()
 
            val pedido = Pedido(
                 idCliente = selectedClienteId,
-                fechaEntrega = fechaEntrega,
+                fechaEntrega = fechaISO,
                 estadoPedido = "CREADO",
                 valorTotal = valorTotal,
                 idVendedor = idUsuario,
@@ -279,6 +303,17 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 t.printStackTrace()
                 Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }
+
         })
+
+    }
+
+    private fun convertirFechaAISO8601(fecha: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        outputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date: Date = inputFormat.parse(fecha)!!
+        return outputFormat.format(date)
     }
 }

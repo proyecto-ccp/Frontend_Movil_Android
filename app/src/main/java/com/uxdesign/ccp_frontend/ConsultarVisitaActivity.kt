@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
+import java.util.Calendar
 
 class ConsultarVisitaActivity : AppCompatActivity() {
     private lateinit var editTextFecha: EditText
@@ -20,6 +22,25 @@ class ConsultarVisitaActivity : AppCompatActivity() {
 
         val idUsuario = intent.getStringExtra("id_usuario")
         editTextFecha = findViewById(R.id.editFecha)
+        editTextFecha.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val year = calendario.get(Calendar.YEAR)
+            val month = calendario.get(Calendar.MONTH)
+            val day = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+
+                    val fechaSeleccionada = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    editTextFecha.setText(fechaSeleccionada)
+                },
+                year, month, day
+            )
+
+            datePicker.show()
+        }
+
         val buttonConsultar: Button = findViewById(R.id.buttonConsultar)
 
         buttonConsultar.setOnClickListener {

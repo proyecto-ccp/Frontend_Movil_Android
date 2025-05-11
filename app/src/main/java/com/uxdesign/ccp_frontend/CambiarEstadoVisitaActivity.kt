@@ -53,6 +53,7 @@ class CambiarEstadoVisitaActivity : AppCompatActivity() {
             val nuevaDescripcion = editDescripcion.text.toString()
 
             val actualizacion = VisitaRequest(
+                id = visita.id,
                 idCliente = visita.idCliente,
                 idVendedor = visita.idVendedor,
                 cliente = visita.cliente,
@@ -80,7 +81,7 @@ class CambiarEstadoVisitaActivity : AppCompatActivity() {
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
-        apiService.modificarEstadoVisita(visita).enqueue(object : Callback<RespuestaRequest> {
+        apiService.modificarEstadoVisita(visita.id, visita).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
                     val respuesta = response.body()

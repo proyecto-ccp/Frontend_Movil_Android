@@ -80,7 +80,7 @@ interface ApiService {
     fun getVisitasPorFecha(@Path("fecha") fecha: String, @Path("vendedorId") vendedorId: String
     ): Call<RespuestaVisita>
 
-    @PUT("Visita/ModificarVisita/2")
-    fun modificarEstadoVisita(@Body request: VisitaRequest): Call<RespuestaRequest>
+    @PUT("Visita/ModificarVisita/{id}")
+    fun modificarEstadoVisita(@Path("id") idVisita: Int, @Body request: VisitaRequest): Call<RespuestaRequest>
 }
 
