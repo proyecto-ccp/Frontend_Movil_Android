@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context="com.uxdesign.ccp_frontend.FinalizarPedidoActivity">
+    tools:context="com.uxdesign.ccp_frontend.RegistrarVisitaActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,6 +15,57 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/imageOjoIng"
+            android:layout_width="63dp"
+            android:layout_height="48dp"
+            android:clickable="true"
+            android:contentDescription="Cambiar color"
+            android:focusable="true"
+            app:srcCompat="@drawable/usa"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="332dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imageOjoEsp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/col"
+            android:contentDescription="Cambiar a español"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/imageOjoPor"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/br"
+            android:contentDescription="Ojo superior"
+            android:layout_gravity="end"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/imageLogoPeque"
@@ -46,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
-                android:text="Cliente"
+                android:text="@string/cliente"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
@@ -58,21 +109,21 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="4dp"
                 android:background="@drawable/spinner_borde"
-                android:contentDescription="Selecciona uno"
+                android:contentDescription="@string/selecciona_uno"
                 android:minHeight="48dp" />
 
             <TextView
-                android:id="@+id/tituloFechaEntrega"
+                android:id="@+id/tituloFecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
-                android:text="Fecha Entrega"
+                android:hint="@string/fecha"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
             <EditText
-                android:id="@+id/editFechaEntrega"
+                android:id="@+id/editFecha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -86,84 +137,27 @@
                 android:minHeight="48dp" />
 
             <TextView
-                android:id="@+id/tituloNumProductos"
+                android:id="@+id/tituloMotivo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="6dp"
-                android:text="No. Productos"
+                android:text="@string/motivo_visita"
                 android:textColor="@color/blue"
                 android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/editNumProductos"
+            <Spinner
+                android:id="@+id/spinnerMotivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="4dp"
-                android:paddingLeft="20dp"
                 android:background="@drawable/spinner_borde"
-                android:hint="0"
-                android:focusable="false"
+                android:contentDescription="@string/selecciona_uno"
                 android:minHeight="48dp" />
 
-            <TextView
-                android:id="@+id/tituloTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="6dp"
-                android:text="Total"
-                android:textColor="@color/blue"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editTotal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="4dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/spinner_borde"
-                android:hint="0"
-                android:focusable="false"
-                android:minHeight="48dp" />
-
-            <TextView
-                android:id="@+id/tituloComentarios"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="6dp"
-                android:text="Comentarios"
-                android:textColor="@color/blue"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/editComentarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:paddingLeft="20dp"
-                android:background="@drawable/spinner_borde"
-                android:hint="Opcional"
-                android:paddingStart="30dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:minHeight="48dp"
-                android:inputType="textMultiLine"
-                android:gravity="top|start"
-                android:scrollbars="vertical"
-                android:lines="5"
-                android:maxLines="10"
-                android:scrollHorizontally="false"/>
-
-            </LinearLayout>
+        </LinearLayout>
 
         <Button
             android:id="@+id/buttonRegistrar"
@@ -172,7 +166,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="60dp"
             android:background="@android:color/black"
-            android:text="Terminar"
+            android:text="@string/registrar"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="16sp" />

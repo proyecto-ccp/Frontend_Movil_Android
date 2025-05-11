@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="selecciona_uno">Select one</string>
+        <string name="cliente">Customer</string>
+        <string name="fecha">Date</string>
+        <string name="yyyy_mm_dd">YYYY-MM-DD</string>
+        <string name="hora">Time</string>
+        <string name="motivo_visita">Reason for Visit</string>
+        <string name="registrar">Register</string>
+        <string name="hh_mm">HH:MM</string>
+        <string name="presentaci_n_de_producto">Product presentation</string>
+        <string name="seguimiento_de_pedido">Order follow-up</string>
+        <string name="visita_de_cortes_a">Courtesy visit</string>
+        <string name="otro">Other</string>
+        <string name="cobranza">Payment collection</string>
+        <string name="id_de_usuario_no_disponible">User ID not available</string>
+        <string name="error_al_cargar_clientes">Error loading clients</string>
+        <string name="error_de_conexi_n_con_clientes">Client connection error</string>
+        <string name="datos_de_vendedor_no_v_lidos">Invalid seller data</string>
+        <string name="seleccione_un_cliente">Select a client</string>
+        <string name="seleccione_un_motivo_de_visita">Select a reason for visit</string>
+        <string name="ingrese_la_fecha_de_entrega">Enter the delivery date</string>
+        <string name="la_fecha_de_visita_debe_tener_el_formato_yyyy_mm_dd">The visit date must follow the format yyyy-MM-dd</string>
+        <string name="la_hora_de_visista_debe_tener_el_formato_hh_ss_hora_militar">The visit time must follow the format HH:SS (24-hour format)</string>
+        <string name="la_visita_ha_sido_registrada_exitosamente">The visit has been successfully registered</string>
+        <string name="no_fue_posible_crear_la_visita_intente_de_nuevo">Could not register the visit, please try again</string>
+        <string name="error_de_conexi_n_con_visita">Visit connection error</string>
+</resources>

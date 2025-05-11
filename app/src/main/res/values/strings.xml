@@ -1,15 +1,39 @@
-<resources>
-    <string name="app_name">CPP</string>
-    <string name="iniciar">Iniciar</string>
-    <string name="crear_pedido">Crear Pedido</string>
-    <string name="recomendar_localizaci_n_productos">Recomendar Localización Productos</string>
-    <string name="logo_peque_o">Logo pequeño</string>
-    <string name="imagen_del_producto">Imagen del producto</string>
-    <string name="subir_video_de_tienda">Subir video de tienda</string>
-    <string name="logo_de_ccp_peque_o">Logo de CCP pequeño</string>
-    <string name="selecciona_un_producto_para_recomendarte_una_localizaci_n_y_luego_sube_un_video_donde_puedas_mostrarnos_la_tienda">Escribe un nombre para tu video, selecciona un producto para recomendarte una localización y luego sube un video donde puedas mostrarnos la tienda:</string>
-    <string name="producto">Producto</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" tools:ignore="MissingTranslation">CPP</string>
+    <string name="iniciar" tools:ignore="MissingTranslation">Iniciar</string>
+    <string name="crear_pedido" tools:ignore="MissingTranslation">Crear Pedido</string>
+    <string name="recomendar_localizaci_n_productos" tools:ignore="MissingTranslation">Recomendar Localización Productos</string>
+    <string name="logo_peque_o" tools:ignore="MissingTranslation">Logo pequeño</string>
+    <string name="imagen_del_producto" tools:ignore="MissingTranslation">Imagen del producto</string>
+    <string name="subir_video_de_tienda" tools:ignore="MissingTranslation">Subir video de tienda</string>
+    <string name="logo_de_ccp_peque_o" tools:ignore="MissingTranslation">Logo de CCP pequeño</string>
+    <string name="selecciona_un_producto_para_recomendarte_una_localizaci_n_y_luego_sube_un_video_donde_puedas_mostrarnos_la_tienda" tools:ignore="MissingTranslation">Escribe un nombre para tu video, selecciona un producto para recomendarte una localización y luego sube un video donde puedas mostrarnos la tienda:</string>
+    <string name="producto" tools:ignore="MissingTranslation">Producto</string>
     <string name="selecciona_uno">Selecciona uno</string>
+    <string name="cliente">Cliente</string>
+    <string name="fecha">Fecha</string>
+    <string name="yyyy_mm_dd">YYYY-MM-DD</string>
+    <string name="hora">Hora</string>
+    <string name="motivo_visita">Motivo Visita</string>
+    <string name="registrar">Registrar</string>
+    <string name="hh_mm">HH:MM</string>
+    <string name="presentaci_n_de_producto">Presentación de producto</string>
+    <string name="seguimiento_de_pedido">Seguimiento de pedido</string>
+    <string name="visita_de_cortes_a">Visita de cortesía</string>
+    <string name="otro">Otro</string>
+    <string name="cobranza">Cobranza</string>
+    <string name="id_de_usuario_no_disponible">ID de usuario no disponible</string>
+    <string name="error_al_cargar_clientes">Error al cargar clientes</string>
+    <string name="error_de_conexi_n_con_clientes">Error de conexión con clientes</string>
+    <string name="datos_de_vendedor_no_v_lidos">Datos de vendedor no válidos</string>
+    <string name="seleccione_un_cliente">Seleccione un cliente</string>
+    <string name="seleccione_un_motivo_de_visita">Seleccione un motivo de visita</string>
+    <string name="ingrese_la_fecha_de_entrega">Ingrese la fecha de entrega</string>
+    <string name="la_fecha_de_visita_debe_tener_el_formato_yyyy_mm_dd">La fecha de visita debe tener el formato yyyy-MM-dd</string>
+    <string name="la_hora_de_visista_debe_tener_el_formato_hh_ss_hora_militar">La hora de visista debe tener el formato HH:SS (hora militar)</string>
+    <string name="la_visita_ha_sido_registrada_exitosamente">La visita ha sido registrada exitosamente</string>
+    <string name="no_fue_posible_crear_la_visita_intente_de_nuevo">No fue posible crear la visita, intente de nuevo</string>
+    <string name="error_de_conexi_n_con_visita">Error de conexión con visita</string>
 
     <string-array name="tipos_doc">
         <item>Cédula de Ciudadanía</item>

@@ -16,7 +16,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @POST("CargarVideo")
+    @POST("Video/CargarVideo")
     fun uploadVideo(@Body videoRequest: VideoRequest): Call<ResponseBody>
 
     @GET("Video/ObtenerVideosPorCliente/{clienteId}")
@@ -67,9 +67,20 @@ interface ApiService {
     fun getVendedor(@Path("idVendedor") vendedorId: String): Call<RespuestaVendedor>
 
     @POST("Pedido/CrearPedido")
-    fun crearPedido(@Body request: Pedido): Call<RespuestaRequestPedido>
+    fun crearPedido(@Body request: Pedido): Call<RespuestaRequest>
 
     @PUT("DetallePedido/ActualizarDetalles/{idUsuario}/{idPedido}")
     fun enlazarDetallePedido(@Path("idUsuario") idUsuario: String,
-        @Path("idPedido") idPedido: String): Call<RespuestaRequestPedido>
+        @Path("idPedido") idPedido: String): Call<RespuestaRequest>
+
+    @POST("Visita/CrearVisita")
+    fun crearVisita(@Body request: Visita): Call<RespuestaRequest>
+
+    @GET("Visita/ObtenerVisitasPorFecha/{fecha}/{vendedorId}")
+    fun getVisitasPorFecha(@Path("fecha") fecha: String, @Path("vendedorId") vendedorId: String
+    ): Call<RespuestaVisita>
+
+    @PUT("Visita/ModificarVisita/{id}")
+    fun modificarEstadoVisita(@Path("id") idVisita: Int, @Body request: VisitaRequest): Call<RespuestaRequest>
 }
+

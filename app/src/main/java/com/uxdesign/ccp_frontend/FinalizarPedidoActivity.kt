@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import java.text.SimpleDateFormat
@@ -24,11 +25,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.text.ParseException
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
 class FinalizarPedidoActivity : AppCompatActivity() {
     private lateinit var spinnerCliente: Spinner
     private lateinit var editFecha: EditText
-    private lateinit var editHora: EditText
     private lateinit var editNumProductos: EditText
     private lateinit var editTotal: EditText
     private lateinit var editComentarios: EditText
@@ -47,7 +50,25 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFechaEntrega)
-        editHora = findViewById(R.id.editHora)
+
+        editFecha.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val year = calendario.get(Calendar.YEAR)
+            val month = calendario.get(Calendar.MONTH)
+            val day = calendario.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val fechaSeleccionada = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    editFecha.setText(fechaSeleccionada)
+                },
+                year, month, day
+            )
+
+            datePicker.show()
+        }
+
         editNumProductos = findViewById(R.id.editNumProductos)
         editTotal = findViewById(R.id.editTotal)
         editComentarios = findViewById(R.id.editComentarios)
@@ -74,16 +95,13 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val cliente = spinnerCliente.selectedItem.toString()
             val fechaEntrega = editFecha.text.toString().trim()
-            val hora = editHora.text.toString().trim()
+            val fechaISO = convertirFechaAISO8601(fechaEntrega)
             val comentarios = editComentarios.text.toString().trim()
-            //val numProductos = editNumProductos.text.toString().trim().toInt()
-            //val total = editTotal.text.toString().trim().toDouble()
 
            val pedido = Pedido(
                 idCliente = selectedClienteId,
-                fechaEntrega = fechaEntrega,
+                fechaEntrega = fechaISO,
                 estadoPedido = "CREADO",
                 valorTotal = valorTotal,
                 idVendedor = idUsuario,
@@ -190,17 +208,6 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             return false
         }
 
-        if (!validarHora(editHora.text.toString().trim())) {
-            showToast("La hora debe tener el formato HH:MM")
-            return false
-        }
-
-
-        if (editHora.text.toString().trim().isEmpty()) {
-            showToast("Ingrese la hora")
-            return false
-        }
-
         if (editNumProductos.text.toString().trim().isEmpty()) {
             showToast("Número de productos es obligatorio")
             return false
@@ -213,11 +220,6 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         return true
 
-    }
-
-    fun validarHora(hora: String): Boolean {
-        val regex = "^([01]?[0-9]|2[0-3]):([0-5]?[0-9])$".toRegex()
-        return hora.matches(regex)
     }
 
     private fun validarFecha(fecha: String): Boolean {
@@ -245,8 +247,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             .build()
 
         val apiService = retrofit.create(ApiService::class.java)
-        apiService.crearPedido(pedido).enqueue(object : Callback<RespuestaRequestPedido> {
-            override fun onResponse(call: Call<RespuestaRequestPedido>, response: Response<RespuestaRequestPedido>) {
+        apiService.crearPedido(pedido).enqueue(object : Callback<RespuestaRequest> {
+            override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
                     val respuesta = response.body()
                     val idPedido = respuesta?.id
@@ -262,7 +264,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<RespuestaRequestPedido>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }
@@ -277,8 +279,8 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
         val apiService = retrofit.create(ApiService::class.java)
 
-        apiService.enlazarDetallePedido(idUsuario, idPedido).enqueue(object : Callback<RespuestaRequestPedido> {
-            override fun onResponse(call: Call<RespuestaRequestPedido>, response: Response<RespuestaRequestPedido>) {
+        apiService.enlazarDetallePedido(idUsuario, idPedido).enqueue(object : Callback<RespuestaRequest> {
+            override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
                     val respuesta = response.body()
                     val status = respuesta?.status
@@ -297,10 +299,21 @@ class FinalizarPedidoActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<RespuestaRequestPedido>, t: Throwable) {
+            override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
                 Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }
+
         })
+
+    }
+
+    private fun convertirFechaAISO8601(fecha: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        outputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date: Date = inputFormat.parse(fecha)!!
+        return outputFormat.format(date)
     }
 }

@@ -1,30 +1,28 @@
 package com.uxdesign.ccp_frontend
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
 
-class MainActivity : AppCompatActivity() {
+class DetalleVisitaActivity : AppCompatActivity() {
+    private lateinit var adapter: VisitaAdapter
+    private lateinit var visitas: List<VisitaRequest>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_detalle_visita)
 
-        val textVersion = findViewById<TextView>(R.id.textVersion)
-        val versionName = packageManager.getPackageInfo(packageName, 0).versionName
-        textVersion.text = "Versión: $versionName"
+        visitas = intent.getSerializableExtra("visitas_filtradas") as List<VisitaRequest>
 
-        val buttonIngresar: Button = findViewById(R.id.buttonIngresar)
-        buttonIngresar.setOnClickListener {
-            val intent = Intent(this, MenuActivity::class.java)
-            startActivity(intent)
-        }
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewDetalleVisita)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = VisitaAdapter(visitas)
+        recyclerView.adapter = adapter
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

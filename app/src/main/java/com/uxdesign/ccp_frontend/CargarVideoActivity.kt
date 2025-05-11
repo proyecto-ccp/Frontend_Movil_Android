@@ -17,6 +17,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.gson.Gson
 import com.uxdesign.cpp.R
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -226,7 +227,7 @@ class CargarVideoActivity : AppCompatActivity() {
     }
 
     private fun sendVideo64ToServer(videoBytes: ByteArray, producto: Int, cliente: String) {
-        val video64 = Base64.encodeToString(videoBytes, Base64.DEFAULT)
+        val video64 = Base64.encodeToString(videoBytes, Base64.NO_WRAP)
 
         val videoRequest = VideoRequest(
             idCliente = cliente,  // Asumiendo que 'cliente' es un ID de tipo String
@@ -238,7 +239,7 @@ class CargarVideoActivity : AppCompatActivity() {
         loadingContainer.visibility = View.VISIBLE
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/Video/")  // Aqui URL de microservicio
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/")  // Aqui URL de microservicio
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
