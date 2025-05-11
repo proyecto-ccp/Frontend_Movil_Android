@@ -75,4 +75,12 @@ interface ApiService {
 
     @POST("Visita/CrearVisita")
     fun crearVisita(@Body request: Visita): Call<RespuestaRequest>
+
+    @GET("Visita/ObtenerVisitasPorFecha/{fecha}/{vendedorId}")
+    fun getVisitasPorFecha(@Path("fecha") fecha: String, @Path("vendedorId") vendedorId: String
+    ): Call<RespuestaVisita>
+
+    @PUT("Visita/ModificarVisita/2")
+    fun modificarEstadoVisita(@Body request: VisitaRequest): Call<RespuestaRequest>
 }
+
