@@ -356,8 +356,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     private fun convertirFechaAISO8601(fecha: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        outputFormat.timeZone = TimeZone.getTimeZone("UTC")
-
+        
         val date: Date = inputFormat.parse(fecha)!!
         return outputFormat.format(date)
     }
