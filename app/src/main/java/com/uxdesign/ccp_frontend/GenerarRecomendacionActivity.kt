@@ -17,12 +17,8 @@ class GenerarRecomendacionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_generar_recomendacion)
 
         val imagen = intent.getStringExtra("video_imagen")
-        //val minuto = intent.getStringExtra("video_minuto")
 
         val imageView: ImageView = findViewById<ImageView>(R.id.imagenRecomendacion)
-        //val textoCuadro: TextView = findViewById<TextView>(R.id.textoCuadro)
-        //val textoConMinuto = "Esta imagen pertenece al minuto $minuto de tu video"
-        //textoCuadro.text = textoConMinuto
 
         if (!imagen.isNullOrEmpty()) {
             Glide.with(this)
