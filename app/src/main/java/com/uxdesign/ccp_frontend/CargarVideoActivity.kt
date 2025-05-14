@@ -17,7 +17,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.google.gson.Gson
 import com.uxdesign.cpp.R
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -145,7 +144,7 @@ class CargarVideoActivity : AppCompatActivity() {
                 cargarProductosDesdeApi(selectedProveedorId)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
-
+                // No hacer nada
             }
         }
 
@@ -367,10 +366,6 @@ class CargarVideoActivity : AppCompatActivity() {
 
     fun validarSeleccion(clientePos: Int, productoPos: Int): Boolean {
         return clientePos > 0 && productoPos > 0
-    }
-
-    fun convertirVideoABase64(videoBytes: ByteArray): String {
-        return Base64.encodeToString(videoBytes, Base64.DEFAULT)
     }
 
 }

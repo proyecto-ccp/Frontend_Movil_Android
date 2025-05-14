@@ -52,12 +52,9 @@ class ConsultarClientesActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RespuestaCliente>, response: Response<RespuestaCliente>) {
                 if (response.isSuccessful) {
                     val clienteList = response.body()?.clientes ?: emptyList()
-                    if (clienteList != null) {
-                        clientes.clear()
-                        clientes.addAll(clienteList)
-                        // Notificar al adaptador que los datos han cambiado
-                        (findViewById<RecyclerView>(R.id.recyclerViewClientes).adapter as ClienteAdapter).notifyDataSetChanged()
-                    }
+                    clientes.clear()
+                    clientes.addAll(clienteList)
+                    (findViewById<RecyclerView>(R.id.recyclerViewClientes).adapter as ClienteAdapter).notifyDataSetChanged()
                 } else {
                     Toast.makeText(this@ConsultarClientesActivity, "Error al cargar los clientes", Toast.LENGTH_SHORT).show()
                 }
