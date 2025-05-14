@@ -58,7 +58,9 @@ abstract class DetalleProductoActivity : AppCompatActivity() {
         cargarStockDesdeApi(productoId)
 
         editCantidad.addTextChangedListener(object: android.text.TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Intencionalmente vacío: no es necesario manejar esta situación
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val cantidad= s.toString().toIntOrNull() ?: 0
                 val total = cantidad * productoPrecio

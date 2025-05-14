@@ -87,7 +87,7 @@ class ListarVisitasActivity : AppCompatActivity() {
     private fun extraerCiudades() {
         val visitasPorCiudad = mutableMapOf<Pair<String, String>, Int>()
         for (visita in visitas) {
-            val ciudad = visita.cliente.ciudad ?: "Sin ciudad"
+            val ciudad = visita.cliente.ciudad
             val fecha = visita.fechaVisita?.substring(0, 10) ?: "Sin fecha"
             val key = ciudad to fecha
             visitasPorCiudad[key] = visitasPorCiudad.getOrDefault(key, 0) + 1
