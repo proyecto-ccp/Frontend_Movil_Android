@@ -91,9 +91,9 @@ class RegistrarVisitaActivity : AppCompatActivity() {
         editFecha = findViewById(R.id.editFecha)
         editFecha.setOnClickListener {
             val calendario = Calendar.getInstance()
-            val year = calendario.get(Calendar.YEAR)
-            val month = calendario.get(Calendar.MONTH)
-            val day = calendario.get(Calendar.DAY_OF_MONTH)
+            val year = calendario[Calendar.YEAR]
+            val month = calendario[Calendar.MONTH]
+            val day = calendario[Calendar.DAY_OF_MONTH]
 
             val datePicker = DatePickerDialog(
                 this,

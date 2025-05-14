@@ -17,7 +17,6 @@ class ProductoPedidoAdapter(private val productos: List<ProductoCarrito>) : Recy
     override fun onBindViewHolder(holder: ProductoPedidoViewHolder, position: Int) {
         val producto = productos[position]
         holder.bind(producto)
-        val context = holder.itemView.context
     }
 
     override fun getItemCount(): Int {
