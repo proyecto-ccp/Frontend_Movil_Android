@@ -23,7 +23,6 @@ class VideoAdapter(private val videos: List<Video>) : RecyclerView.Adapter<Video
         holder.itemView.setOnClickListener {
            val intent = Intent(context, GenerarRecomendacionActivity::class.java).apply {
                 putExtra("video_imagen", video.urlImagen)
-                //putExtra("video_minuto", video.minuto)
            }
             context.startActivity(intent)
 

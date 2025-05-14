@@ -163,7 +163,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
 
     private fun cargarClientesDesdeApi() {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/") // Reemplaza por la base real
+            .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
