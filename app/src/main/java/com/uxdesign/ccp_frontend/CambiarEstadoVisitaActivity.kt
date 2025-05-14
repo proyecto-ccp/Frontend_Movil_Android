@@ -84,7 +84,6 @@ class CambiarEstadoVisitaActivity : AppCompatActivity() {
         apiService.modificarEstadoVisita(visita.id, visita).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
-                    val respuesta = response.body()
                     Toast.makeText(this@CambiarEstadoVisitaActivity, "La visita ha sido actualizada exitosamente", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@CambiarEstadoVisitaActivity, MenuActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

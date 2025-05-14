@@ -38,6 +38,7 @@ class CargarVideoActivity : AppCompatActivity() {
     private var listaProductos: List<Producto> = emptyList()
     private var selectedProductoId: Int = 0
 
+    private val SELECCIONA_UNO = "Selecciona uno"
     private val REQUEST_VIDEO_CAPTURE = 1
     private val REQUEST_VIDEO_GALLERY = 2
     private lateinit var videoBytes: ByteArray
@@ -144,7 +145,7 @@ class CargarVideoActivity : AppCompatActivity() {
                 cargarProductosDesdeApi(selectedProveedorId)
             }
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // No hacer nada
+
             }
         }
 
@@ -161,7 +162,6 @@ class CargarVideoActivity : AppCompatActivity() {
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 REQUEST_VIDEO_CAPTURE -> {
-                    // Lógica para el video capturado con la cámara
                     val videoUri = data?.data
                     if (videoUri != null) {
                         try {
@@ -169,8 +169,8 @@ class CargarVideoActivity : AppCompatActivity() {
                             videoBytes = inputStream.readBytes()
                             saveVideoToFile(videoBytes)
                             sendVideo64ToServer(videoBytes, selectedProductoId, selectedClienteId)
-                            videoBytes = ByteArray(0) // Liberar la memoria
-                            spinner.setSelection(0)    // Limpiar el spinner
+                            videoBytes = ByteArray(0)
+                            spinner.setSelection(0)
                             spinnerC.setSelection(0)
                             spinnerP.setSelection(0)
                             editTextNombreVideo.text.clear()
@@ -184,17 +184,15 @@ class CargarVideoActivity : AppCompatActivity() {
                 }
 
                 REQUEST_VIDEO_GALLERY -> {
-                    // Lógica para el video seleccionado desde la galería
                     val videoUri = data?.data
                     if (videoUri != null) {
                         try {
                             val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!
                             videoBytes = inputStream.readBytes()
-                            //saveVideoToFile(videoBytes)
-                                // sendVideoToServer(videoBytes, spinner.selectedItem.toString(), spinnerC.selectedItem.toString(), videoName)
+
                             sendVideo64ToServer(videoBytes, selectedProductoId, selectedClienteId)
-                            videoBytes = ByteArray(0) // Liberar la memoria
-                            spinner.setSelection(0)    // Limpiar el spinner
+                            videoBytes = ByteArray(0)
+                            spinner.setSelection(0)
                             spinnerC.setSelection(0)
                             spinnerP.setSelection(0)
                             editTextNombreVideo.text.clear()
@@ -219,7 +217,6 @@ class CargarVideoActivity : AppCompatActivity() {
             outputStream.write(videoBytes)
             outputStream.close()
 
-            //Toast.makeText(this, "Video guardado en: ${file.absolutePath}", Toast.LENGTH_LONG).show()
         } catch (e: IOException) {
             e.printStackTrace()
             Toast.makeText(this, "Error al guardar el archivo de video", Toast.LENGTH_SHORT).show()
@@ -230,16 +227,15 @@ class CargarVideoActivity : AppCompatActivity() {
         val video64 = Base64.encodeToString(videoBytes, Base64.NO_WRAP)
 
         val videoRequest = VideoRequest(
-            idCliente = cliente,  // Asumiendo que 'cliente' es un ID de tipo String
+            idCliente = cliente,
             idProducto = producto,
             nombre = nombreVideo,
             video = video64
         )
-        //Log.d("VideoRequest", "Request Body: $videoRequest")
         loadingContainer.visibility = View.VISIBLE
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/")  // Aqui URL de microservicio
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -251,7 +247,6 @@ class CargarVideoActivity : AppCompatActivity() {
                     Toast.makeText(this@CargarVideoActivity, "Video subido exitosamente", Toast.LENGTH_SHORT).show()
 
                 } else {
-                    // Imprimir el cuerpo de la respuesta en caso de error
                     try {
                         val errorBody = response.errorBody()?.string()
                         Log.e("UploadError", "Error en la subida del video: $errorBody")
@@ -288,7 +283,7 @@ class CargarVideoActivity : AppCompatActivity() {
                     val adapter = ArrayAdapter(
                         this@CargarVideoActivity,
                         android.R.layout.simple_spinner_item,
-                        listOf("Selecciona uno") + nombresProveedores
+                        listOf(SELECCIONA_UNO) + nombresProveedores
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerP.adapter = adapter
@@ -324,7 +319,7 @@ class CargarVideoActivity : AppCompatActivity() {
                     val adapter = ArrayAdapter(
                         this@CargarVideoActivity,
                         android.R.layout.simple_spinner_item,
-                        listOf("Selecciona uno") + nombresClientes
+                        listOf(SELECCIONA_UNO) + nombresClientes
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerC.adapter = adapter
@@ -355,7 +350,7 @@ class CargarVideoActivity : AppCompatActivity() {
                     val adapter = ArrayAdapter(
                         this@CargarVideoActivity,
                         android.R.layout.simple_spinner_item,
-                        listOf("Selecciona uno") + nombresProductos
+                        listOf(SELECCIONA_UNO) + nombresProductos
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinner.adapter = adapter
@@ -370,40 +365,12 @@ class CargarVideoActivity : AppCompatActivity() {
         })
     }
 
-    // Validación de selección
     fun validarSeleccion(clientePos: Int, productoPos: Int): Boolean {
         return clientePos > 0 && productoPos > 0
     }
 
-    // Nombre completo del cliente
-    fun obtenerNombreCompleto(nombre: String, apellido: String): String {
-        return "$nombre $apellido".trim()
-    }
-
-    // Traducción tipo documento
-    fun traducirTipoDocumento(tipo: String?): String {
-        return when (tipo) {
-            "CC" -> "Cédula de Ciudadanía"
-            "PS" -> "Pasaporte"
-            "NI" -> "Número de Identificación Tributario"
-            "CE" -> "Cédula de Extranjería"
-            else -> "Tipo desconocido"
-        }
-    }
-
-    // Conversión a base64
     fun convertirVideoABase64(videoBytes: ByteArray): String {
         return Base64.encodeToString(videoBytes, Base64.DEFAULT)
-    }
-
-    // Crear request
-    fun crearVideoRequest(clienteId: String, productoId: Int, nombre: String, videoBytes: ByteArray): VideoRequest {
-        return VideoRequest(
-            idCliente = clienteId,
-            idProducto = productoId,
-            nombre = nombre,
-            video = convertirVideoABase64(videoBytes)
-        )
     }
 
 }
