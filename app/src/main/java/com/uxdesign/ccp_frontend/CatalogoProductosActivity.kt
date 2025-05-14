@@ -63,12 +63,9 @@ class CatalogoProductosActivity : AppCompatActivity() {
             override fun onResponse(call: Call<RespuestaProducto>, response: Response<RespuestaProducto>) {
                 if (response.isSuccessful) {
                     val productoList = response.body()?.productos ?: emptyList()
-                    if (productoList != null) {
-                        productos.clear()
-                        productos.addAll(productoList)
-                        // Notificar al adaptador que los datos han cambiado
-                        (findViewById<RecyclerView>(R.id.recyclerViewProductos).adapter as ProductoAdapter).notifyDataSetChanged()
-                    }
+                    productos.clear()
+                    productos.addAll(productoList)
+                    (findViewById<RecyclerView>(R.id.recyclerViewProductos).adapter as ProductoAdapter).notifyDataSetChanged()
                 } else {
                     Toast.makeText(this@CatalogoProductosActivity, "Error al cargar el catálogo", Toast.LENGTH_SHORT).show()
                 }

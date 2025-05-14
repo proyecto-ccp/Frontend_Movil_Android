@@ -64,7 +64,9 @@ abstract class DetalleProductoActivity : AppCompatActivity() {
                 val total = cantidad * productoPrecio
                 editValor.setText("$%.2f".format(total))
             }
-            override fun afterTextChanged(s: android.text.Editable?){}
+            override fun afterTextChanged(s: android.text.Editable?){
+                //No hacer nada
+            }
         })
 
 

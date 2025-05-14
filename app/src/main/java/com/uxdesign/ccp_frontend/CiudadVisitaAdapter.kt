@@ -23,7 +23,7 @@ class CiudadVisitaAdapter(private val ciudadVisita: MutableList<CiudadVisita>,
 
         holder.itemView.setOnClickListener {
             val visitasFiltradas = visitas.filter {
-                it.cliente?.ciudad == ciudadItem.ciudad && it.fechaVisita?.startsWith(ciudadItem.fecha) == true
+                it.cliente.ciudad == ciudadItem.ciudad && it.fechaVisita?.startsWith(ciudadItem.fecha) == true
             }
             val intent = Intent(context, DetalleVisitaActivity::class.java).apply {
                 putExtra("visitas_filtradas", ArrayList(visitasFiltradas))
