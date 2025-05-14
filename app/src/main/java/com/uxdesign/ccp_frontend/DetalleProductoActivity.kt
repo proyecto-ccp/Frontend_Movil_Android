@@ -92,7 +92,7 @@ abstract class DetalleProductoActivity : AppCompatActivity() {
                 precioUnitario = productoPrecio
             )
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/") // Cambia a tu URL real
+                .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 

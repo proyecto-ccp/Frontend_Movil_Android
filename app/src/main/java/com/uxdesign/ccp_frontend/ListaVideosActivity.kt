@@ -48,7 +48,7 @@ class ListaVideosActivity : AppCompatActivity() {
 
     private fun getVideos(clienteId: String) {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/") // URL base del microservicio
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
