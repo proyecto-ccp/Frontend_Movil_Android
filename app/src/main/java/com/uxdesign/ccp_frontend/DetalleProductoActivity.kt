@@ -65,7 +65,7 @@ abstract class DetalleProductoActivity : AppCompatActivity() {
                 editValor.setText("$%.2f".format(total))
             }
             override fun afterTextChanged(s: android.text.Editable?){
-                //No hacer nada
+                // Intencionalmente vacío: no es necesario manejar esta situación
             }
         })
 
