@@ -10,6 +10,6 @@ data class Video(
     val idProducto: String,
     val nombre: String,
     val urlVideo: String,
-    val urlImagen: String?, // puede ser null
+    val urlImagen: String?,
     val estadoCarga: String
 ) : Parcelable

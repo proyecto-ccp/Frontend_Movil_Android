@@ -5,14 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import java.text.SimpleDateFormat
 import java.util.Locale
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ScrollView
 import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
