@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -68,30 +69,28 @@ class VerPedidoActivity : AppCompatActivity() {
 
         apiService = retrofit.create(ApiService::class.java)
         apiService.getDetallePedidoUsuario(idUsuario).enqueue(object : Callback<RespuestaDetalleCarrito> {
-            override fun onResponse(call: Call<RespuestaDetalleCarrito>, response: Response<RespuestaDetalleCarrito>) {
+            @SuppressLint("NotifyDataSetChanged", "DefaultLocale")
+            override fun onResponse(call: Call<RespuestaDetalleCarrito>, response: Response<RespuestaDetalleCarrito>) =
                 if (response.isSuccessful) {
                     val detallePedidoList = response.body()?.detallePedidos ?: emptyList()
-                    if (detallePedidoList != null) {
-                        detallePedido.clear()
-                        detallePedido.addAll(detallePedidoList)
+                    detallePedido.clear()
+                    detallePedido.addAll(detallePedidoList)
 
-                        totalProductos = detallePedidoList.size
-                        valorTotal = detallePedidoList.sumOf { it.precioUnitario * it.cantidad }
-                        val valor = "$${String.format("%.2f", valorTotal)}"
+                    totalProductos = detallePedidoList.size
+                    valorTotal = detallePedidoList.sumOf { it.precioUnitario * it.cantidad }
+                    val valor = "$${String.format(getString(R.string._2f), valorTotal)}"
 
-                        val editCantidad: EditText = findViewById(R.id.editNumProductos)
-                        val editValor: EditText = findViewById(R.id.editTotal)
-                        editCantidad.setText(totalProductos.toString())
-                        editValor.setText(valor)
+                    val editCantidad = findViewById<EditText>(R.id.editNumProductos)
+                    val editValor = findViewById<EditText>(R.id.editTotal)
+                    editCantidad.setText(totalProductos.toString())
+                    editValor.setText(valor)
 
-                        (findViewById<RecyclerView>(R.id.recyclerViewProductosPedido).adapter as ProductoPedidoAdapter).notifyDataSetChanged()
-                    }
+                    (findViewById<RecyclerView>(R.id.recyclerViewProductosPedido).adapter as ProductoPedidoAdapter).notifyDataSetChanged()
                 } else {
                     Toast.makeText(this@VerPedidoActivity, "No tienes productos en el carrito", Toast.LENGTH_SHORT).show()
                     val buttonFin: Button = findViewById(R.id.buttonFin)
                     buttonFin.isEnabled = false
                 }
-            }
 
             override fun onFailure(call: Call<RespuestaDetalleCarrito>, t: Throwable) {
                 t.printStackTrace()

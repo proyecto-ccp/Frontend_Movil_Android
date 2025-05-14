@@ -34,6 +34,7 @@
     <string name="la_visita_ha_sido_registrada_exitosamente">La visita ha sido registrada exitosamente</string>
     <string name="no_fue_posible_crear_la_visita_intente_de_nuevo">No fue posible crear la visita, intente de nuevo</string>
     <string name="error_de_conexi_n_con_visita">Error de conexión con visita</string>
+    <string name="_2f">%.2f</string>
 
     <string-array name="tipos_doc">
         <item>Cédula de Ciudadanía</item>

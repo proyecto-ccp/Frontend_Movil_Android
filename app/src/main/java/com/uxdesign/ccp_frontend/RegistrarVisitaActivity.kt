@@ -151,7 +151,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                 estado = "PENDIENTE"
             )
 
-            registrarVisita(visita, idUsuario)
+            registrarVisita(visita)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -293,7 +293,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
         }
     }
 
-    private fun registrarVisita(visita: Visita, idUsuario: String) {
+    private fun registrarVisita(visita: Visita) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-visitas-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -304,7 +304,6 @@ class RegistrarVisitaActivity : AppCompatActivity() {
         apiService.crearVisita(visita).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
-                    val respuesta = response.body()
                     Toast.makeText(this@RegistrarVisitaActivity,
                         getString(R.string.la_visita_ha_sido_registrada_exitosamente), Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@RegistrarVisitaActivity, MenuActivity::class.java)
@@ -346,7 +345,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     }
 
     private fun recrearConNuevoIdioma(codigoIdioma: String) {
-        val context = cambiarIdioma(this, codigoIdioma)
+        cambiarIdioma(this, codigoIdioma)
         val intent = intent
         finish()
         startActivity(intent)
