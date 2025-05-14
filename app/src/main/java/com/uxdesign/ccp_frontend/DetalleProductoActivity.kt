@@ -20,8 +20,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class DetalleProductoActivity : AppCompatActivity() {
-    private lateinit var apiService: ApiService
+abstract class DetalleProductoActivity : AppCompatActivity() {
     private var productoPrecio: Double = 0.0
     private var stockDisponible: Int = 0
 
@@ -45,17 +44,15 @@ class DetalleProductoActivity : AppCompatActivity() {
         val nombreProducto: TextView = findViewById(R.id.textNombreProducto)
         val precioProducto: TextView = findViewById(R.id.textPrecioProducto)
         val descripcionProducto: TextView = findViewById(R.id.textDescripcionProducto)
-        val stockProducto: TextView = findViewById(R.id.textStock)
 
-        // Establecer los datos recibidos
         nombreProducto.text = productoNombre
         precioProducto.text = "$${productoPrecio}"
         descripcionProducto.text = productoDescripcion
 
         Glide.with(this)
-            .load(productoImagen) // URL de la imagen
-            .placeholder(R.drawable.errorphotopeque) // opcional
-            .error(R.drawable.errorphotopeque) // opcional
+            .load(productoImagen)
+            .placeholder(R.drawable.errorphotopeque)
+            .error(R.drawable.errorphotopeque)
             .into(imageProducto)
 
         cargarStockDesdeApi(productoId)
@@ -131,10 +128,6 @@ class DetalleProductoActivity : AppCompatActivity() {
     }
 
     private fun cargarStockDesdeApi(productoId: Int) {
-        if (productoId == null) {
-            Toast.makeText(this, "ID del producto no disponible", Toast.LENGTH_SHORT).show()
-            return
-        }
         val retrofit = Retrofit.Builder()
             .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -160,7 +153,6 @@ class DetalleProductoActivity : AppCompatActivity() {
                     findViewById<Button>(R.id.buttonAgregar).isEnabled = false
                     findViewById<Button>(R.id.buttonAgregar).alpha = 0.5f
                     findViewById<EditText>(R.id.editCantidad).isEnabled = false
-                    //Toast.makeText(this@DetalleProductoActivity, "Error al cargar stock", Toast.LENGTH_SHORT).show()
                 }
             }
 
