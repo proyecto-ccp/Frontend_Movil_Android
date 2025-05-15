@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--<style name="Theme.CPP" parent="android:Theme.Material.Light.NoActionBar" /> -->
     <style name="Theme.CPP" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Puedes agregar personalización aquí, como colores y estilos -->
 
     </style>
 </resources>
