@@ -12,33 +12,40 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class VerPedidoActivity : AppCompatActivity() {
     private val detallePedido = mutableListOf<ProductoCarrito>()
-    private lateinit var apiService: ApiService
+    private lateinit var pedidoRepository: PedidoRepository
     private var totalProductos: Int = 0
     private var valorTotal: Double = 0.0
+    private lateinit var adapter: ProductoPedidoAdapter
+    private var idUsuario: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_ver_pedido)
-        val idUsuario = intent.getStringExtra("id_usuario")
+
+        idUsuario = intent.getStringExtra("id_usuario")
 
         val buttonFin: Button = findViewById(R.id.buttonFin)
 
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProductosPedido)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = ProductoPedidoAdapter(detallePedido)
+        adapter = ProductoPedidoAdapter(detallePedido)
         recyclerView.adapter = adapter
 
-        cargarDetallesDesdeApi(idUsuario)
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
+        val apiService = retrofit.create(ApiService::class.java)
+        pedidoRepository = PedidoRepository(apiService)
+
+        cargarDetallesDesdeApi(idUsuario)
 
         buttonFin.setOnClickListener {
             val intent = Intent(this, FinalizarPedidoActivity::class.java)
@@ -61,42 +68,27 @@ class VerPedidoActivity : AppCompatActivity() {
             return
         }
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        pedidoRepository.obtenerDetallePedido(
+            idUsuario,
+            onSuccess = { detalle ->
+                detallePedido.clear()
+                detallePedido.addAll(detalle)
 
-        apiService = retrofit.create(ApiService::class.java)
-        apiService.getDetallePedidoUsuario(idUsuario).enqueue(object : Callback<RespuestaDetalleCarrito> {
-            override fun onResponse(call: Call<RespuestaDetalleCarrito>, response: Response<RespuestaDetalleCarrito>) {
-                if (response.isSuccessful) {
-                    val detallePedidoList = response.body()?.detallePedidos ?: emptyList()
-                    if (detallePedidoList != null) {
-                        detallePedido.clear()
-                        detallePedido.addAll(detallePedidoList)
+                totalProductos = detalle.size
+                valorTotal = detalle.sumOf { it.precioUnitario * it.cantidad }
 
-                        totalProductos = detallePedidoList.size
-                        valorTotal = detallePedidoList.sumOf { it.precioUnitario * it.cantidad }
-                        val valor = "$${String.format("%.2f", valorTotal)}"
+                val editCantidad: EditText = findViewById(R.id.editNumProductos)
+                val editValor: EditText = findViewById(R.id.editTotal)
+                editCantidad.setText(totalProductos.toString())
+                editValor.setText("$${String.format("%.2f", valorTotal)}")
 
-                        val editCantidad: EditText = findViewById(R.id.editNumProductos)
-                        val editValor: EditText = findViewById(R.id.editTotal)
-                        editCantidad.setText(totalProductos.toString())
-                        editValor.setText(valor)
-
-                        (findViewById<RecyclerView>(R.id.recyclerViewProductosPedido).adapter as ProductoPedidoAdapter).notifyDataSetChanged()
-                    }
-                } else {
-                    Toast.makeText(this@VerPedidoActivity, "No tienes productos en el carrito", Toast.LENGTH_SHORT).show()
-                    val buttonFin: Button = findViewById(R.id.buttonFin)
-                    buttonFin.isEnabled = false
-                }
+                adapter.notifyDataSetChanged()
+            },
+            onError = { mensaje ->
+                Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+                val buttonFin: Button = findViewById(R.id.buttonFin)
+                buttonFin.isEnabled = false
             }
-
-            override fun onFailure(call: Call<RespuestaDetalleCarrito>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@VerPedidoActivity, "Error de conexión en detalle de pedido", Toast.LENGTH_SHORT).show()
-            }
-        })
+        )
     }
 }

@@ -72,11 +72,20 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
-    testImplementation(libs.junit)
+
+    // Dependencias de JUnit y Mockito
+    testImplementation("org.mockito:mockito-core:4.8.1")  // Dependencia principal de Mockito
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")  // Para Mockito con Kotlin
+    testImplementation("junit:junit:4.13.2")  // Dependencia de JUnit 4 (si usas JUnit 4)
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")  // Si usas JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")  // JUnit 5 engine
+
+    // Dependencias de AndroidTest
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
 }

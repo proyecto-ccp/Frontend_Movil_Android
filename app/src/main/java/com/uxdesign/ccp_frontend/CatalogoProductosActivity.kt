@@ -6,20 +6,16 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CatalogoProductosActivity : AppCompatActivity() {
+
     private val productos = mutableListOf<Producto>()
-    private lateinit var apiService: ApiService
+    private lateinit var catalogoManager: CatalogoManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,33 +43,19 @@ class CatalogoProductosActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        apiService = retrofit.create(ApiService::class.java)
+        val apiService = retrofit.create(ApiService::class.java)
 
-        getCatalogo()
+        catalogoManager = CatalogoManager(apiService)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-    }
-
-    private fun getCatalogo() {
-        apiService.getProductos().enqueue(object : Callback<RespuestaProducto> {
-            override fun onResponse(call: Call<RespuestaProducto>, response: Response<RespuestaProducto>) {
-                if (response.isSuccessful) {
-                    val productoList = response.body()?.productos ?: emptyList()
-                    productos.clear()
-                    productos.addAll(productoList)
-                    (findViewById<RecyclerView>(R.id.recyclerViewProductos).adapter as ProductoAdapter).notifyDataSetChanged()
-                } else {
-                    Toast.makeText(this@CatalogoProductosActivity, "Error al cargar el catálogo", Toast.LENGTH_SHORT).show()
-                }
+        catalogoManager.obtenerCatalogo(object : CatalogoManager.CatalogoCallback {
+            override fun onExito(productos: List<Producto>) {
+                this@CatalogoProductosActivity.productos.clear()
+                this@CatalogoProductosActivity.productos.addAll(productos)
+                adapter.notifyDataSetChanged()
             }
 
-            override fun onFailure(call: Call<RespuestaProducto>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@CatalogoProductosActivity, "Error de conexión en catálogo", Toast.LENGTH_SHORT).show()
+            override fun onError(mensaje: String) {
+                Toast.makeText(this@CatalogoProductosActivity, mensaje, Toast.LENGTH_SHORT).show()
             }
         })
     }
