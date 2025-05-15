@@ -1,7 +1,6 @@
 package com.uxdesign.ccp_frontend
 
 import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
 
 class VisitaDataManager(private val apiService: ApiService) {
 
