@@ -7,7 +7,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.uxdesign.ccp_frontend.PedidoLogic
 import com.uxdesign.cpp.R
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
@@ -60,7 +59,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             DatePickerDialog(this, { _, year, month, dayOfMonth ->
                 val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
                 editFecha.setText(fechaSeleccionada)
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]).show()
         }
 
         buttonRegistrar.setOnClickListener {
