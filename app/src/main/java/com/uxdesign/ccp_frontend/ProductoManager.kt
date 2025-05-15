@@ -37,8 +37,8 @@ class ProductoManager(private val apiService: ApiService) {
     }
 
     fun agregarProducto(producto: ProductoCarrito, callback: AgregarProductoCallback) {
-        apiService.agregarDetallePedido(producto).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+        apiService.agregarDetallePedido(producto).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.isSuccessful) {
                     callback.onAgregado()
                 } else {
@@ -46,7 +46,7 @@ class ProductoManager(private val apiService: ApiService) {
                 }
             }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
                 callback.onError("Error de red al agregar producto")
             }
         })

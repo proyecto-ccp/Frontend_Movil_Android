@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.bumptech.glide.Glidec
+import com.bumptech.glide.Glide
 import com.uxdesign.cpp.R
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -49,7 +49,6 @@ class DetalleProductoActivity : AppCompatActivity() {
             .error(R.drawable.errorphotopeque)
             .into(imageProducto)
 
-        // Iniciar Retrofit y ProductoManager
         val retrofit = Retrofit.Builder()
             .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -57,7 +56,6 @@ class DetalleProductoActivity : AppCompatActivity() {
         val api = retrofit.create(ApiService::class.java)
         productoManager = ProductoManager(api)
 
-        // Obtener stock
         productoManager.obtenerStock(productoId, object : ProductoManager.StockCallback {
             override fun onStockRecibido(stock: Int) {
                 stockDisponible = stock
@@ -79,13 +77,17 @@ class DetalleProductoActivity : AppCompatActivity() {
         })
 
         editCantidad.addTextChangedListener(object : android.text.TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                //Implementacion de caso  que no es necesario por eso queda vacio
+            }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val cantidad = s.toString().toIntOrNull() ?: 0
                 val total = cantidad * productoPrecio
                 editValor.setText("$%.2f".format(total))
             }
-            override fun afterTextChanged(s: android.text.Editable?) {}
+            override fun afterTextChanged(s: android.text.Editable?) {
+                //Implementacion de caso  que no es necesario por eso queda vacio
+            }
         })
 
         agregarButton.setOnClickListener {
