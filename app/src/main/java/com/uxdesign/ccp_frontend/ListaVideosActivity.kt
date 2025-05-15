@@ -9,15 +9,12 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ListaVideosActivity : AppCompatActivity() {
     private val videos = mutableListOf<Video>()
-    private lateinit var apiService: ApiService
+    private lateinit var videoDataManager: VideoDataManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,49 +33,39 @@ class ListaVideosActivity : AppCompatActivity() {
             return
         }
 
-        getVideos(clienteId)
+        // Inicializamos Retrofit y el manager
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+        videoDataManager = VideoDataManager(apiService)
+
+        // Usamos la clase separada
+        videoDataManager.getVideosPorCliente(
+            clienteId,
+            onSuccess = { videoList ->
+                videos.clear()
+                videos.addAll(videoList)
+                adapter.notifyDataSetChanged()
+            },
+            onEmpty = {
+                Toast.makeText(
+                    this,
+                    "No hay videos cargados para el cliente seleccionado",
+                    Toast.LENGTH_SHORT
+                ).show()
+            },
+            onError = {
+                Toast.makeText(this, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        )
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-    }
-
-    private fun getVideos(clienteId: String) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-video-596275467600.us-central1.run.app/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-
-        apiService = retrofit.create(ApiService::class.java)
-
-        apiService.getVideosPorCliente(clienteId).enqueue(object : Callback<RespuestaVideo> {
-            override fun onResponse(call: Call<RespuestaVideo>, response: Response<RespuestaVideo>) {
-                if (response.isSuccessful) {
-                    val videoList = response.body()?.videos ?: emptyList()
-                    if (videoList.isEmpty()) {
-                        Toast.makeText(
-                            this@ListaVideosActivity,
-                            "No hay videos cargados para el cliente seleccionado",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        videos.clear()
-                        videos.addAll(videoList)
-                        (findViewById<RecyclerView>(R.id.recyclerViewVideos).adapter as VideoAdapter).notifyDataSetChanged()
-                    }
-                } else {
-                    Toast.makeText(this@ListaVideosActivity, "El cliente seleccionado no tiene videos cargados", Toast.LENGTH_SHORT).show()
-                }
-            }
-
-            override fun onFailure(call: Call<RespuestaVideo>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@ListaVideosActivity, "Error de conexión", Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 }

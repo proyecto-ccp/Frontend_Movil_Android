@@ -88,7 +88,7 @@ class CargarVideoActivity : AppCompatActivity() {
 
         }
 
-       
+
         buttonGaleria.setOnClickListener {
             val posicionP = spinner.selectedItemPosition
             val posicionC = spinnerC.selectedItemPosition
@@ -369,5 +369,4 @@ class CargarVideoActivity : AppCompatActivity() {
     }
 
 }
-
 

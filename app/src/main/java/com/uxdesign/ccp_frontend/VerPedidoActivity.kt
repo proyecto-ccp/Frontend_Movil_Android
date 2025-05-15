@@ -1,6 +1,5 @@
 package com.uxdesign.ccp_frontend
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -75,38 +74,6 @@ class VerPedidoActivity : AppCompatActivity() {
                 detallePedido.clear()
                 detallePedido.addAll(detalle)
 
-<<<<<<< HEAD
-        apiService = retrofit.create(ApiService::class.java)
-        apiService.getDetallePedidoUsuario(idUsuario).enqueue(object : Callback<RespuestaDetalleCarrito> {
-            @SuppressLint("NotifyDataSetChanged", "DefaultLocale")
-            override fun onResponse(call: Call<RespuestaDetalleCarrito>, response: Response<RespuestaDetalleCarrito>) =
-                if (response.isSuccessful) {
-                    val detallePedidoList = response.body()?.detallePedidos ?: emptyList()
-                    detallePedido.clear()
-                    detallePedido.addAll(detallePedidoList)
-
-                    totalProductos = detallePedidoList.size
-                    valorTotal = detallePedidoList.sumOf { it.precioUnitario * it.cantidad }
-                    val valor = "$${String.format(getString(R.string._2f), valorTotal)}"
-
-                    val editCantidad = findViewById<EditText>(R.id.editNumProductos)
-                    val editValor = findViewById<EditText>(R.id.editTotal)
-                    editCantidad.setText(totalProductos.toString())
-                    editValor.setText(valor)
-
-                    (findViewById<RecyclerView>(R.id.recyclerViewProductosPedido).adapter as ProductoPedidoAdapter).notifyDataSetChanged()
-                } else {
-                    Toast.makeText(this@VerPedidoActivity, "No tienes productos en el carrito", Toast.LENGTH_SHORT).show()
-                    val buttonFin: Button = findViewById(R.id.buttonFin)
-                    buttonFin.isEnabled = false
-                }
-
-            override fun onFailure(call: Call<RespuestaDetalleCarrito>, t: Throwable) {
-                t.printStackTrace()
-                Toast.makeText(this@VerPedidoActivity, "Error de conexión en detalle de pedido", Toast.LENGTH_SHORT).show()
-            }
-        })
-=======
                 totalProductos = detalle.size
                 valorTotal = detalle.sumOf { it.precioUnitario * it.cantidad }
 
@@ -123,6 +90,5 @@ class VerPedidoActivity : AppCompatActivity() {
                 buttonFin.isEnabled = false
             }
         )
->>>>>>> develop
     }
 }

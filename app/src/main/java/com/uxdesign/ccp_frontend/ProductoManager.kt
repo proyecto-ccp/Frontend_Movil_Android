@@ -1,5 +1,6 @@
 package com.uxdesign.ccp_frontend
 
+import android.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,8 +38,10 @@ class ProductoManager(private val apiService: ApiService) {
     }
 
     fun agregarProducto(producto: ProductoCarrito, callback: AgregarProductoCallback) {
-        apiService.agregarDetallePedido(producto).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+        Log.d("ProductoManager", "Agregando producto al carrito: $producto") // Log para el producto que se agrega
+
+        apiService.agregarDetallePedido(producto).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if (response.isSuccessful) {
                     callback.onAgregado()
                 } else {
@@ -46,7 +49,7 @@ class ProductoManager(private val apiService: ApiService) {
                 }
             }
 
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
+            override fun onFailure(call: Call<Void>, t: Throwable) {
                 callback.onError("Error de red al agregar producto")
             }
         })

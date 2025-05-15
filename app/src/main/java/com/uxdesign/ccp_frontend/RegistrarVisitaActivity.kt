@@ -151,7 +151,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                 estado = "PENDIENTE"
             )
 
-            registrarVisita(visita)
+            registrarVisita(visita, idUsuario)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -293,7 +293,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
         }
     }
 
-    private fun registrarVisita(visita: Visita) {
+    private fun registrarVisita(visita: Visita, idUsuario: String) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-visitas-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -304,6 +304,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
         apiService.crearVisita(visita).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
+                    val respuesta = response.body()
                     Toast.makeText(this@RegistrarVisitaActivity,
                         getString(R.string.la_visita_ha_sido_registrada_exitosamente), Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@RegistrarVisitaActivity, MenuActivity::class.java)
@@ -311,9 +312,9 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                     startActivity(intent)
                 } else {
 
-                        Toast.makeText(this@RegistrarVisitaActivity,
-                            getString(R.string.no_fue_posible_crear_la_visita_intente_de_nuevo), Toast.LENGTH_SHORT).show()
-                    }
+                    Toast.makeText(this@RegistrarVisitaActivity,
+                        getString(R.string.no_fue_posible_crear_la_visita_intente_de_nuevo), Toast.LENGTH_SHORT).show()
+                }
 
             }
 
@@ -345,7 +346,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     }
 
     private fun recrearConNuevoIdioma(codigoIdioma: String) {
-        cambiarIdioma(this, codigoIdioma)
+        val context = cambiarIdioma(this, codigoIdioma)
         val intent = intent
         finish()
         startActivity(intent)
@@ -354,7 +355,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     private fun convertirFechaAISO8601(fecha: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        
+
         val date: Date = inputFormat.parse(fecha)!!
         return outputFormat.format(date)
     }

@@ -31,7 +31,7 @@ interface ApiService {
 
 
     @POST("DetallePedido/AgregarDetalle")
-    fun agregarDetallePedido(@Body detalle: ProductoCarrito): Call<Unit>
+    fun agregarDetallePedido(@Body detalle: ProductoCarrito): Call<Void>
 
     @GET("Inventarios/Consultar")
     fun getStockProducto(@Query("idProducto") idProducto: Int): Call<RespuestaInventario>
