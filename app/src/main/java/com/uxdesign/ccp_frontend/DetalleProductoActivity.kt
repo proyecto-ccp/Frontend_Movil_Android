@@ -7,7 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.bumptech.glide.Glide
+import com.bumptech.glide.Glidec
 import com.uxdesign.cpp.R
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
