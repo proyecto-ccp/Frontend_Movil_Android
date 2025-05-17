@@ -20,13 +20,14 @@ class ListarVisitasActivity : AppCompatActivity() {
     private var ciudadVisitas = mutableListOf<CiudadVisita>()
     private lateinit var apiService: ApiService
     private lateinit var adapter: CiudadVisitaAdapter
+    private lateinit var idUsuario: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_listar_visitas)
 
         val fecha = intent.getStringExtra("fecha")
-        val idUsuario = intent.getStringExtra("idUsuario")
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
 
         if (idUsuario.isNullOrEmpty() || fecha.isNullOrEmpty()) {
             Toast.makeText(this, "ID de vendedor o fecha no recibida", Toast.LENGTH_SHORT).show()

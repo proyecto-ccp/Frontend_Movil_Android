@@ -8,35 +8,45 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
+import com.uxdesign.cpp.utils.TokenManager
 
 class MenuActivity : AppCompatActivity() {
-    val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
+    private lateinit var idUsuario: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_menu)
 
+        idUsuario = intent.getStringExtra("id_usuario") ?: "desconocido"
+
         val buttonRecomendar: Button = findViewById(R.id.buttonRecomendar)
         buttonRecomendar.setOnClickListener {
             val intent = Intent(this, CargarVideoActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
 
         val buttonCatalogo: Button = findViewById(R.id.buttonPedido)
         buttonCatalogo.setOnClickListener {
             val intent = Intent(this, CatalogoProductosActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
 
         val buttonConsultarCliente: Button = findViewById(R.id.buttonConsultarCliente)
         buttonConsultarCliente.setOnClickListener {
             val intent = Intent(this, ConsultarClientesActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
             startActivity(intent)
         }
 
         val buttonCerrarSesion: Button = findViewById(R.id.buttonCerrarSesion)
         buttonCerrarSesion.setOnClickListener {
+            TokenManager.clearToken(this)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            finish()
         }
 
         val buttonRegistrarVisita: Button = findViewById(R.id.buttonRegistrarVisita)

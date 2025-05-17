@@ -9,11 +9,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.uxdesign.cpp.R
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class DetalleProductoActivity : AppCompatActivity() {
-
+    private lateinit var idUsuario: String
     private lateinit var productoManager: ProductoManager
     private var productoPrecio: Double = 0.0
     private var stockDisponible: Int = 0
@@ -37,7 +38,7 @@ class DetalleProductoActivity : AppCompatActivity() {
         productoPrecio = intent.getDoubleExtra("producto_precio", 0.0)
         val productoDescripcion = intent.getStringExtra("producto_descripcion")
         val productoImagen = intent.getStringExtra("producto_imagen")
-        val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
 
         nombreProducto.text = productoNombre
         precioProducto.text = "$${productoPrecio}"
@@ -49,9 +50,13 @@ class DetalleProductoActivity : AppCompatActivity() {
             .error(R.drawable.errorphotopeque)
             .into(imageProducto)
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
         // Iniciar Retrofit y ProductoManager
         val retrofit = Retrofit.Builder()
             .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         val api = retrofit.create(ApiService::class.java)

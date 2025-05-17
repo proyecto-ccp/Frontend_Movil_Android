@@ -71,6 +71,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.firebase.crashlytics.buildtools)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
     kapt("com.github.bumptech.glide:compiler:4.16.0")
 
     // Dependencias de JUnit y Mockito

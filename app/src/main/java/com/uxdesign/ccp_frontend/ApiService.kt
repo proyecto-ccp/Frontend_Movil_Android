@@ -58,5 +58,8 @@ interface ApiService {
 
     @PUT("Visita/ModificarVisita/{id}")
     fun modificarEstadoVisita(@Path("id") idVisita: Int, @Body request: VisitaRequest): Call<RespuestaRequest>
+
+    @POST("Usuarios/Login")
+    fun login(@Body request: LoginRequest ): Call<RespuestaLogin>
 }
 

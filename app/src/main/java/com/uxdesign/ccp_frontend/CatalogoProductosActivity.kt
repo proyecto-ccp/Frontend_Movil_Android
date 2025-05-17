@@ -9,11 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CatalogoProductosActivity : AppCompatActivity() {
-
+    private lateinit var idUsuario: String
     private val productos = mutableListOf<Producto>()
     private lateinit var catalogoManager: CatalogoManager
 
@@ -24,7 +25,7 @@ class CatalogoProductosActivity : AppCompatActivity() {
 
         val buttonPedido: Button = findViewById(R.id.botonPedido)
 
-        val idUsuario = "b07e8ab8-b787-4f6d-8a85-6c506a3616f5"
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
 
         buttonPedido.setOnClickListener {
             val intent = Intent(this, VerPedidoActivity::class.java)
@@ -38,8 +39,13 @@ class CatalogoProductosActivity : AppCompatActivity() {
         val adapter = ProductoAdapter(productos)
         recyclerView.adapter = adapter
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://productos-596275467600.us-central1.run.app/api/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

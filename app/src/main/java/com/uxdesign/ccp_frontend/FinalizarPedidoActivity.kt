@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,13 +35,14 @@ class FinalizarPedidoActivity : AppCompatActivity() {
     private var listaClientes: List<Cliente> = emptyList()
     private var selectedClienteId: String = ""
     private lateinit var vendedor: Vendedor
+    private lateinit var idUsuario: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_finalizar_pedido)
 
-        val idUsuario = intent.getStringExtra("id_usuario")
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
         val cantidadProd = intent.getIntExtra("cantidad_productos", 0)
         val valorTotal = intent.getDoubleExtra("valor_total", 0.0)
 
@@ -237,8 +239,13 @@ class FinalizarPedidoActivity : AppCompatActivity() {
     }
 
     private fun enviarPedido(pedido: Pedido, idUsuario: String) {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -268,8 +275,13 @@ class FinalizarPedidoActivity : AppCompatActivity() {
     }
 
     private fun asociarDetalles(idUsuario: String, idPedido: String) {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

@@ -37,6 +37,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     private var selectedMotivo: String = ""
     private lateinit var vendedor: Vendedor
     private lateinit var listaMotivos: List<String>
+    private lateinit var idUsuario: String
 
     override fun attachBaseContext(newBase: Context) {
         val idioma = obtenerIdiomaGuardado(newBase)
@@ -85,7 +86,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
             }
         }
 
-        val idUsuario = intent.getStringExtra("id_usuario")
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFecha)
@@ -151,7 +152,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
                 estado = "PENDIENTE"
             )
 
-            registrarVisita(visita, idUsuario)
+            registrarVisita(visita)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -293,7 +294,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
         }
     }
 
-    private fun registrarVisita(visita: Visita, idUsuario: String) {
+    private fun registrarVisita(visita: Visita) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-visitas-596275467600.us-central1.run.app/api/")
             .addConverterFactory(GsonConverterFactory.create())
