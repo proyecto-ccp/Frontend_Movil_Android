@@ -54,7 +54,6 @@ class DetalleProductoActivity : AppCompatActivity() {
         val client = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(this))
             .build()
-        // Iniciar Retrofit y ProductoManager
 
         val retrofit = Retrofit.Builder()
             .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/")

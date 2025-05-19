@@ -92,12 +92,10 @@ class MainActivity : AppCompatActivity() {
                 Log.d("LOGIN_RESPONSE", Gson().toJson(loginResponse))
                 if (response.isSuccessful && loginResponse != null) {
                     if (loginResponse.menu.equals("azul", ignoreCase = true)) {
-                        idUsuario = loginResponse.idusuario
+                        val idtemp: String = loginResponse.idusuario
                         val token = loginResponse.token
                         TokenManager.saveToken(this@MainActivity, loginResponse.token)
-                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
-                        intent.putExtra("id_usuario", idUsuario)
-                        startActivity(intent)
+                        traerIdCliente(idtemp)
                     } else {
                         Toast.makeText(
                             this@MainActivity,
@@ -115,6 +113,43 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<RespuestaLogin>, t: Throwable) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Usuario no encontrado",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
+    }
+
+    private fun traerIdCliente(usuario: String) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://usuarios-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        val apiService = retrofit.create(ApiService::class.java)
+        apiService.getIdCliente(usuario).enqueue(object : Callback<RespuestaUsuario> {
+            override fun onResponse(
+                call: Call<RespuestaUsuario>,
+                response: Response<RespuestaUsuario>
+            ) {
+                val loginResponse = response.body()
+                if (response.isSuccessful && loginResponse != null) {
+                    Log.i("ID_USUARIO", Gson().toJson(loginResponse))
+                    idUsuario = loginResponse.idPerfil
+                    val intent = Intent(this@MainActivity, MenuActivity::class.java)
+                    intent.putExtra("id_usuario", idUsuario)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "No fue posible encontrar id de cliente",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RespuestaUsuario>, t: Throwable) {
                 Toast.makeText(
                     this@MainActivity,
                     "Usuario no encontrado",
