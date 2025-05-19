@@ -42,9 +42,9 @@ class MainActivity : AppCompatActivity() {
             if (!validarCampos()) {
                 return@setOnClickListener
             }
-            //validarUsuario(usuarioText.text.toString(), contraseniaText.text.toString())
-            val intent = Intent(this, MenuActivity::class.java)
-            startActivity(intent)
+            validarUsuario(usuarioText.text.toString(), contraseniaText.text.toString())
+            //val intent = Intent(this, MenuActivity::class.java)
+            //startActivity(intent)
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     Toast.makeText(
                         this@MainActivity,
-                        loginResponse?.mensaje ?: "No fue posible autenticas al usuario",
+                        loginResponse?.mensaje ?: "No fue posible autenticar al usuario",
                         Toast.LENGTH_LONG
                     ).show()
                 }

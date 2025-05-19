@@ -75,6 +75,7 @@
             android:layout_marginBottom="4dp"
             android:paddingLeft="20dp"
             android:background="@drawable/spinner_borde"
+            android:inputType="textPassword"
             android:hint="Ingresa tu contraseña registrada"
             android:minHeight="48dp" />
 
