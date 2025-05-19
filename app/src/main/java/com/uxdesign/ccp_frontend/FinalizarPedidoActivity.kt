@@ -3,96 +3,107 @@ package com.uxdesign.ccp_frontend
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.widget.*
+import java.text.SimpleDateFormat
+import java.util.Locale
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
-import retrofit2.*
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
+import java.text.ParseException
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 
 class FinalizarPedidoActivity : AppCompatActivity() {
-
     private lateinit var spinnerCliente: Spinner
     private lateinit var editFecha: EditText
     private lateinit var editNumProductos: EditText
     private lateinit var editTotal: EditText
     private lateinit var editComentarios: EditText
-    private lateinit var pedidoLogic: PedidoLogic
-
     private var listaClientes: List<Cliente> = emptyList()
     private var selectedClienteId: String = ""
     private lateinit var vendedor: Vendedor
+    private lateinit var idUsuario: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_finalizar_pedido)
 
-        // Inicializar Retrofit y lógica
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://servicio-backend/api/") // Cambia por base común si unificaste
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val apiService = retrofit.create(ApiService::class.java)
-        pedidoLogic = PedidoLogic(apiService)
-
-        // Obtener datos del intent
-        val idUsuario = intent.getStringExtra("id_usuario")
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
         val cantidadProd = intent.getIntExtra("cantidad_productos", 0)
         val valorTotal = intent.getDoubleExtra("valor_total", 0.0)
 
-        // Inicializar UI
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFechaEntrega)
+
+        editFecha.setOnClickListener {
+            val calendario = Calendar.getInstance()
+            val year = calendario[Calendar.YEAR]
+            val month = calendario[Calendar.MONTH]
+            val day = calendario[Calendar.DAY_OF_MONTH]
+
+            val datePicker = DatePickerDialog(
+                this,
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val fechaSeleccionada = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
+                    editFecha.setText(fechaSeleccionada)
+                },
+                year, month, day
+            )
+
+            datePicker.show()
+        }
+
         editNumProductos = findViewById(R.id.editNumProductos)
         editTotal = findViewById(R.id.editTotal)
         editComentarios = findViewById(R.id.editComentarios)
-        val buttonRegistrar: Button = findViewById(R.id.buttonRegistrar)
 
         editNumProductos.setText(cantidadProd.toString())
         editTotal.setText("$${String.format("%.2f", valorTotal)}")
 
-        editFecha.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            DatePickerDialog(this, { _, year, month, dayOfMonth ->
-                val fechaSeleccionada = String.format("%04d-%02d-%02d", year, month + 1, dayOfMonth)
-                editFecha.setText(fechaSeleccionada)
-            }, calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]).show()
-        }
+        val buttonRegistrar: Button = findViewById(R.id.buttonRegistrar)
+
+        obtenerZonaVendedor(idUsuario)
 
         buttonRegistrar.setOnClickListener {
             if (idUsuario.isNullOrEmpty()) {
-                showToast("ID de usuario no disponible")
+                Toast.makeText(this, "ID de usuario no disponible", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val clientePos = spinnerCliente.selectedItemPosition
-            if (clientePos <= 0) {
-                showToast("Seleccione un cliente")
+            val posicionCliente = spinnerCliente.selectedItemPosition
+            val clienteSeleccionado = listaClientes[posicionCliente - 1]
+            val idCliente = clienteSeleccionado.id
+            selectedClienteId = idCliente
+
+            if (!validarCampos()) {
                 return@setOnClickListener
             }
 
-            val clienteSeleccionado = listaClientes[clientePos - 1]
-            selectedClienteId = clienteSeleccionado.id
-
-            val fecha = editFecha.text.toString()
-            val numProductos = editNumProductos.text.toString()
-            val total = editTotal.text.toString()
-
-            if (!pedidoLogic.validarCampos(fecha, numProductos, total, clientePos)) {
-                showToast("Complete correctamente todos los campos")
-                return@setOnClickListener
-            }
+            val fechaEntrega = editFecha.text.toString().trim()
+            val fechaISO = convertirFechaAISO8601(fechaEntrega)
+            val comentarios = editComentarios.text.toString().trim()
 
             val pedido = Pedido(
                 idCliente = selectedClienteId,
-                fechaEntrega = pedidoLogic.convertirFechaAISO8601(fecha),
+                fechaEntrega = fechaISO,
                 estadoPedido = "CREADO",
                 valorTotal = valorTotal,
                 idVendedor = idUsuario,
-                comentarios = editComentarios.text.toString(),
+                comentarios = comentarios,
                 idMoneda = 11
             )
 
@@ -104,103 +115,213 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        if (!idUsuario.isNullOrEmpty()) {
-            obtenerZonaVendedor(idUsuario)
-        }
     }
 
-    private fun obtenerZonaVendedor(idUsuario: String) {
-        pedidoLogic.obtenerVendedor(idUsuario, object : Callback<RespuestaVendedor> {
-            override fun onResponse(call: Call<RespuestaVendedor>, response: Response<RespuestaVendedor>) {
-                if (response.isSuccessful) {
-                    val vendedorRes = response.body()?.vendedor
-                    if (vendedorRes != null) {
-                        vendedor = vendedorRes
-                        cargarClientes(vendedor.idzona)
-                    } else {
-                        showToast("Vendedor no válido")
-                    }
-                } else {
-                    showToast("Error al obtener vendedor")
-                }
-            }
+    private fun cargarClientesDesdeApi() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-cliente-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-            override fun onFailure(call: Call<RespuestaVendedor>, t: Throwable) {
-                t.printStackTrace()
-                showToast("Fallo de conexión al obtener vendedor")
-            }
-        })
-    }
+        val apiService = retrofit.create(ApiService::class.java)
+        val idZona = vendedor.idzona
 
-    private fun cargarClientes(idZona: String) {
-        pedidoLogic.obtenerClientesPorZona(idZona, object : Callback<RespuestaCliente> {
+        apiService.getClientesPorZona(idZona).enqueue(object : Callback<RespuestaCliente> {
             override fun onResponse(call: Call<RespuestaCliente>, response: Response<RespuestaCliente>) {
                 if (response.isSuccessful) {
-                    listaClientes = response.body()?.clientes ?: emptyList()
-                    val nombres = listaClientes.map { "${it.nombre} ${it.apellido}" }
+                    val clientes = response.body()?.clientes ?: emptyList()
+
+                    listaClientes = clientes
+
+                    val nombresClientes = clientes.map { "${it.nombre} ${it.apellido}" }
                     val adapter = ArrayAdapter(
                         this@FinalizarPedidoActivity,
                         android.R.layout.simple_spinner_item,
-                        listOf("Selecciona uno") + nombres
+                        listOf("Selecciona uno") + nombresClientes
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinnerCliente.adapter = adapter
                 } else {
-                    showToast("Error al cargar clientes")
+                    Toast.makeText(this@FinalizarPedidoActivity, "Error al cargar clientes", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<RespuestaCliente>, t: Throwable) {
                 t.printStackTrace()
-                showToast("Fallo de conexión al cargar clientes")
+                Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con clientes", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
+    private fun obtenerZonaVendedor(idUsuario: String?) {
+        if (idUsuario.isNullOrEmpty()) {
+            Toast.makeText(this, "ID de usuario no disponible", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://vendedor-596275467600.us-central1.run.app/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+
+        apiService.getVendedor(idUsuario).enqueue(object : Callback<RespuestaVendedor> {
+            override fun onResponse(call: Call<RespuestaVendedor>, response: Response<RespuestaVendedor>) {
+                if (response.isSuccessful) {
+                    val vendedorS = response.body()?.vendedor
+
+                    if (vendedorS != null) {
+                        vendedor = vendedorS
+                        cargarClientesDesdeApi()
+                    } else {
+                        showToast("Datos de vendedor no válidos")
+                    }
+
+                } else {
+                    Toast.makeText(this@FinalizarPedidoActivity, "Error al cargar clientes", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<RespuestaVendedor>, t: Throwable) {
+                t.printStackTrace()
+                Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con clientes", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun validarCampos(): Boolean {
+        if (spinnerCliente.selectedItem == null || spinnerCliente.selectedItem.toString().isEmpty()) {
+            showToast("Seleccione un cliente")
+            return false
+        }
+
+        if (editFecha.text.toString().trim().isEmpty()) {
+            showToast("Ingrese la fecha de entrega")
+            return false
+        }
+
+        if (!validarFecha(editFecha.text.toString().trim())) {
+            showToast("La fecha de entrega debe tener el formato yyyy-MM-dd")
+            return false
+        }
+
+        if (editNumProductos.text.toString().trim().isEmpty()) {
+            showToast("Número de productos es obligatorio")
+            return false
+        }
+
+        if (editTotal.text.toString().trim().isEmpty()) {
+            showToast("Total del pedido es obligatorio")
+            return false
+        }
+
+        return true
+
+    }
+
+    private fun validarFecha(fecha: String): Boolean {
+        val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        formato.isLenient = false
+
+        return try {
+            val date = formato.parse(fecha)
+
+            fecha == formato.format(date)
+        } catch (e: ParseException) {
+            false
+        }
+    }
+
+    private fun showToast(mensaje: String) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+    }
+
     private fun enviarPedido(pedido: Pedido, idUsuario: String) {
-        pedidoLogic.crearPedido(pedido, object : Callback<RespuestaRequest> {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+        apiService.crearPedido(pedido).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
                 if (response.isSuccessful) {
-                    val idPedido = response.body()?.id
-                    if (idPedido != null) {
+                    val respuesta = response.body()
+                    val idPedido = respuesta?.id
+                    if (idPedido != null){
                         asociarDetalles(idUsuario, idPedido)
                     } else {
-                        showToast("Pedido creado, pero no se obtuvo ID")
+
+                        Toast.makeText(this@FinalizarPedidoActivity, "No fue posible crear el pedido, intente de nuevo", Toast.LENGTH_SHORT).show()
                     }
+
                 } else {
-                    showToast("Error al crear pedido")
+                    Toast.makeText(this@FinalizarPedidoActivity, "Error al crear pedido", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
-                showToast("Fallo de conexión al crear pedido")
+                Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }
         })
     }
 
     private fun asociarDetalles(idUsuario: String, idPedido: String) {
-        pedidoLogic.asociarDetalles(idUsuario, idPedido, object : Callback<RespuestaRequest> {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(ApiService::class.java)
+
+        apiService.enlazarDetallePedido(idUsuario, idPedido).enqueue(object : Callback<RespuestaRequest> {
             override fun onResponse(call: Call<RespuestaRequest>, response: Response<RespuestaRequest>) {
-                if (response.isSuccessful && response.body()?.status == 201) {
-                    showToast("Pedido registrado exitosamente")
-                    val intent = Intent(this@FinalizarPedidoActivity, CatalogoProductosActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                if (response.isSuccessful) {
+                    val respuesta = response.body()
+                    val status = respuesta?.status
+                    if (status == 201){
+                        Toast.makeText(this@FinalizarPedidoActivity, "El pedido ha sido registrado exitosamente", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@FinalizarPedidoActivity, CatalogoProductosActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+
+                        Toast.makeText(this@FinalizarPedidoActivity, "No fue posible agregar detalles, intente de nuevo", Toast.LENGTH_SHORT).show()
+                    }
+
                 } else {
-                    showToast("No fue posible asociar los detalles")
+                    Toast.makeText(this@FinalizarPedidoActivity, "Error al agregar detalles", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<RespuestaRequest>, t: Throwable) {
                 t.printStackTrace()
-                showToast("Fallo de conexión al asociar detalles")
+                Toast.makeText(this@FinalizarPedidoActivity, "Error de conexión con pedido", Toast.LENGTH_SHORT).show()
             }
+
         })
+
     }
 
-    private fun showToast(mensaje: String) {
-        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+    private fun convertirFechaAISO8601(fecha: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        outputFormat.timeZone = TimeZone.getTimeZone("UTC")
+
+        val date: Date = inputFormat.parse(fecha)!!
+        return outputFormat.format(date)
     }
 }

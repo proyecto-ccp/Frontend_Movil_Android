@@ -16,12 +16,12 @@ import java.util.Calendar
 class ConsultarVisitaActivity : AppCompatActivity() {
     private lateinit var editTextFecha: EditText
     private val logica = ConsultaVisitaLogic()
-
+    private lateinit var idUsuario: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_consultar_visita)
 
-        val idUsuario = intent.getStringExtra("id_usuario")
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
         editTextFecha = findViewById(R.id.editFecha)
 
         editTextFecha.setOnClickListener {

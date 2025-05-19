@@ -37,6 +37,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
     private var selectedMotivo: String = ""
     private lateinit var vendedor: Vendedor
     private lateinit var listaMotivos: List<String>
+    private lateinit var idUsuario: String
 
     override fun attachBaseContext(newBase: Context) {
         val idioma = obtenerIdiomaGuardado(newBase)
@@ -85,7 +86,7 @@ class RegistrarVisitaActivity : AppCompatActivity() {
             }
         }
 
-        val idUsuario = intent.getStringExtra("id_usuario")
+        idUsuario = intent.getStringExtra("id_usuario") ?: ""
 
         spinnerCliente = findViewById(R.id.spinnerCliente)
         editFecha = findViewById(R.id.editFecha)

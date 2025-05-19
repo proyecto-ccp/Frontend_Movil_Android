@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,6 +37,7 @@ class CargarVideoActivity : AppCompatActivity() {
     private var selectedProveedorId: String = ""
     private var listaProductos: List<Producto> = emptyList()
     private var selectedProductoId: Int = 0
+    private lateinit var idUsuario: String
 
     private val SELECCIONA_UNO = "Selecciona uno"
     private val REQUEST_VIDEO_CAPTURE = 1
@@ -335,8 +337,13 @@ class CargarVideoActivity : AppCompatActivity() {
     }
 
     private fun cargarProductosDesdeApi(proveedorId: String) {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://productos-596275467600.us-central1.run.app/api/") // Cambia por tu URL real
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

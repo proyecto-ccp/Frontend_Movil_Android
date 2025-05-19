@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uxdesign.cpp.R
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -21,7 +22,7 @@ class VerPedidoActivity : AppCompatActivity() {
     private var totalProductos: Int = 0
     private var valorTotal: Double = 0.0
     private lateinit var adapter: ProductoPedidoAdapter
-    private var idUsuario: String? = null
+    private var idUsuario: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +38,13 @@ class VerPedidoActivity : AppCompatActivity() {
         adapter = ProductoPedidoAdapter(detallePedido)
         recyclerView.adapter = adapter
 
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(this))
+            .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
