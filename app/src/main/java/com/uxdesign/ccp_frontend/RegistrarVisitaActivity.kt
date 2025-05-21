@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class RegistrarVisitaActivity : AppCompatActivity() {
     private lateinit var spinnerCliente: Spinner
@@ -375,7 +376,8 @@ class RegistrarVisitaActivity : AppCompatActivity() {
 
     private fun convertirFechaAISO8601(fecha: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+        outputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
         val date: Date = inputFormat.parse(fecha)!!
         return outputFormat.format(date)

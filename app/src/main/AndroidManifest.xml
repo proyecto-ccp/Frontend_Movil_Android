@@ -37,9 +37,7 @@
         <activity
             android:name="com.uxdesign.ccp_frontend.RegistrarVisitaActivity"
             android:exported="false" />
-        <activity
-            android:name="com.uxdesign.ccp_frontend.DetallePedidoActivity"
-            android:exported="false" />
+
         <activity
             android:name="com.uxdesign.ccp_frontend.DetalleClienteActivity"
             android:exported="false" />

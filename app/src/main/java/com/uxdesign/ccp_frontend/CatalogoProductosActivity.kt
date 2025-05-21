@@ -24,8 +24,15 @@ class CatalogoProductosActivity : AppCompatActivity() {
         setContentView(R.layout.activity_catalogo_productos)
 
         val buttonPedido: Button = findViewById(R.id.botonPedido)
+        val buttonMenu: Button = findViewById(R.id.botonVolverMenu)
 
         idUsuario = intent.getStringExtra("id_usuario") ?: ""
+
+        buttonMenu.setOnClickListener {
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.putExtra("id_usuario", idUsuario)
+            startActivity(intent)
+        }
 
         buttonPedido.setOnClickListener {
             val intent = Intent(this, VerPedidoActivity::class.java)
@@ -36,7 +43,7 @@ class CatalogoProductosActivity : AppCompatActivity() {
         val recyclerView: RecyclerView = findViewById(R.id.recyclerViewProductos)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = ProductoAdapter(productos)
+        val adapter = ProductoAdapter(productos, idUsuario)
         recyclerView.adapter = adapter
 
         val client = OkHttpClient.Builder()

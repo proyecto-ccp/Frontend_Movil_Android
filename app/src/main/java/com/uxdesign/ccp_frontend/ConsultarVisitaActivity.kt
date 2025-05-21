@@ -9,13 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.uxdesign.ccp_frontend.logic.ConsultaVisitaLogic
 import com.uxdesign.cpp.R
 import java.util.Calendar
 
 class ConsultarVisitaActivity : AppCompatActivity() {
     private lateinit var editTextFecha: EditText
-    private val logica = ConsultaVisitaLogic()
+    private val logica = ConsultaVisitaLogica()
     private lateinit var idUsuario: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +46,14 @@ class ConsultarVisitaActivity : AppCompatActivity() {
             val resultado = logica.validarDatos(idUsuario, fecha)
 
             when (resultado) {
-                is ConsultaVisitaLogic.ResultadoValidacion.Exito -> {
+                is ConsultaVisitaLogica.ResultadoValidacion.Exito -> {
                     val intent = Intent(this, ListarVisitasActivity::class.java)
                     intent.putExtra("fecha", fecha)
-                    intent.putExtra("idUsuario", idUsuario)
+                    intent.putExtra("id_usuario", idUsuario)
                     startActivity(intent)
                 }
 
-                is ConsultaVisitaLogic.ResultadoValidacion.Error -> {
+                is ConsultaVisitaLogica.ResultadoValidacion.Error -> {
                     Toast.makeText(this, resultado.mensaje, Toast.LENGTH_SHORT).show()
                 }
             }

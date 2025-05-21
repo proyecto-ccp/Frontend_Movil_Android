@@ -1,10 +1,9 @@
 package com.uxdesign.ccp_frontend
 
+import android.util.Log
 import retrofit2.*
 
 class VisitaDataManager(private val apiService: ApiService) {
-
-    // Eliminamos la creación interna del apiService y lo inyectamos por el constructor
 
     fun cargarCiudadVisitas(
         fecha: String,
@@ -16,7 +15,7 @@ class VisitaDataManager(private val apiService: ApiService) {
         val fechaFormateada = "${fecha}T00:00:00.420Z"
         apiService.getVisitasPorFecha(fechaFormateada, idUsuario).enqueue(object : Callback<RespuestaVisita> {
             override fun onResponse(call: Call<RespuestaVisita>, response: Response<RespuestaVisita>) {
-                if (response.isSuccessful) {
+               if (response.isSuccessful) {
                     val lista = response.body()?.visitas ?: emptyList()
                     if (lista.isEmpty()) onEmpty() else onSuccess(lista)
                 } else {

@@ -216,6 +216,27 @@ class FinalizarPedidoActivity : AppCompatActivity() {
             return false
         }
 
+        try {
+            val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            formato.isLenient = false
+            val fechaIngresada = formato.parse(editFecha.text.toString())
+            val fechaActual = Calendar.getInstance().apply {
+                set(Calendar.HOUR_OF_DAY, 0)
+                set(Calendar.MINUTE, 0)
+                set(Calendar.SECOND, 0)
+                set(Calendar.MILLISECOND, 0)
+            }.time
+
+            if (fechaIngresada.before(fechaActual)) {
+                showToast("La fecha no puede ser anterior a la fecha actual")
+                return false
+            }
+        } catch (e: Exception) {
+            showToast("Error al procesar la fecha")
+            return false
+        }
+
+
         return true
 
     }
@@ -318,7 +339,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
 
     private fun convertirFechaAISO8601(fecha: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
         outputFormat.timeZone = TimeZone.getTimeZone("UTC")
 
         val date: Date = inputFormat.parse(fecha)!!

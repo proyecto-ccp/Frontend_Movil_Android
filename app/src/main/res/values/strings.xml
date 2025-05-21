@@ -35,6 +35,7 @@
     <string name="no_fue_posible_crear_la_visita_intente_de_nuevo">No fue posible crear la visita, intente de nuevo</string>
     <string name="error_de_conexi_n_con_visita">Error de conexión con visita</string>
     <string name="_2f" tools:ignore="MissingTranslation">%.2f</string>
+    <string name="para_cambiar_el_estado_de_una_visita_presiona_sobre_el_cliente_que_quieres_modificar">Para cambiar el estado de una visita, presiona sobre el cliente que quieres modificar</string>
 
     <string-array name="tipos_doc">
         <item>Cédula de Ciudadanía</item>

@@ -1,6 +1,7 @@
 package com.uxdesign.ccp_frontend
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +29,7 @@ class ListarVisitasActivity : AppCompatActivity() {
     }
 
     private val visitaDataManager by lazy {
-        VisitaDataManager(apiService) // Inyectamos el apiService al VisitaDataManager
+        VisitaDataManager(apiService)
     }
 
 
@@ -43,7 +44,7 @@ class ListarVisitasActivity : AppCompatActivity() {
         idUsuario = intent.getStringExtra("id_usuario") ?: ""
 
         if (idUsuario.isNullOrEmpty() || fecha.isNullOrEmpty()) {
-            Toast.makeText(this, "ID de vendedor o fecha no recibida", Toast.LENGTH_SHORT).show()
+           Toast.makeText(this, "ID de vendedor o fecha no recibida", Toast.LENGTH_SHORT).show()
             finish()
             return
         }
@@ -59,8 +60,8 @@ class ListarVisitasActivity : AppCompatActivity() {
             insets
         }
 
-        // Usamos visitaDataManager con inyección del apiService
         visitaDataManager.cargarCiudadVisitas(
+
             fecha,
             idUsuario,
             onSuccess = { listaVisitas ->

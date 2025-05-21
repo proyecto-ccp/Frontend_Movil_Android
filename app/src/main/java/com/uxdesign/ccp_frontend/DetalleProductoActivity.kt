@@ -2,6 +2,7 @@ package com.uxdesign.ccp_frontend
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -12,10 +13,10 @@ import com.uxdesign.cpp.R
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 class DetalleProductoActivity : AppCompatActivity() {
     private lateinit var idUsuario: String
-    private lateinit var productoManager: ProductoManager
     private var productoPrecio: Double = 0.0
     private var stockDisponible: Int = 0
 
@@ -38,7 +39,8 @@ class DetalleProductoActivity : AppCompatActivity() {
         productoPrecio = intent.getDoubleExtra("producto_precio", 0.0)
         val productoDescripcion = intent.getStringExtra("producto_descripcion")
         val productoImagen = intent.getStringExtra("producto_imagen")
-        idUsuario = intent.getStringExtra("id_usuario") ?: ""
+        idUsuario = intent.getStringExtra("id_usuario") ?: "nada"
+        Log.d("USUSARIO_DETALLE", idUsuario)
 
         nombreProducto.text = productoNombre
         precioProducto.text = "$${productoPrecio}"
@@ -55,15 +57,25 @@ class DetalleProductoActivity : AppCompatActivity() {
             .addInterceptor(AuthInterceptor(this))
             .build()
 
-        val retrofit = Retrofit.Builder()
+        val retrofitStock = Retrofit.Builder()
             .baseUrl("https://inventarios-596275467600.us-central1.run.app/api/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        val api = retrofit.create(ApiService::class.java)
-        productoManager = ProductoManager(api)
 
-        productoManager.obtenerStock(productoId, object : ProductoManager.StockCallback {
+        val apiStock = retrofitStock.create(ApiService::class.java)
+        val stockManager = StockManager(apiStock)
+
+        val retrofitCarrito = Retrofit.Builder()
+            .baseUrl("https://servicio-pedidos-596275467600.us-central1.run.app/api/")
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofitCarrito.create(ApiService::class.java)
+        val productoManager = ProductoManager(apiService)
+
+        stockManager.obtenerStock(productoId, object : StockManager.StockCallback {
             override fun onStockRecibido(stock: Int) {
                 stockDisponible = stock
                 stockProducto.text = "Stock: $stock unidades"
@@ -118,7 +130,6 @@ class DetalleProductoActivity : AppCompatActivity() {
                 idUsuario = idUsuario,
                 precioUnitario = productoPrecio
             )
-
             productoManager.agregarProducto(producto, object : ProductoManager.AgregarProductoCallback {
                 override fun onAgregado() {
                     Toast.makeText(this@DetalleProductoActivity, "Producto agregado al carrito", Toast.LENGTH_SHORT).show()
