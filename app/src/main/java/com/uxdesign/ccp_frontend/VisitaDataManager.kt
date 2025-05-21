@@ -1,6 +1,5 @@
 package com.uxdesign.ccp_frontend
 
-import android.util.Log
 import retrofit2.*
 
 class VisitaDataManager(private val apiService: ApiService) {

@@ -42,8 +42,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             validarUsuario(usuarioText.text.toString(), contraseniaText.text.toString())
-            //val intent = Intent(this, MenuActivity::class.java)
-            //startActivity(intent)
+
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -92,7 +91,6 @@ class MainActivity : AppCompatActivity() {
                 if (response.isSuccessful && loginResponse != null) {
                     if (loginResponse.menu.equals("azul", ignoreCase = true)) {
                         val idtemp: String = loginResponse.idusuario
-                        val token = loginResponse.token
                         TokenManager.saveToken(this@MainActivity, loginResponse.token)
                         traerIdCliente(idtemp)
                     } else {

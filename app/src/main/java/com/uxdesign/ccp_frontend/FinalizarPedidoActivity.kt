@@ -36,8 +36,10 @@ class FinalizarPedidoActivity : AppCompatActivity() {
     private var selectedClienteId: String = ""
     private lateinit var vendedor: Vendedor
     private lateinit var idUsuario: String
+    private val DATE_FORMAT = "yyyy-MM-dd"
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_finalizar_pedido)
@@ -217,7 +219,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
         }
 
         try {
-            val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val formato = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
             formato.isLenient = false
             val fechaIngresada = formato.parse(editFecha.text.toString())
             val fechaActual = Calendar.getInstance().apply {
@@ -242,7 +244,7 @@ class FinalizarPedidoActivity : AppCompatActivity() {
     }
 
     private fun validarFecha(fecha: String): Boolean {
-        val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val formato = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
 
         formato.isLenient = false
 
