@@ -1,4 +1,4 @@
-package com.uxdesign.cpp.utils
+package com.uxdesign.ccp_frontend
 
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences

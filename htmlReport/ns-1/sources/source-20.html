@@ -1,0 +1,197 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ProductoAdapter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: ProductoAdapter (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProductoAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProductoAdapter$ProductoViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/17)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/35)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.content.Intent
+&nbsp;import android.view.LayoutInflater
+&nbsp;import android.view.View
+&nbsp;import android.view.ViewGroup
+&nbsp;import android.widget.ImageView
+&nbsp;import android.widget.TextView
+&nbsp;import androidx.recyclerview.widget.RecyclerView
+&nbsp;import com.bumptech.glide.Glide
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;
+<b class="nc">&nbsp;class ProductoAdapter(private val productos: List&lt;Producto&gt;,</b>
+<b class="nc">&nbsp;    private val idUsuario: String) : RecyclerView.Adapter&lt;ProductoAdapter.ProductoViewHolder&gt;() {</b>
+&nbsp;
+&nbsp;    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
+<b class="nc">&nbsp;        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_producto, parent, false)</b>
+<b class="nc">&nbsp;        return ProductoViewHolder(itemView)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
+<b class="nc">&nbsp;        val producto = productos[position]</b>
+<b class="nc">&nbsp;        holder.bind(producto)</b>
+<b class="nc">&nbsp;        val context = holder.itemView.context</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.itemView.setOnClickListener {</b>
+<b class="nc">&nbsp;            val intent = Intent(context, DetalleProductoActivity::class.java).apply {</b>
+<b class="nc">&nbsp;                putExtra(&quot;producto_id&quot;, producto.id)</b>
+<b class="nc">&nbsp;                putExtra(&quot;producto_nombre&quot;, producto.nombre)</b>
+<b class="nc">&nbsp;                putExtra(&quot;producto_precio&quot;, producto.precioUnitario)</b>
+<b class="nc">&nbsp;                putExtra(&quot;producto_descripcion&quot;, producto.descripcion)</b>
+<b class="nc">&nbsp;                putExtra(&quot;producto_imagen&quot;, producto.urlFoto1)</b>
+<b class="nc">&nbsp;                putExtra(&quot;id_usuario&quot;, idUsuario)</b>
+<b class="nc">&nbsp;            }</b>
+<b class="nc">&nbsp;            context.startActivity(intent)</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    override fun getItemCount(): Int {
+<b class="nc">&nbsp;        return productos.size</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {</b>
+<b class="nc">&nbsp;        private val nombreProducto: TextView = itemView.findViewById(R.id.nombreProducto)</b>
+<b class="nc">&nbsp;        private val descripcionProducto: TextView = itemView.findViewById(R.id.descripcionProducto)</b>
+<b class="nc">&nbsp;        private val precioProducto: TextView = itemView.findViewById(R.id.precioProducto)</b>
+<b class="nc">&nbsp;        private val imagenProducto: ImageView = itemView.findViewById(R.id.imagenProducto)</b>
+<b class="nc">&nbsp;        private val cantidadProducto: TextView = itemView.findViewById(R.id.cantidadProducto)</b>
+<b class="nc">&nbsp;        private val valor: TextView = itemView.findViewById(R.id.valorTotalProducto)</b>
+&nbsp;
+&nbsp;        fun bind(producto: Producto) {
+<b class="nc">&nbsp;            nombreProducto.text = producto.nombre</b>
+<b class="nc">&nbsp;            descripcionProducto.text = producto.descripcion</b>
+<b class="nc">&nbsp;            precioProducto.text = &quot;Valor Unitario: $${producto.precioUnitario}&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;            Glide.with(itemView.context)</b>
+<b class="nc">&nbsp;                .load(producto.urlFoto1) // URL de la imagen</b>
+<b class="nc">&nbsp;                .placeholder(R.drawable.errorphotopeque) // opcional</b>
+<b class="nc">&nbsp;                .error(R.drawable.errorphotopeque) // opcional</b>
+<b class="nc">&nbsp;                .into(imagenProducto)</b>
+&nbsp;
+&nbsp;            //cantidadProducto.text = &quot;Stock: $${producto.cantidad}&quot;
+<b class="nc">&nbsp;            cantidadProducto.visibility = View.GONE</b>
+<b class="nc">&nbsp;            valor.visibility = View.GONE</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

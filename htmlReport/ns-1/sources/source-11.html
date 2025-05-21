@@ -1,0 +1,321 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DetalleProductoActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: DetalleProductoActivity (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DetalleProductoActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/63)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DetalleProductoActivity$onCreate$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/11)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DetalleProductoActivity$onCreate$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DetalleProductoActivity$onCreate$3$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/86)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.content.Intent
+&nbsp;import android.os.Bundle
+&nbsp;import android.util.Log
+&nbsp;import android.widget.*
+&nbsp;import androidx.activity.enableEdgeToEdge
+&nbsp;import androidx.appcompat.app.AppCompatActivity
+&nbsp;import androidx.core.view.ViewCompat
+&nbsp;import androidx.core.view.WindowInsetsCompat
+&nbsp;import com.bumptech.glide.Glide
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;import okhttp3.OkHttpClient
+&nbsp;import retrofit2.Retrofit
+&nbsp;import retrofit2.converter.gson.GsonConverterFactory
+&nbsp;import retrofit2.create
+&nbsp;
+<b class="nc">&nbsp;class DetalleProductoActivity : AppCompatActivity() {</b>
+&nbsp;    private lateinit var idUsuario: String
+&nbsp;    private var productoPrecio: Double = 0.0
+&nbsp;    private var stockDisponible: Int = 0
+&nbsp;
+&nbsp;    override fun onCreate(savedInstanceState: Bundle?) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState)</b>
+<b class="nc">&nbsp;        enableEdgeToEdge()</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_detalle_producto)</b>
+&nbsp;
+<b class="nc">&nbsp;        val editCantidad: EditText = findViewById(R.id.editCantidad)</b>
+<b class="nc">&nbsp;        val editValor: EditText = findViewById(R.id.editValor)</b>
+<b class="nc">&nbsp;        val agregarButton: Button = findViewById(R.id.buttonAgregar)</b>
+<b class="nc">&nbsp;        val imageProducto: ImageView = findViewById(R.id.imageProducto)</b>
+<b class="nc">&nbsp;        val nombreProducto: TextView = findViewById(R.id.textNombreProducto)</b>
+<b class="nc">&nbsp;        val precioProducto: TextView = findViewById(R.id.textPrecioProducto)</b>
+<b class="nc">&nbsp;        val descripcionProducto: TextView = findViewById(R.id.textDescripcionProducto)</b>
+<b class="nc">&nbsp;        val stockProducto: TextView = findViewById(R.id.textStock)</b>
+&nbsp;
+<b class="nc">&nbsp;        val productoId = intent.getIntExtra(&quot;producto_id&quot;, -1)</b>
+<b class="nc">&nbsp;        val productoNombre = intent.getStringExtra(&quot;producto_nombre&quot;)</b>
+<b class="nc">&nbsp;        productoPrecio = intent.getDoubleExtra(&quot;producto_precio&quot;, 0.0)</b>
+<b class="nc">&nbsp;        val productoDescripcion = intent.getStringExtra(&quot;producto_descripcion&quot;)</b>
+<b class="nc">&nbsp;        val productoImagen = intent.getStringExtra(&quot;producto_imagen&quot;)</b>
+<b class="nc">&nbsp;        idUsuario = intent.getStringExtra(&quot;id_usuario&quot;) ?: &quot;nada&quot;</b>
+<b class="nc">&nbsp;        Log.d(&quot;USUSARIO_DETALLE&quot;, idUsuario)</b>
+&nbsp;
+<b class="nc">&nbsp;        nombreProducto.text = productoNombre</b>
+<b class="nc">&nbsp;        precioProducto.text = &quot;$${productoPrecio}&quot;</b>
+<b class="nc">&nbsp;        descripcionProducto.text = productoDescripcion</b>
+&nbsp;
+<b class="nc">&nbsp;        Glide.with(this)</b>
+<b class="nc">&nbsp;            .load(productoImagen)</b>
+<b class="nc">&nbsp;            .placeholder(R.drawable.errorphotopeque)</b>
+<b class="nc">&nbsp;            .error(R.drawable.errorphotopeque)</b>
+<b class="nc">&nbsp;            .into(imageProducto)</b>
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        val client = OkHttpClient.Builder()</b>
+<b class="nc">&nbsp;            .addInterceptor(AuthInterceptor(this))</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val retrofitStock = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://inventarios-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .client(client)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiStock = retrofitStock.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        val stockManager = StockManager(apiStock)</b>
+&nbsp;
+<b class="nc">&nbsp;        val retrofitCarrito = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-pedidos-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .client(client)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofitCarrito.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        val productoManager = ProductoManager(apiService)</b>
+&nbsp;
+<b class="nc">&nbsp;        stockManager.obtenerStock(productoId, object : StockManager.StockCallback {</b>
+&nbsp;            override fun onStockRecibido(stock: Int) {
+<b class="nc">&nbsp;                stockDisponible = stock</b>
+<b class="nc">&nbsp;                stockProducto.text = &quot;Stock: $stock unidades&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;                if (stock &lt;= 0) {</b>
+<b class="nc">&nbsp;                    agregarButton.isEnabled = false</b>
+<b class="nc">&nbsp;                    agregarButton.alpha = 0.5f</b>
+<b class="nc">&nbsp;                    editCantidad.isEnabled = false</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onError(mensaje: String) {
+<b class="nc">&nbsp;                Toast.makeText(this@DetalleProductoActivity, mensaje, Toast.LENGTH_SHORT).show()</b>
+<b class="nc">&nbsp;                agregarButton.isEnabled = false</b>
+<b class="nc">&nbsp;                agregarButton.alpha = 0.5f</b>
+<b class="nc">&nbsp;                editCantidad.isEnabled = false</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;
+<b class="nc">&nbsp;        editCantidad.addTextChangedListener(object : android.text.TextWatcher {</b>
+&nbsp;            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+&nbsp;                //Implementacion de caso  que no es necesario por eso queda vacio
+<b class="nc">&nbsp;            }</b>
+&nbsp;            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+<b class="nc">&nbsp;                val cantidad = s.toString().toIntOrNull() ?: 0</b>
+<b class="nc">&nbsp;                val total = cantidad * productoPrecio</b>
+<b class="nc">&nbsp;                editValor.setText(&quot;$%.2f&quot;.format(total))</b>
+&nbsp;            }
+&nbsp;            override fun afterTextChanged(s: android.text.Editable?) {
+&nbsp;                //Implementacion de caso  que no es necesario por eso queda vacio
+<b class="nc">&nbsp;            }</b>
+&nbsp;        })
+&nbsp;
+<b class="nc">&nbsp;        agregarButton.setOnClickListener {</b>
+<b class="nc">&nbsp;            val cantidadText = editCantidad.text.toString().trim()</b>
+&nbsp;
+<b class="nc">&nbsp;            if (cantidadText.isEmpty() || cantidadText == &quot;0&quot;) {</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Por favor ingrese una cantidad válida&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                return@setOnClickListener
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            val cantidad = cantidadText.toInt()</b>
+&nbsp;
+<b class="nc">&nbsp;            if (cantidad &gt; stockDisponible) {</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;La cantidad ingresada excede el stock disponible ($stockDisponible)&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                return@setOnClickListener
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            val producto = ProductoCarrito(</b>
+<b class="nc">&nbsp;                idProducto = productoId,</b>
+<b class="nc">&nbsp;                cantidad = cantidad,</b>
+<b class="nc">&nbsp;                idUsuario = idUsuario,</b>
+<b class="nc">&nbsp;                precioUnitario = productoPrecio</b>
+&nbsp;            )
+<b class="nc">&nbsp;            productoManager.agregarProducto(producto, object : ProductoManager.AgregarProductoCallback {</b>
+&nbsp;                override fun onAgregado() {
+<b class="nc">&nbsp;                    Toast.makeText(this@DetalleProductoActivity, &quot;Producto agregado al carrito&quot;, Toast.LENGTH_SHORT).show()</b>
+<b class="nc">&nbsp;                    val intent = Intent(this@DetalleProductoActivity, VerPedidoActivity::class.java)</b>
+<b class="nc">&nbsp;                    intent.putExtra(&quot;id_usuario&quot;, idUsuario)</b>
+<b class="nc">&nbsp;                    startActivity(intent)</b>
+&nbsp;                }
+&nbsp;
+&nbsp;                override fun onError(mensaje: String) {
+<b class="nc">&nbsp;                    Toast.makeText(this@DetalleProductoActivity, mensaje, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            })
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets -&gt;</b>
+<b class="nc">&nbsp;            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)</b>
+<b class="nc">&nbsp;            insets</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

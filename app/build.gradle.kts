@@ -3,8 +3,9 @@ import org.gradle.testing.jacoco.tasks.JacocoReport
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jetbrains.kotlin.kapt")
+    id("org.sonarqube")
     id("kotlin-parcelize")
+    id("jacoco")
 }
 
 android {
@@ -32,13 +33,17 @@ android {
                 "proguard-rules.pro"
             )
         }
+        getByName("debug") {
+            isTestCoverageEnabled = true  // Habilita la cobertura de pruebas en Debug
+        }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -53,6 +58,32 @@ android {
     }
 }
 
+jacoco {
+    toolVersion = "0.8.7" // Asegúrate de usar una versión compatible de JaCoCo
+}
+
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn(tasks.named("testDebugUnitTest")) // Ejecuta las pruebas unitarias antes de generar el reporte
+
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(file("$buildDir/reports/jacoco/html"))
+
+        xml.required.set(true)
+        xml.outputLocation.set(file("$buildDir/reports/jacoco/xml"))
+    }
+
+
+    // Define las fuentes y clases compiladas para calcular la cobertura
+    sourceDirectories.setFrom(files("src/main/java"))
+    classDirectories.setFrom(fileTree("build/tmp/kotlin-classes/debug") {
+        include("**/*.class")
+    }) // Asegúrate de que esta ruta sea correcta
+
+    // Define la ubicación del archivo de ejecución de JaCoCo
+    executionData.setFrom(fileTree("build/outputs/unit_test_code_coverage/debugUnitTest") { include("testDebugUnitTest.exec") })
+
+}
 
 dependencies {
 
@@ -76,14 +107,16 @@ dependencies {
     implementation(libs.firebase.crashlytics.buildtools)
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
-    kapt("com.github.bumptech.glide:compiler:4.16.0")
+    implementation(libs.androidx.junit.ktx)
+    //implementation(libs.core.ktx)
 
     // Dependencias de JUnit y Mockito
     testImplementation("org.mockito:mockito-core:4.8.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation("com.squareup.okhttp3:okhttp:4.9.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.0")
+    testImplementation("org.robolectric:robolectric:4.6.1")
 
     // Dependencias de AndroidTest
     androidTestImplementation(libs.androidx.junit)
@@ -92,7 +125,28 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-
 }
 
+sonarqube {
+    properties {
+        property("sonar.projectKey", "proyecto-ccp_Frontend_Movil_Android")
+        property("sonar.projectName", "Frontend Movil Android")
+        property("sonar.organization", "proyecto-ccp-1")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.login", "2cad78399830ff55cddc8a9c9fa1be13073d0937")
+        property("sonar.sources", "src/main/java")
+        property("sonar.tests", "src/test/java")
+
+        // 🟢 Cambia la ruta de clases compiladas
+        property("sonar.java.binaries", "build/tmp/kotlin-classes/debug")
+
+        // Opcional: Reportes de pruebas
+        property("sonar.junit.reportPaths", "build/test-results/testDebugUnitTest")
+
+        // 🟢 Reporte de cobertura de JaCoCo
+        property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/xml/report.xml")
+
+        property("sonar.junit.reportPaths", "build/test-results/testDebugUnitTest") // Reporte de pruebas JUnit
+        property("sonar.jacoco.reportPaths", "build/reports/jacoco/testDebugUnitTest.exec") // Reporte de JaCoCo
+    }
+}

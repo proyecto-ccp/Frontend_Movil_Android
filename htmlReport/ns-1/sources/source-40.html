@@ -1,0 +1,145 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ApiService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: ApiService (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">ApiService$MockitoMock$pdqCIff5</td>
+  </tr>
+  <tr>
+    <td class="name">ApiService$MockitoMock$pdqCIff5$auxiliary$50saSaYd</td>
+  </tr>
+  <tr>
+    <td class="name">ApiService$MockitoMock$pdqCIff5$auxiliary$kHIY7UWS</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import okhttp3.ResponseBody
+&nbsp;import retrofit2.Call
+&nbsp;import retrofit2.http.Body
+&nbsp;import retrofit2.http.GET
+&nbsp;import retrofit2.http.POST
+&nbsp;import retrofit2.http.PUT
+&nbsp;import retrofit2.http.Path
+&nbsp;import retrofit2.http.Query
+&nbsp;
+&nbsp;interface ApiService {
+&nbsp;
+&nbsp;    @POST(&quot;Video/CargarVideo&quot;)
+&nbsp;    fun uploadVideo(@Body videoRequest: VideoRequest): Call&lt;ResponseBody&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Video/ObtenerVideosPorCliente/{clienteId}&quot;)
+&nbsp;    fun getVideosPorCliente(@Path(&quot;clienteId&quot;) clienteId: String): Call&lt;RespuestaVideo&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Proveedores/Listar&quot;)
+&nbsp;    fun getProveedores(): Call&lt;RespuestaProveedor&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Productos/ConsultarPorProveedor&quot;)
+&nbsp;    fun getProductosPorProveedor(@Query(&quot;idProveedor&quot;) idProveedor: String): Call&lt;RespuestaProducto&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Productos/Consultar&quot;)
+&nbsp;    fun getProductos(): Call&lt;RespuestaProducto&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Cliente/ObtenerClientesPorZona/{zonaId}&quot;)
+&nbsp;    fun getClientesPorZona(@Path(&quot;zonaId&quot;) zonaId: String): Call&lt;RespuestaCliente&gt;
+&nbsp;
+&nbsp;
+&nbsp;    @POST(&quot;DetallePedido/AgregarDetalle&quot;)
+&nbsp;    fun agregarDetallePedido(@Body detalle: ProductoCarrito): Call&lt;Void&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Inventarios/Consultar&quot;)
+&nbsp;    fun getStockProducto(@Query(&quot;idProducto&quot;) idProducto: Int): Call&lt;RespuestaInventario&gt;
+&nbsp;
+&nbsp;    @GET(&quot;DetallePedido/ObtenerDetallesUsuario/{id}&quot;)
+&nbsp;    fun getDetallePedidoUsuario(@Path(&quot;id&quot;) clienteId: String): Call&lt;RespuestaDetalleCarrito&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Vendedor/{idVendedor}&quot;)
+&nbsp;    fun getVendedor(@Path(&quot;idVendedor&quot;) vendedorId: String): Call&lt;RespuestaVendedor&gt;
+&nbsp;
+&nbsp;    @POST(&quot;Pedido/CrearPedido&quot;)
+&nbsp;    fun crearPedido(@Body request: Pedido): Call&lt;RespuestaRequest&gt;
+&nbsp;
+&nbsp;    @PUT(&quot;DetallePedido/ActualizarDetalles/{idUsuario}/{idPedido}&quot;)
+&nbsp;    fun enlazarDetallePedido(@Path(&quot;idUsuario&quot;) idUsuario: String,
+&nbsp;        @Path(&quot;idPedido&quot;) idPedido: String): Call&lt;RespuestaRequest&gt;
+&nbsp;
+&nbsp;    @POST(&quot;Visita/CrearVisita&quot;)
+&nbsp;    fun crearVisita(@Body request: Visita): Call&lt;RespuestaRequest&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Visita/ObtenerVisitasPorFecha/{fecha}/{vendedorId}&quot;)
+&nbsp;    fun getVisitasPorFecha(@Path(&quot;fecha&quot;) fecha: String, @Path(&quot;vendedorId&quot;) vendedorId: String
+&nbsp;    ): Call&lt;RespuestaVisita&gt;
+&nbsp;
+&nbsp;    @PUT(&quot;Visita/ModificarVisita/{id}&quot;)
+&nbsp;    fun modificarEstadoVisita(@Path(&quot;id&quot;) idVisita: Int, @Body request: VisitaRequest): Call&lt;RespuestaRequest&gt;
+&nbsp;
+&nbsp;    @POST(&quot;Usuarios/Login&quot;)
+&nbsp;    fun login(@Body request: LoginRequest ): Call&lt;RespuestaLogin&gt;
+&nbsp;
+&nbsp;    @GET(&quot;Usuarios/{id}&quot;)
+&nbsp;    fun getIdCliente(@Path(&quot;id&quot;) idUsuario: String):Call&lt;RespuestaUsuario&gt;
+&nbsp;}
+&nbsp;
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

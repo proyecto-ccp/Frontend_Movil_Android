@@ -1,0 +1,288 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > ListarVisitasActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: ListarVisitasActivity (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ListarVisitasActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/24)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ListarVisitasActivity$apiService$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ListarVisitasActivity$onCreate$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ListarVisitasActivity$onCreate$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ListarVisitasActivity$onCreate$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ListarVisitasActivity$visitaDataManager$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/37)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.os.Bundle
+&nbsp;import android.util.Log
+&nbsp;import android.widget.Toast
+&nbsp;import androidx.activity.enableEdgeToEdge
+&nbsp;import androidx.appcompat.app.AppCompatActivity
+&nbsp;import androidx.core.view.ViewCompat
+&nbsp;import androidx.core.view.WindowInsetsCompat
+&nbsp;import androidx.recyclerview.widget.LinearLayoutManager
+&nbsp;import androidx.recyclerview.widget.RecyclerView
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;import retrofit2.Retrofit
+&nbsp;import retrofit2.converter.gson.GsonConverterFactory
+&nbsp;
+<b class="nc">&nbsp;class ListarVisitasActivity : AppCompatActivity() {</b>
+<b class="nc">&nbsp;    private val visitas = mutableListOf&lt;VisitaRequest&gt;()</b>
+<b class="nc">&nbsp;    private var ciudadVisitas = mutableListOf&lt;CiudadVisita&gt;()</b>
+&nbsp;    private lateinit var adapter: CiudadVisitaAdapter
+&nbsp;
+&nbsp;
+&nbsp;    // Inyectamos el ApiService y el VisitaDataManager
+<b class="nc">&nbsp;    private val apiService: ApiService by lazy {</b>
+<b class="nc">&nbsp;        Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-visitas-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+<b class="nc">&nbsp;            .create(ApiService::class.java)</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private val visitaDataManager by lazy {</b>
+<b class="nc">&nbsp;        VisitaDataManager(apiService)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;
+&nbsp;    private lateinit var idUsuario: String
+&nbsp;
+&nbsp;    override fun onCreate(savedInstanceState: Bundle?) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState)</b>
+<b class="nc">&nbsp;        enableEdgeToEdge()</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_listar_visitas)</b>
+&nbsp;
+<b class="nc">&nbsp;        val fecha = intent.getStringExtra(&quot;fecha&quot;)</b>
+<b class="nc">&nbsp;        idUsuario = intent.getStringExtra(&quot;id_usuario&quot;) ?: &quot;&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;        if (idUsuario.isNullOrEmpty() || fecha.isNullOrEmpty()) {</b>
+<b class="nc">&nbsp;           Toast.makeText(this, &quot;ID de vendedor o fecha no recibida&quot;, Toast.LENGTH_SHORT).show()</b>
+<b class="nc">&nbsp;            finish()</b>
+&nbsp;            return
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        val recyclerView: RecyclerView = findViewById(R.id.recyclerViewCiudadVisitas)</b>
+<b class="nc">&nbsp;        recyclerView.layoutManager = LinearLayoutManager(this)</b>
+<b class="nc">&nbsp;        adapter = CiudadVisitaAdapter(ciudadVisitas, visitas)</b>
+<b class="nc">&nbsp;        recyclerView.adapter = adapter</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets -&gt;</b>
+<b class="nc">&nbsp;            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)</b>
+<b class="nc">&nbsp;            insets</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        visitaDataManager.cargarCiudadVisitas(</b>
+&nbsp;
+<b class="nc">&nbsp;            fecha,</b>
+<b class="nc">&nbsp;            idUsuario,</b>
+&nbsp;            onSuccess = { listaVisitas -&gt;
+<b class="nc">&nbsp;                visitas.clear()</b>
+<b class="nc">&nbsp;                visitas.addAll(listaVisitas)</b>
+<b class="nc">&nbsp;                ciudadVisitas.clear()</b>
+<b class="nc">&nbsp;                ciudadVisitas.addAll(visitaDataManager.extraerCiudades(listaVisitas))</b>
+<b class="nc">&nbsp;                adapter.notifyDataSetChanged()</b>
+&nbsp;            },
+&nbsp;            onEmpty = {
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;No hay visitas registradas para la fecha seleccionada&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            },
+&nbsp;            onError = {
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Error de conexión con visitas&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        )
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

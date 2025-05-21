@@ -1,0 +1,176 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > VisitaDataManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: VisitaDataManager (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VisitaDataManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/13)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">VisitaDataManager$cargarCiudadVisitas$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (2/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    55.6%
+  </span>
+  <span class="absValue">
+    (5/9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (5/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (18/22)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.util.Log
+&nbsp;import retrofit2.*
+&nbsp;
+<b class="fc">&nbsp;class VisitaDataManager(private val apiService: ApiService) {</b>
+&nbsp;
+&nbsp;    fun cargarCiudadVisitas(
+&nbsp;        fecha: String,
+&nbsp;        idUsuario: String,
+&nbsp;        onSuccess: (List&lt;VisitaRequest&gt;) -&gt; Unit,
+&nbsp;        onEmpty: () -&gt; Unit,
+&nbsp;        onError: () -&gt; Unit
+&nbsp;    ) {
+<b class="fc">&nbsp;        val fechaFormateada = &quot;${fecha}T00:00:00.420Z&quot;</b>
+<b class="fc">&nbsp;        apiService.getVisitasPorFecha(fechaFormateada, idUsuario).enqueue(object : Callback&lt;RespuestaVisita&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaVisita&gt;, response: Response&lt;RespuestaVisita&gt;) {
+<b class="fc">&nbsp;               if (response.isSuccessful) {</b>
+<b class="fc">&nbsp;                    val lista = response.body()?.visitas ?: emptyList()</b>
+<b class="fc">&nbsp;                    if (lista.isEmpty()) onEmpty() else onSuccess(lista)</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    onEmpty()</b>
+&nbsp;                }
+<b class="fc">&nbsp;            }</b>
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaVisita&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                onError()</b>
+<b class="nc">&nbsp;            }</b>
+&nbsp;        })
+<b class="fc">&nbsp;    }</b>
+&nbsp;
+&nbsp;    fun extraerCiudades(visitas: List&lt;VisitaRequest&gt;): List&lt;CiudadVisita&gt; {
+<b class="fc">&nbsp;        val agrupado = mutableMapOf&lt;Pair&lt;String, String&gt;, Int&gt;()</b>
+<b class="fc">&nbsp;        visitas.forEach {</b>
+<b class="fc">&nbsp;            val ciudad = it.cliente.ciudad</b>
+<b class="fc">&nbsp;            val fecha = it.fechaVisita?.substring(0, 10) ?: &quot;Sin fecha&quot;</b>
+<b class="fc">&nbsp;            val key = ciudad to fecha</b>
+<b class="fc">&nbsp;            agrupado[key] = agrupado.getOrDefault(key, 0) + 1</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;
+<b class="fc">&nbsp;        return agrupado.map { (key, cantidad) -&gt;</b>
+<b class="fc">&nbsp;            CiudadVisita(key.first, cantidad, key.second)</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,179 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > VideoAdapter</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: VideoAdapter (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VideoAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">VideoAdapter$VideoViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/21)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.content.Intent
+&nbsp;import android.view.LayoutInflater
+&nbsp;import android.view.View
+&nbsp;import android.view.ViewGroup
+&nbsp;import android.widget.TextView
+&nbsp;import androidx.recyclerview.widget.RecyclerView
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;
+<b class="nc">&nbsp;class VideoAdapter(private val videos: List&lt;Video&gt;) : RecyclerView.Adapter&lt;VideoAdapter.VideoViewHolder&gt;() {</b>
+&nbsp;
+&nbsp;    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
+<b class="nc">&nbsp;        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_video, parent, false)</b>
+<b class="nc">&nbsp;        return VideoViewHolder(itemView)</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
+<b class="nc">&nbsp;        val video = videos[position]</b>
+<b class="nc">&nbsp;        holder.bind(video)</b>
+<b class="nc">&nbsp;        val context = holder.itemView.context</b>
+&nbsp;
+<b class="nc">&nbsp;        holder.itemView.setOnClickListener {</b>
+<b class="nc">&nbsp;           val intent = Intent(context, GenerarRecomendacionActivity::class.java).apply {</b>
+<b class="nc">&nbsp;                putExtra(&quot;video_imagen&quot;, video.urlImagen)</b>
+<b class="nc">&nbsp;           }</b>
+<b class="nc">&nbsp;            context.startActivity(intent)</b>
+&nbsp;
+&nbsp;        }
+&nbsp;    }
+&nbsp;    override fun getItemCount(): Int {
+<b class="nc">&nbsp;        return videos.size</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {</b>
+<b class="nc">&nbsp;        private val nombreVideo: TextView = itemView.findViewById(R.id.nombreVideo)</b>
+<b class="nc">&nbsp;        private val clienteVideo: TextView = itemView.findViewById(R.id.cliente)</b>
+<b class="nc">&nbsp;        private val productoVideo: TextView = itemView.findViewById(R.id.nombreProducto)</b>
+<b class="nc">&nbsp;        private val estadoVideo: TextView = itemView.findViewById(R.id.estado)</b>
+&nbsp;
+&nbsp;        fun bind(video: Video) {
+<b class="nc">&nbsp;            nombreVideo.text = video.nombre</b>
+<b class="nc">&nbsp;            clienteVideo.text = &quot;Cliente: ${video.idCliente}&quot;</b>
+<b class="nc">&nbsp;            productoVideo.text = &quot;Producto ID: ${video.idProducto}&quot;</b>
+<b class="nc">&nbsp;            estadoVideo.text = &quot;Estado: ${video.estadoCarga}&quot;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,584 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > CargarVideoActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: CargarVideoActivity (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CargarVideoActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/148)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CargarVideoActivity$cargarClientesDesdeApi$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CargarVideoActivity$cargarProductosDesdeApi$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/16)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CargarVideoActivity$cargarProveedoresDesdeApi$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CargarVideoActivity$onCreate$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/6)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CargarVideoActivity$sendVideo64ToServer$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/12)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/218)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.content.Intent
+&nbsp;import android.os.Bundle
+&nbsp;import android.provider.MediaStore
+&nbsp;import android.util.Log
+&nbsp;import android.widget.ArrayAdapter
+&nbsp;import android.widget.Button
+&nbsp;import android.widget.Spinner
+&nbsp;import android.widget.Toast
+&nbsp;import android.util.Base64
+&nbsp;import android.view.View
+&nbsp;import android.widget.AdapterView
+&nbsp;import android.widget.EditText
+&nbsp;import android.widget.LinearLayout
+&nbsp;import androidx.activity.enableEdgeToEdge
+&nbsp;import androidx.appcompat.app.AppCompatActivity
+&nbsp;import androidx.core.view.ViewCompat
+&nbsp;import androidx.core.view.WindowInsetsCompat
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;import okhttp3.OkHttpClient
+&nbsp;import okhttp3.ResponseBody
+&nbsp;import retrofit2.Call
+&nbsp;import retrofit2.Callback
+&nbsp;import retrofit2.Response
+&nbsp;import retrofit2.Retrofit
+&nbsp;import retrofit2.converter.gson.GsonConverterFactory
+&nbsp;import java.io.File
+&nbsp;import java.io.FileOutputStream
+&nbsp;import java.io.InputStream
+&nbsp;import java.io.IOException
+&nbsp;
+<b class="nc">&nbsp;class CargarVideoActivity : AppCompatActivity() {</b>
+<b class="nc">&nbsp;    internal var listaClientes: List&lt;Cliente&gt; = emptyList()</b>
+<b class="nc">&nbsp;    private var selectedClienteId: String = &quot;&quot;</b>
+<b class="nc">&nbsp;    internal var listaProveedores: List&lt;Proveedor&gt; = emptyList()</b>
+<b class="nc">&nbsp;    private var selectedProveedorId: String = &quot;&quot;</b>
+<b class="nc">&nbsp;    internal var listaProductos: List&lt;Producto&gt; = emptyList()</b>
+&nbsp;    private var selectedProductoId: Int = 0
+&nbsp;    private lateinit var idUsuario: String
+&nbsp;
+<b class="nc">&nbsp;    private val SELECCIONA_UNO = &quot;Selecciona uno&quot;</b>
+<b class="nc">&nbsp;    private val REQUEST_VIDEO_CAPTURE = 1</b>
+<b class="nc">&nbsp;    private val REQUEST_VIDEO_GALLERY = 2</b>
+&nbsp;    private lateinit var videoBytes: ByteArray
+&nbsp;    private lateinit var spinner: Spinner
+&nbsp;    private lateinit var spinnerC: Spinner
+&nbsp;    private lateinit var spinnerP: Spinner
+&nbsp;    private lateinit var editTextNombreVideo: EditText
+<b class="nc">&nbsp;    private var nombreVideo: String = &quot;&quot;</b>
+&nbsp;    private lateinit var loadingContainer: LinearLayout
+&nbsp;
+&nbsp;    override fun onCreate(savedInstanceState: Bundle?) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState)</b>
+<b class="nc">&nbsp;        enableEdgeToEdge()</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_cargar_video)</b>
+&nbsp;
+<b class="nc">&nbsp;        spinner = findViewById(R.id.spinnerProductos)</b>
+<b class="nc">&nbsp;        spinnerC = findViewById(R.id.spinnerClientes)</b>
+<b class="nc">&nbsp;        spinnerP = findViewById(R.id.spinnerProveedores)</b>
+<b class="nc">&nbsp;        editTextNombreVideo = findViewById(R.id.editNombres)</b>
+&nbsp;
+<b class="nc">&nbsp;        cargarProveedoresDesdeApi()</b>
+<b class="nc">&nbsp;        cargarClientesDesdeApi()</b>
+&nbsp;
+<b class="nc">&nbsp;        val buttonCargar = findViewById&lt;Button&gt;(R.id.buttonCargar)</b>
+<b class="nc">&nbsp;        val buttonGaleria = findViewById&lt;Button&gt;(R.id.buttonGaleria)</b>
+<b class="nc">&nbsp;        loadingContainer = findViewById(R.id.loadingContainer)</b>
+&nbsp;
+<b class="nc">&nbsp;        buttonCargar.setOnClickListener {</b>
+<b class="nc">&nbsp;            val posicionProducto = spinner.selectedItemPosition</b>
+<b class="nc">&nbsp;            val posicionCliente = spinnerC.selectedItemPosition</b>
+&nbsp;
+<b class="nc">&nbsp;            if (!validarSeleccion(posicionCliente, posicionProducto)) {</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Debes seleccionar un producto y un cliente&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                return@setOnClickListener
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            val productoSeleccionado = listaProductos[posicionProducto - 1]</b>
+<b class="nc">&nbsp;            val idProducto = productoSeleccionado.id</b>
+<b class="nc">&nbsp;            selectedProductoId = idProducto</b>
+&nbsp;
+<b class="nc">&nbsp;            val clienteSeleccionado = listaClientes[posicionCliente - 1]</b>
+<b class="nc">&nbsp;            val idCliente = clienteSeleccionado.id</b>
+<b class="nc">&nbsp;            selectedClienteId = idCliente</b>
+<b class="nc">&nbsp;            nombreVideo = editTextNombreVideo.text.toString()+&quot;.mp4&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;            val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)</b>
+<b class="nc">&nbsp;            startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE)</b>
+&nbsp;
+&nbsp;        }
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        buttonGaleria.setOnClickListener {</b>
+<b class="nc">&nbsp;            val posicionP = spinner.selectedItemPosition</b>
+<b class="nc">&nbsp;            val posicionC = spinnerC.selectedItemPosition</b>
+&nbsp;
+<b class="nc">&nbsp;            if (!validarSeleccion(posicionC, posicionP)) {</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Debes seleccionar un producto y un cliente&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                return@setOnClickListener
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            val productoSeleccionado = listaProductos[posicionP-1]</b>
+<b class="nc">&nbsp;            val idProducto = productoSeleccionado.id</b>
+&nbsp;
+<b class="nc">&nbsp;            val clienteSeleccionado = listaClientes[posicionC - 1]</b>
+<b class="nc">&nbsp;            val idCliente = clienteSeleccionado.id</b>
+&nbsp;
+<b class="nc">&nbsp;            nombreVideo = editTextNombreVideo.text.toString().trim()+&quot;.mp4&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;            val pickVideoIntent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)</b>
+<b class="nc">&nbsp;            pickVideoIntent.type = &quot;video/*&quot;</b>
+<b class="nc">&nbsp;            selectedClienteId = idCliente</b>
+<b class="nc">&nbsp;            selectedProductoId = idProducto</b>
+<b class="nc">&nbsp;            startActivityForResult(pickVideoIntent, REQUEST_VIDEO_GALLERY)</b>
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        val buttonVerLista: Button = findViewById&lt;Button&gt;(R.id.buttonLista)</b>
+<b class="nc">&nbsp;        buttonVerLista.setOnClickListener {</b>
+<b class="nc">&nbsp;            val posicion = spinnerC.selectedItemPosition</b>
+&nbsp;
+<b class="nc">&nbsp;            if (posicion &gt; 0) {</b>
+<b class="nc">&nbsp;                val clienteSeleccionado = listaClientes[posicion - 1]</b>
+<b class="nc">&nbsp;                val idCliente = clienteSeleccionado.id</b>
+&nbsp;
+<b class="nc">&nbsp;                val intent = Intent(this, ListaVideosActivity::class.java)</b>
+<b class="nc">&nbsp;                intent.putExtra(&quot;CLIENTE_ID&quot;, idCliente)</b>
+<b class="nc">&nbsp;                startActivity(intent)</b>
+<b class="nc">&nbsp;                spinnerC.setSelection(0)</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;Debes seleccionar un cliente de la lista&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        spinnerP.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {</b>
+&nbsp;            override fun onItemSelected(parent: AdapterView&lt;*&gt;, view: View?, position: Int, id: Long) {
+<b class="nc">&nbsp;                if (position == 0 ){</b>
+&nbsp;                    return
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                val proveedorSeleccionado = listaProveedores[position - 1]</b>
+<b class="nc">&nbsp;                selectedProveedorId = proveedorSeleccionado.id</b>
+&nbsp;
+<b class="nc">&nbsp;                cargarProductosDesdeApi(selectedProveedorId)</b>
+&nbsp;            }
+&nbsp;            override fun onNothingSelected(parent: AdapterView&lt;*&gt;) {
+&nbsp;                // No hacer nada
+<b class="nc">&nbsp;            }</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets -&gt;</b>
+<b class="nc">&nbsp;            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)</b>
+<b class="nc">&nbsp;            insets</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+<b class="nc">&nbsp;        super.onActivityResult(requestCode, resultCode, data)</b>
+&nbsp;
+<b class="nc">&nbsp;        if (resultCode == RESULT_OK) {</b>
+<b class="nc">&nbsp;            when (requestCode) {</b>
+<b class="nc">&nbsp;                REQUEST_VIDEO_CAPTURE -&gt; {</b>
+<b class="nc">&nbsp;                    val videoUri = data?.data</b>
+<b class="nc">&nbsp;                    if (videoUri != null) {</b>
+<b class="nc">&nbsp;                        try {</b>
+<b class="nc">&nbsp;                            val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!</b>
+<b class="nc">&nbsp;                            videoBytes = inputStream.readBytes()</b>
+<b class="nc">&nbsp;                            saveVideoToFile(videoBytes)</b>
+<b class="nc">&nbsp;                            sendVideo64ToServer(videoBytes, selectedProductoId, selectedClienteId)</b>
+<b class="nc">&nbsp;                            videoBytes = ByteArray(0)</b>
+<b class="nc">&nbsp;                            spinner.setSelection(0)</b>
+<b class="nc">&nbsp;                            spinnerC.setSelection(0)</b>
+<b class="nc">&nbsp;                            spinnerP.setSelection(0)</b>
+<b class="nc">&nbsp;                            editTextNombreVideo.text.clear()</b>
+<b class="nc">&nbsp;                        } catch (e: IOException) {</b>
+<b class="nc">&nbsp;                            e.printStackTrace()</b>
+<b class="nc">&nbsp;                            Toast.makeText(this, &quot;Error al leer el video&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                        }
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;No se pudo obtener el video&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                REQUEST_VIDEO_GALLERY -&gt; {</b>
+<b class="nc">&nbsp;                    val videoUri = data?.data</b>
+<b class="nc">&nbsp;                    if (videoUri != null) {</b>
+<b class="nc">&nbsp;                        try {</b>
+<b class="nc">&nbsp;                            val inputStream: InputStream = contentResolver.openInputStream(videoUri)!!</b>
+<b class="nc">&nbsp;                            videoBytes = inputStream.readBytes()</b>
+&nbsp;
+<b class="nc">&nbsp;                            sendVideo64ToServer(videoBytes, selectedProductoId, selectedClienteId)</b>
+<b class="nc">&nbsp;                            videoBytes = ByteArray(0)</b>
+<b class="nc">&nbsp;                            spinner.setSelection(0)</b>
+<b class="nc">&nbsp;                            spinnerC.setSelection(0)</b>
+<b class="nc">&nbsp;                            spinnerP.setSelection(0)</b>
+<b class="nc">&nbsp;                            editTextNombreVideo.text.clear()</b>
+&nbsp;
+<b class="nc">&nbsp;                        } catch (e: IOException) {</b>
+<b class="nc">&nbsp;                            e.printStackTrace()</b>
+<b class="nc">&nbsp;                            Toast.makeText(this, &quot;Error al leer el video&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                        }
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        Toast.makeText(this, &quot;No se pudo obtener el video&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;        }    }
+&nbsp;
+&nbsp;
+&nbsp;    private fun saveVideoToFile(videoBytes: ByteArray) {
+<b class="nc">&nbsp;        try {</b>
+<b class="nc">&nbsp;            val file = File(filesDir, nombreVideo)</b>
+<b class="nc">&nbsp;            val outputStream = FileOutputStream(file)</b>
+&nbsp;
+<b class="nc">&nbsp;            outputStream.write(videoBytes)</b>
+<b class="nc">&nbsp;            outputStream.close()</b>
+&nbsp;
+<b class="nc">&nbsp;        } catch (e: IOException) {</b>
+<b class="nc">&nbsp;            e.printStackTrace()</b>
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;Error al guardar el archivo de video&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun sendVideo64ToServer(videoBytes: ByteArray, producto: Int, cliente: String) {
+<b class="nc">&nbsp;        val video64 = Base64.encodeToString(videoBytes, Base64.NO_WRAP)</b>
+&nbsp;
+<b class="nc">&nbsp;        val videoRequest = VideoRequest(</b>
+<b class="nc">&nbsp;            idCliente = cliente,</b>
+<b class="nc">&nbsp;            idProducto = producto,</b>
+<b class="nc">&nbsp;            nombre = nombreVideo,</b>
+<b class="nc">&nbsp;            video = video64</b>
+&nbsp;        )
+<b class="nc">&nbsp;        loadingContainer.visibility = View.VISIBLE</b>
+&nbsp;
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-video-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        apiService.uploadVideo(videoRequest).enqueue(object : Callback&lt;ResponseBody&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;ResponseBody&gt;, response: Response&lt;ResponseBody&gt;) {
+<b class="nc">&nbsp;                loadingContainer.visibility = View.GONE</b>
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    Toast.makeText(this@CargarVideoActivity, &quot;Video subido exitosamente&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    try {</b>
+<b class="nc">&nbsp;                        val errorBody = response.errorBody()?.string()</b>
+<b class="nc">&nbsp;                        Log.e(&quot;UploadError&quot;, &quot;Error en la subida del video: $errorBody&quot;)</b>
+<b class="nc">&nbsp;                        Toast.makeText(this@CargarVideoActivity, &quot;Error al subir el video&quot;, Toast.LENGTH_SHORT).show()</b>
+<b class="nc">&nbsp;                    } catch (e: IOException) {</b>
+<b class="nc">&nbsp;                        Log.e(&quot;UploadError&quot;, &quot;Error al leer la respuesta del error: ${e.message}&quot;)</b>
+&nbsp;                    }
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;ResponseBody&gt;, t: Throwable) {
+<b class="nc">&nbsp;                loadingContainer.visibility = View.GONE</b>
+<b class="nc">&nbsp;                Toast.makeText(this@CargarVideoActivity, &quot;Error en la conexión para enviar video: ${t.message}&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun cargarProveedoresDesdeApi() {
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://proveedores-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+&nbsp;
+<b class="nc">&nbsp;        apiService.getProveedores().enqueue(object : Callback&lt;RespuestaProveedor&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaProveedor&gt;, response: Response&lt;RespuestaProveedor&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    val proveedores = response.body()?.proveedores ?: emptyList()</b>
+&nbsp;
+<b class="nc">&nbsp;                    listaProveedores = proveedores</b>
+&nbsp;
+<b class="nc">&nbsp;                    val nombresProveedores = proveedores.map { &quot;${it.nombre}&quot; }</b>
+<b class="nc">&nbsp;                    val adapter = ArrayAdapter(</b>
+<b class="nc">&nbsp;                        this@CargarVideoActivity,</b>
+<b class="nc">&nbsp;                        android.R.layout.simple_spinner_item,</b>
+<b class="nc">&nbsp;                        listOf(SELECCIONA_UNO) + nombresProveedores</b>
+&nbsp;                    )
+<b class="nc">&nbsp;                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)</b>
+<b class="nc">&nbsp;                    spinnerP.adapter = adapter</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@CargarVideoActivity, &quot;Error al cargar proveedores&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaProveedor&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                Toast.makeText(this@CargarVideoActivity, &quot;Error de conexión con proveedores&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun cargarClientesDesdeApi() {
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-cliente-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        val idZona = &quot;11e86372-1b67-4d4b-b234-53f716dab601&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;        apiService.getClientesPorZona(idZona).enqueue(object : Callback&lt;RespuestaCliente&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaCliente&gt;, response: Response&lt;RespuestaCliente&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    val clientes = response.body()?.clientes ?: emptyList()</b>
+&nbsp;
+<b class="nc">&nbsp;                    listaClientes = clientes</b>
+&nbsp;
+<b class="nc">&nbsp;                    val nombresClientes = clientes.map { &quot;${it.nombre} ${it.apellido}&quot; }</b>
+<b class="nc">&nbsp;                    val adapter = ArrayAdapter(</b>
+<b class="nc">&nbsp;                        this@CargarVideoActivity,</b>
+<b class="nc">&nbsp;                        android.R.layout.simple_spinner_item,</b>
+<b class="nc">&nbsp;                        listOf(SELECCIONA_UNO) + nombresClientes</b>
+&nbsp;                    )
+<b class="nc">&nbsp;                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)</b>
+<b class="nc">&nbsp;                    spinnerC.adapter = adapter</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@CargarVideoActivity, &quot;Error al cargar clientes&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaCliente&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                Toast.makeText(this@CargarVideoActivity, &quot;Error de conexión con clientes&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun cargarProductosDesdeApi(proveedorId: String) {
+<b class="nc">&nbsp;        val client = OkHttpClient.Builder()</b>
+<b class="nc">&nbsp;            .addInterceptor(AuthInterceptor(this))</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://productos-596275467600.us-central1.run.app/api/&quot;) // Cambia por tu URL real</b>
+<b class="nc">&nbsp;            .client(client)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        apiService.getProductosPorProveedor(proveedorId).enqueue(object : Callback&lt;RespuestaProducto&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaProducto&gt;, response: Response&lt;RespuestaProducto&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    listaProductos = response.body()?.productos ?: emptyList()</b>
+<b class="nc">&nbsp;                    val nombresProductos = listaProductos.map { it.nombre }</b>
+<b class="nc">&nbsp;                    val adapter = ArrayAdapter(</b>
+<b class="nc">&nbsp;                        this@CargarVideoActivity,</b>
+<b class="nc">&nbsp;                        android.R.layout.simple_spinner_item,</b>
+<b class="nc">&nbsp;                        listOf(SELECCIONA_UNO) + nombresProductos</b>
+&nbsp;                    )
+<b class="nc">&nbsp;                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)</b>
+<b class="nc">&nbsp;                    spinner.adapter = adapter</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@CargarVideoActivity, &quot;Error al cargar productos&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaProducto&gt;, t: Throwable) {
+<b class="nc">&nbsp;                Toast.makeText(this@CargarVideoActivity, &quot;Error de conexión con productos&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    fun validarSeleccion(clientePos: Int, productoPos: Int): Boolean {
+<b class="nc">&nbsp;        return clientePos &gt; 0 &amp;&amp; productoPos &gt; 0</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

@@ -31,11 +31,11 @@ import java.io.InputStream
 import java.io.IOException
 
 class CargarVideoActivity : AppCompatActivity() {
-    private var listaClientes: List<Cliente> = emptyList()
+    internal var listaClientes: List<Cliente> = emptyList()
     private var selectedClienteId: String = ""
-    private var listaProveedores: List<Proveedor> = emptyList()
+    internal var listaProveedores: List<Proveedor> = emptyList()
     private var selectedProveedorId: String = ""
-    private var listaProductos: List<Producto> = emptyList()
+    internal var listaProductos: List<Producto> = emptyList()
     private var selectedProductoId: Int = 0
     private lateinit var idUsuario: String
 

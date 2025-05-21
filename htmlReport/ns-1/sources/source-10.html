@@ -1,0 +1,154 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > DetalleClienteActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: DetalleClienteActivity (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DetalleClienteActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.os.Bundle
+&nbsp;import android.widget.TextView
+&nbsp;import androidx.activity.enableEdgeToEdge
+&nbsp;import androidx.appcompat.app.AppCompatActivity
+&nbsp;import androidx.core.view.ViewCompat
+&nbsp;import androidx.core.view.WindowInsetsCompat
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;
+<b class="nc">&nbsp;class DetalleClienteActivity : AppCompatActivity() {</b>
+&nbsp;    override fun onCreate(savedInstanceState: Bundle?) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState)</b>
+<b class="nc">&nbsp;        enableEdgeToEdge()</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_detalle_cliente)</b>
+&nbsp;
+<b class="nc">&nbsp;        val nombre = intent.getStringExtra(&quot;cliente_nombre&quot;)</b>
+<b class="nc">&nbsp;        val apellido = intent.getStringExtra(&quot;cliente_apellido&quot;)</b>
+<b class="nc">&nbsp;        val documento = intent.getStringExtra(&quot;cliente_documento&quot;)</b>
+<b class="nc">&nbsp;        val direccion = intent.getStringExtra(&quot;cliente_direccion&quot;)</b>
+<b class="nc">&nbsp;        val telefono = intent.getStringExtra(&quot;cliente_telefono&quot;)</b>
+<b class="nc">&nbsp;        val tipoDocumentoAbreviado = intent.getStringExtra(&quot;cliente_tipodoc&quot;)</b>
+<b class="nc">&nbsp;        val ciudad = intent.getStringExtra(&quot;cliente_ciudad&quot;)</b>
+<b class="nc">&nbsp;        val zona = intent.getStringExtra(&quot;cliente_zona&quot;)</b>
+<b class="nc">&nbsp;        val correo = intent.getStringExtra(&quot;cliente_correo&quot;)</b>
+&nbsp;
+<b class="nc">&nbsp;        val tipoDocumento = when (tipoDocumentoAbreviado) {</b>
+<b class="nc">&nbsp;            &quot;CC&quot; -&gt; &quot;Cédula de Ciudadanía&quot;</b>
+<b class="nc">&nbsp;            &quot;PS&quot; -&gt; &quot;Pasaporte&quot;</b>
+<b class="nc">&nbsp;            &quot;NI&quot; -&gt; &quot;Número de Identificación Tributario&quot;</b>
+<b class="nc">&nbsp;            &quot;CE&quot; -&gt; &quot;Cédula de Extranjería&quot;</b>
+<b class="nc">&nbsp;            else -&gt; &quot;Tipo desconocido&quot;</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoNombre).text = &quot;$nombre $apellido&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoTipoDoc).text = &quot;$tipoDocumento&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoNumDoc).text = &quot;$documento&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoDireccion).text = &quot;$direccion&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoTelefono).text = &quot;$telefono&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoCiudad).text = &quot;$ciudad&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoZona).text = &quot;$zona&quot;</b>
+<b class="nc">&nbsp;        findViewById&lt;TextView&gt;(R.id.textoCorreo).text = &quot;$correo&quot;</b>
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets -&gt;</b>
+<b class="nc">&nbsp;            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)</b>
+<b class="nc">&nbsp;            insets</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

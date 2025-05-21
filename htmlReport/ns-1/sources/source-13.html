@@ -1,0 +1,535 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > FinalizarPedidoActivity</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.uxdesign.ccp_frontend</a>
+</div>
+
+<h1>Coverage Summary for Class: FinalizarPedidoActivity (com.uxdesign.ccp_frontend)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FinalizarPedidoActivity</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/133)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FinalizarPedidoActivity$asociarDetalles$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/13)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FinalizarPedidoActivity$cargarClientesDesdeApi$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FinalizarPedidoActivity$enviarPedido$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">FinalizarPedidoActivity$obtenerZonaVendedor$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/10)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/26)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/184)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.uxdesign.ccp_frontend
+&nbsp;
+&nbsp;import android.app.DatePickerDialog
+&nbsp;import android.content.Intent
+&nbsp;import android.os.Bundle
+&nbsp;import java.text.SimpleDateFormat
+&nbsp;import java.util.Locale
+&nbsp;import android.widget.ArrayAdapter
+&nbsp;import android.widget.Button
+&nbsp;import android.widget.EditText
+&nbsp;import android.widget.Spinner
+&nbsp;import android.widget.Toast
+&nbsp;import androidx.activity.enableEdgeToEdge
+&nbsp;import androidx.appcompat.app.AppCompatActivity
+&nbsp;import androidx.core.view.ViewCompat
+&nbsp;import androidx.core.view.WindowInsetsCompat
+&nbsp;import com.uxdesign.cpp.R
+&nbsp;import okhttp3.OkHttpClient
+&nbsp;import retrofit2.Call
+&nbsp;import retrofit2.Callback
+&nbsp;import retrofit2.Response
+&nbsp;import retrofit2.Retrofit
+&nbsp;import retrofit2.converter.gson.GsonConverterFactory
+&nbsp;import java.text.ParseException
+&nbsp;import java.util.Calendar
+&nbsp;import java.util.Date
+&nbsp;import java.util.TimeZone
+&nbsp;
+<b class="nc">&nbsp;class FinalizarPedidoActivity : AppCompatActivity() {</b>
+&nbsp;    private lateinit var spinnerCliente: Spinner
+&nbsp;    private lateinit var editFecha: EditText
+&nbsp;    private lateinit var editNumProductos: EditText
+&nbsp;    private lateinit var editTotal: EditText
+&nbsp;    private lateinit var editComentarios: EditText
+<b class="nc">&nbsp;    private var listaClientes: List&lt;Cliente&gt; = emptyList()</b>
+<b class="nc">&nbsp;    private var selectedClienteId: String = &quot;&quot;</b>
+&nbsp;    private lateinit var vendedor: Vendedor
+&nbsp;    private lateinit var idUsuario: String
+&nbsp;
+&nbsp;    override fun onCreate(savedInstanceState: Bundle?) {
+<b class="nc">&nbsp;        super.onCreate(savedInstanceState)</b>
+<b class="nc">&nbsp;        enableEdgeToEdge()</b>
+<b class="nc">&nbsp;        setContentView(R.layout.activity_finalizar_pedido)</b>
+&nbsp;
+<b class="nc">&nbsp;        idUsuario = intent.getStringExtra(&quot;id_usuario&quot;) ?: &quot;&quot;</b>
+<b class="nc">&nbsp;        val cantidadProd = intent.getIntExtra(&quot;cantidad_productos&quot;, 0)</b>
+<b class="nc">&nbsp;        val valorTotal = intent.getDoubleExtra(&quot;valor_total&quot;, 0.0)</b>
+&nbsp;
+<b class="nc">&nbsp;        spinnerCliente = findViewById(R.id.spinnerCliente)</b>
+<b class="nc">&nbsp;        editFecha = findViewById(R.id.editFechaEntrega)</b>
+&nbsp;
+<b class="nc">&nbsp;        editFecha.setOnClickListener {</b>
+<b class="nc">&nbsp;            val calendario = Calendar.getInstance()</b>
+<b class="nc">&nbsp;            val year = calendario[Calendar.YEAR]</b>
+<b class="nc">&nbsp;            val month = calendario[Calendar.MONTH]</b>
+<b class="nc">&nbsp;            val day = calendario[Calendar.DAY_OF_MONTH]</b>
+&nbsp;
+<b class="nc">&nbsp;            val datePicker = DatePickerDialog(</b>
+<b class="nc">&nbsp;                this,</b>
+&nbsp;                { _, selectedYear, selectedMonth, selectedDay -&gt;
+<b class="nc">&nbsp;                    val fechaSeleccionada = String.format(&quot;%04d-%02d-%02d&quot;, selectedYear, selectedMonth + 1, selectedDay)</b>
+<b class="nc">&nbsp;                    editFecha.setText(fechaSeleccionada)</b>
+&nbsp;                },
+<b class="nc">&nbsp;                year, month, day</b>
+&nbsp;            )
+&nbsp;
+<b class="nc">&nbsp;            datePicker.show()</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        editNumProductos = findViewById(R.id.editNumProductos)</b>
+<b class="nc">&nbsp;        editTotal = findViewById(R.id.editTotal)</b>
+<b class="nc">&nbsp;        editComentarios = findViewById(R.id.editComentarios)</b>
+&nbsp;
+<b class="nc">&nbsp;        editNumProductos.setText(cantidadProd.toString())</b>
+<b class="nc">&nbsp;        editTotal.setText(&quot;$${String.format(&quot;%.2f&quot;, valorTotal)}&quot;)</b>
+&nbsp;
+<b class="nc">&nbsp;        val buttonRegistrar: Button = findViewById(R.id.buttonRegistrar)</b>
+&nbsp;
+<b class="nc">&nbsp;        obtenerZonaVendedor(idUsuario)</b>
+&nbsp;
+<b class="nc">&nbsp;        buttonRegistrar.setOnClickListener {</b>
+<b class="nc">&nbsp;            if (idUsuario.isNullOrEmpty()) {</b>
+<b class="nc">&nbsp;                Toast.makeText(this, &quot;ID de usuario no disponible&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                return@setOnClickListener
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            val posicionCliente = spinnerCliente.selectedItemPosition</b>
+<b class="nc">&nbsp;            val clienteSeleccionado = listaClientes[posicionCliente - 1]</b>
+<b class="nc">&nbsp;            val idCliente = clienteSeleccionado.id</b>
+<b class="nc">&nbsp;            selectedClienteId = idCliente</b>
+&nbsp;
+<b class="nc">&nbsp;            if (!validarCampos()) {</b>
+&nbsp;                return@setOnClickListener
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            val fechaEntrega = editFecha.text.toString().trim()</b>
+<b class="nc">&nbsp;            val fechaISO = convertirFechaAISO8601(fechaEntrega)</b>
+<b class="nc">&nbsp;            val comentarios = editComentarios.text.toString().trim()</b>
+&nbsp;
+<b class="nc">&nbsp;            val pedido = Pedido(</b>
+<b class="nc">&nbsp;                idCliente = selectedClienteId,</b>
+<b class="nc">&nbsp;                fechaEntrega = fechaISO,</b>
+<b class="nc">&nbsp;                estadoPedido = &quot;CREADO&quot;,</b>
+<b class="nc">&nbsp;                valorTotal = valorTotal,</b>
+<b class="nc">&nbsp;                idVendedor = idUsuario,</b>
+<b class="nc">&nbsp;                comentarios = comentarios,</b>
+<b class="nc">&nbsp;                idMoneda = 11</b>
+&nbsp;            )
+&nbsp;
+<b class="nc">&nbsp;            enviarPedido(pedido, idUsuario)</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets -&gt;</b>
+<b class="nc">&nbsp;            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())</b>
+<b class="nc">&nbsp;            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)</b>
+<b class="nc">&nbsp;            insets</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun cargarClientesDesdeApi() {
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-cliente-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        val idZona = vendedor.idzona</b>
+&nbsp;
+<b class="nc">&nbsp;        apiService.getClientesPorZona(idZona).enqueue(object : Callback&lt;RespuestaCliente&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaCliente&gt;, response: Response&lt;RespuestaCliente&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    val clientes = response.body()?.clientes ?: emptyList()</b>
+&nbsp;
+<b class="nc">&nbsp;                    listaClientes = clientes</b>
+&nbsp;
+<b class="nc">&nbsp;                    val nombresClientes = clientes.map { &quot;${it.nombre} ${it.apellido}&quot; }</b>
+<b class="nc">&nbsp;                    val adapter = ArrayAdapter(</b>
+<b class="nc">&nbsp;                        this@FinalizarPedidoActivity,</b>
+<b class="nc">&nbsp;                        android.R.layout.simple_spinner_item,</b>
+<b class="nc">&nbsp;                        listOf(&quot;Selecciona uno&quot;) + nombresClientes</b>
+&nbsp;                    )
+<b class="nc">&nbsp;                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)</b>
+<b class="nc">&nbsp;                    spinnerCliente.adapter = adapter</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@FinalizarPedidoActivity, &quot;Error al cargar clientes&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaCliente&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                Toast.makeText(this@FinalizarPedidoActivity, &quot;Error de conexión con clientes&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun obtenerZonaVendedor(idUsuario: String?) {
+<b class="nc">&nbsp;        if (idUsuario.isNullOrEmpty()) {</b>
+<b class="nc">&nbsp;            Toast.makeText(this, &quot;ID de usuario no disponible&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            return
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://vendedor-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+&nbsp;
+<b class="nc">&nbsp;        apiService.getVendedor(idUsuario).enqueue(object : Callback&lt;RespuestaVendedor&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaVendedor&gt;, response: Response&lt;RespuestaVendedor&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    val vendedorS = response.body()?.vendedor</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (vendedorS != null) {</b>
+<b class="nc">&nbsp;                        vendedor = vendedorS</b>
+<b class="nc">&nbsp;                        cargarClientesDesdeApi()</b>
+&nbsp;                    } else {
+<b class="nc">&nbsp;                        showToast(&quot;Datos de vendedor no válidos&quot;)</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@FinalizarPedidoActivity, &quot;Error al cargar clientes&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaVendedor&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                Toast.makeText(this@FinalizarPedidoActivity, &quot;Error de conexión con clientes&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun validarCampos(): Boolean {
+<b class="nc">&nbsp;        if (spinnerCliente.selectedItem == null || spinnerCliente.selectedItem.toString().isEmpty()) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Seleccione un cliente&quot;)</b>
+<b class="nc">&nbsp;            return false</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (editFecha.text.toString().trim().isEmpty()) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Ingrese la fecha de entrega&quot;)</b>
+<b class="nc">&nbsp;            return false</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (!validarFecha(editFecha.text.toString().trim())) {</b>
+<b class="nc">&nbsp;            showToast(&quot;La fecha de entrega debe tener el formato yyyy-MM-dd&quot;)</b>
+<b class="nc">&nbsp;            return false</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (editNumProductos.text.toString().trim().isEmpty()) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Número de productos es obligatorio&quot;)</b>
+<b class="nc">&nbsp;            return false</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        if (editTotal.text.toString().trim().isEmpty()) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Total del pedido es obligatorio&quot;)</b>
+<b class="nc">&nbsp;            return false</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        try {</b>
+<b class="nc">&nbsp;            val formato = SimpleDateFormat(&quot;yyyy-MM-dd&quot;, Locale.getDefault())</b>
+<b class="nc">&nbsp;            formato.isLenient = false</b>
+<b class="nc">&nbsp;            val fechaIngresada = formato.parse(editFecha.text.toString())</b>
+<b class="nc">&nbsp;            val fechaActual = Calendar.getInstance().apply {</b>
+<b class="nc">&nbsp;                set(Calendar.HOUR_OF_DAY, 0)</b>
+<b class="nc">&nbsp;                set(Calendar.MINUTE, 0)</b>
+<b class="nc">&nbsp;                set(Calendar.SECOND, 0)</b>
+<b class="nc">&nbsp;                set(Calendar.MILLISECOND, 0)</b>
+<b class="nc">&nbsp;            }.time</b>
+&nbsp;
+<b class="nc">&nbsp;            if (fechaIngresada.before(fechaActual)) {</b>
+<b class="nc">&nbsp;                showToast(&quot;La fecha no puede ser anterior a la fecha actual&quot;)</b>
+<b class="nc">&nbsp;                return false</b>
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (e: Exception) {</b>
+<b class="nc">&nbsp;            showToast(&quot;Error al procesar la fecha&quot;)</b>
+<b class="nc">&nbsp;            return false</b>
+&nbsp;        }
+&nbsp;
+&nbsp;
+<b class="nc">&nbsp;        return true</b>
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun validarFecha(fecha: String): Boolean {
+<b class="nc">&nbsp;        val formato = SimpleDateFormat(&quot;yyyy-MM-dd&quot;, Locale.getDefault())</b>
+&nbsp;
+<b class="nc">&nbsp;        formato.isLenient = false</b>
+&nbsp;
+<b class="nc">&nbsp;        return try {</b>
+<b class="nc">&nbsp;            val date = formato.parse(fecha)</b>
+&nbsp;
+<b class="nc">&nbsp;            fecha == formato.format(date)</b>
+<b class="nc">&nbsp;        } catch (e: ParseException) {</b>
+<b class="nc">&nbsp;            false</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun showToast(mensaje: String) {
+<b class="nc">&nbsp;        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun enviarPedido(pedido: Pedido, idUsuario: String) {
+<b class="nc">&nbsp;        val client = OkHttpClient.Builder()</b>
+<b class="nc">&nbsp;            .addInterceptor(AuthInterceptor(this))</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-pedidos-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .client(client)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+<b class="nc">&nbsp;        apiService.crearPedido(pedido).enqueue(object : Callback&lt;RespuestaRequest&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaRequest&gt;, response: Response&lt;RespuestaRequest&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    val respuesta = response.body()</b>
+<b class="nc">&nbsp;                    val idPedido = respuesta?.id</b>
+<b class="nc">&nbsp;                    if (idPedido != null){</b>
+<b class="nc">&nbsp;                        asociarDetalles(idUsuario, idPedido)</b>
+&nbsp;                    } else {
+&nbsp;
+<b class="nc">&nbsp;                        Toast.makeText(this@FinalizarPedidoActivity, &quot;No fue posible crear el pedido, intente de nuevo&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@FinalizarPedidoActivity, &quot;Error al crear pedido&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaRequest&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                Toast.makeText(this@FinalizarPedidoActivity, &quot;Error de conexión con pedido&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;        })
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun asociarDetalles(idUsuario: String, idPedido: String) {
+<b class="nc">&nbsp;        val client = OkHttpClient.Builder()</b>
+<b class="nc">&nbsp;            .addInterceptor(AuthInterceptor(this))</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val retrofit = Retrofit.Builder()</b>
+<b class="nc">&nbsp;            .baseUrl(&quot;https://servicio-pedidos-596275467600.us-central1.run.app/api/&quot;)</b>
+<b class="nc">&nbsp;            .client(client)</b>
+<b class="nc">&nbsp;            .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="nc">&nbsp;            .build()</b>
+&nbsp;
+<b class="nc">&nbsp;        val apiService = retrofit.create(ApiService::class.java)</b>
+&nbsp;
+<b class="nc">&nbsp;        apiService.enlazarDetallePedido(idUsuario, idPedido).enqueue(object : Callback&lt;RespuestaRequest&gt; {</b>
+&nbsp;            override fun onResponse(call: Call&lt;RespuestaRequest&gt;, response: Response&lt;RespuestaRequest&gt;) {
+<b class="nc">&nbsp;                if (response.isSuccessful) {</b>
+<b class="nc">&nbsp;                    val respuesta = response.body()</b>
+<b class="nc">&nbsp;                    val status = respuesta?.status</b>
+<b class="nc">&nbsp;                    if (status == 201){</b>
+<b class="nc">&nbsp;                        Toast.makeText(this@FinalizarPedidoActivity, &quot;El pedido ha sido registrado exitosamente&quot;, Toast.LENGTH_SHORT).show()</b>
+<b class="nc">&nbsp;                        val intent = Intent(this@FinalizarPedidoActivity, CatalogoProductosActivity::class.java)</b>
+<b class="nc">&nbsp;                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK</b>
+<b class="nc">&nbsp;                        startActivity(intent)</b>
+&nbsp;                    } else {
+&nbsp;
+<b class="nc">&nbsp;                        Toast.makeText(this@FinalizarPedidoActivity, &quot;No fue posible agregar detalles, intente de nuevo&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                    }
+&nbsp;
+&nbsp;                } else {
+<b class="nc">&nbsp;                    Toast.makeText(this@FinalizarPedidoActivity, &quot;Error al agregar detalles&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;                }
+&nbsp;            }
+&nbsp;
+&nbsp;            override fun onFailure(call: Call&lt;RespuestaRequest&gt;, t: Throwable) {
+<b class="nc">&nbsp;                t.printStackTrace()</b>
+<b class="nc">&nbsp;                Toast.makeText(this@FinalizarPedidoActivity, &quot;Error de conexión con pedido&quot;, Toast.LENGTH_SHORT).show()</b>
+&nbsp;            }
+&nbsp;
+&nbsp;        })
+&nbsp;
+&nbsp;    }
+&nbsp;
+&nbsp;    private fun convertirFechaAISO8601(fecha: String): String {
+<b class="nc">&nbsp;        val inputFormat = SimpleDateFormat(&quot;yyyy-MM-dd&quot;, Locale.getDefault())</b>
+<b class="nc">&nbsp;        val outputFormat = SimpleDateFormat(&quot;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSS&#39;Z&#39;&quot;, Locale.US)</b>
+<b class="nc">&nbsp;        outputFormat.timeZone = TimeZone.getTimeZone(&quot;UTC&quot;)</b>
+&nbsp;
+<b class="nc">&nbsp;        val date: Date = inputFormat.parse(fecha)!!</b>
+<b class="nc">&nbsp;        return outputFormat.format(date)</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-05-21 16:47</div>
+</div>
+</body>
+</html>

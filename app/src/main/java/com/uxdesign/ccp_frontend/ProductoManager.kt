@@ -18,7 +18,7 @@ class ProductoManager(private val apiService: ApiService) {
     }
 
     fun agregarProducto(producto: ProductoCarrito, callback: AgregarProductoCallback) {
-        Log.d("ProductoManager", "Agregando producto al carrito: $producto") // Log para el producto que se agrega
+        //Log.d("ProductoManager", "Agregando producto al carrito: $producto") // Log para el producto que se agrega
 
         apiService.agregarDetallePedido(producto).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {

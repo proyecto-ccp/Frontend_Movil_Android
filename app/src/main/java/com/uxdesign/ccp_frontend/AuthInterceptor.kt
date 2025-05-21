@@ -1,7 +1,6 @@
 package com.uxdesign.ccp_frontend
 
 import android.content.Context
-import com.uxdesign.cpp.utils.TokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 

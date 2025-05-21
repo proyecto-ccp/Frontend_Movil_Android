@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uxdesign.cpp.R
-import com.uxdesign.cpp.utils.TokenManager
 
 class MenuActivity : AppCompatActivity() {
     private lateinit var idUsuario: String

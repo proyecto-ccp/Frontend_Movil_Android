@@ -10,12 +10,12 @@ class ConsultaVisitaLogica {
             idUsuario.isNullOrEmpty() -> ResultadoValidacion.Error("ID de usuario no disponible")
             fecha.isEmpty() -> ResultadoValidacion.Error("Debes ingresar una fecha")
             !esFechaValidaYNoAnterior(fecha) -> ResultadoValidacion.Error("La fecha no puede ser anterior a hoy")
-            else -> ResultadoValidacion.Exito
+            else -> ResultadoValidacion.Exito("Datos válidos")
         }
     }
 
     sealed class ResultadoValidacion {
-        object Exito : ResultadoValidacion()
+        data class Exito(val mensaje: String) : ResultadoValidacion()
         data class Error(val mensaje: String) : ResultadoValidacion()
     }
 
